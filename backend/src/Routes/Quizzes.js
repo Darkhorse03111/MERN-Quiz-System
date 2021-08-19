@@ -97,4 +97,21 @@ Router.post('/responses', (req, res) => {
 	DB.getResponses(reqBody, res)
 })
 
+Router.get('/', (req, res) => {
+	let quizData;
+	DB.withDB(async (db) => {
+		try {
+			const cursor = db
+				.collection('quizzes')
+				.find({ isOpen: true })
+			quizData = await cursor.toArray()
+			res.status(200).json({
+				quizData
+			})
+		} catch (error) {
+			res.status(500).json({ error })
+		}
+	})
+})
+
 module.exports = Router
