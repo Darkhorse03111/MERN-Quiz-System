@@ -11,7 +11,7 @@ import OneTimeDashBoard from './screens/OneTimeDashboard'
 import CreateQuiz from './screens/CreateQuiz'
 import JoinQuiz from './screens/JoinQuiz'
 import UserDashboard from './screens/UserDashboard'
-import CreatedSuccesfully from './screens/CreatedSuccesfully'
+import CreatedSuccessfully from './screens/CreatedSuccessfully'
 import NotFoundPage from './screens/NotFoundPage'
 import AttemptQuiz from './screens/AttemptQuiz'
 import Appbar from './components/Appbar'
@@ -68,8 +68,8 @@ const App = () => {
 							<CreateQuiz user={user} />
 						</Route>
 						<Route
-							path='/created-succesfully/:quizCode'
-							component={CreatedSuccesfully}
+							path='/created-successfully/:quizCode'
+							component={CreatedSuccessfully}
 						/>
 						<Route path='/join-quiz'>
 							<JoinQuiz user={user} />
