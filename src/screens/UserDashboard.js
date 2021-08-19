@@ -10,6 +10,7 @@ const UserDashboard = ({ user }) => {
 	const [attemptedQuizzes, setAttemptedQuizzes] = useState([])
 	const [loading, setLoading] = useState(true)
 	const [editQuiz, setEditQuiz] = useState([])
+	const [allQuiz, setAllQuiz] = useState([])
 	// Fetch Data from the API
 	useEffect(() => {
 		if (!user.uid) {
@@ -17,10 +18,10 @@ const UserDashboard = ({ user }) => {
 			return
 		}
 		const fetchQuizData = async () => {
-			const results = await fetch(`/API/users/${user.uid}`)
+			let results = await fetch(`/API/users/${user.uid}`)
 			const quizData = await results.json()
 			if (quizData.createdQuiz) setCreatedQuizzes(quizData.createdQuiz)
-			if (quizData.attemptedQuiz) setAttemptedQuizzes(quizData.attemptedQuiz)
+			// if (quizData.attemptedQuiz) setAttemptedQuizzes(quizData.attemptedQuiz)
 			setLoading(false)
 		}
 		if (user) fetchQuizData()

@@ -106,7 +106,7 @@ input[type='submit'],
 	flex-direction: column;
 	/* width:80%; */
 }
-.attempQuestionCard {
+.attemptQuestionCard {
 	padding: 20px;
 	box-shadow: var(--light-shadow) 1px 1px 1px 1px;
 	margin: 10px 0px;
