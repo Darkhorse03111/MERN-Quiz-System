@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
+import { Redirect } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
-import { Modal, Icon, IconButton } from '@material-ui/core'
+import { Modal } from '@material-ui/core'
 import './AddQuestionModal.css'
-import { DeleteRounded, EditRounded, SaveRounded } from '@material-ui/icons'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,170 +27,107 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function AddQuestionModal({
-  type = 'add',
-  title = '',
-  opType = 'radio',
-  opArray,
-  index = -1,
-  addQuestionHandle,
-}) {
+export default function UsernameModal({ setUsername }) {
   const classes = useStyles()
-  const [open, setOpen] = React.useState(false)
-  const [optionType, setOptionType] = useState('radio')
-  const [optionsArray, setOptionsArray] = useState([])
-  const [editedOption, setEditedOption] = useState(null)
-  const [editOpIndex, setEditOpIndex] = useState(-1)
-  const [titleField, setTitleField] = useState('')
-  const [userName, setUserName] = useState('')
-  const optionsRef = useRef(null)
-  const checkBoxRef = useRef(null)
+  const [open, setOpen] = useState(true)
+  const [path, setPath] = useState('')
+  const [username, setName] = useState('')
 
   useEffect(() => {
-    if (open) {
-      setTitleField(title)
-      setOptionType(opType)
-      if (opArray) setOptionsArray(opArray)
-    } else {
-      setTitleField('')
-      setOptionsArray([])
-      setOptionType('radio')
-    }
-  }, [open, title, opType, opArray])
-  const handleOpen = () => {
-    setOpen(true)
-  }
-
-  const handleClose = () => {
-    setOpen(false)
-  }
+  }, [open])
   const addQuestionCallBack = () => {
-    const tempArr = [...optionsArray]
-    if (optionsRef.current.value.length !== 0) {
-      // For radio options, set all other options incorrect
-      if (optionType === 'radio' && checkBoxRef.current.checked)
-        tempArr.forEach((op) => (op.isCorrect = false))
-
-      tempArr.push({
-        text: optionsRef.current.value,
-        isCorrect: checkBoxRef.current.checked,
-      })
-    }
     // Error Handling
-    if (!titleField.length && optionsArray.length < 2) {
-      alert('Please add Question and atleast 2 options.')
-      return
-    } else if (!titleField.length) {
-      alert('Please add Question.')
-      return
-    } else if (optionsArray.length < 2) {
-      alert('Number of Options must be greater than 1.')
-      return
-    }
-    const correctOp = optionsArray.filter((op) => op.isCorrect)
-    if (correctOp.length < 1) {
-      alert('No correct option was selected.')
-      return
-    }
-    if (index !== -1) addQuestionHandle(titleField, optionType, tempArr, index)
-    else addQuestionHandle(titleField, optionType, tempArr)
-
-    setOpen(false)
-  }
-
-  const addOption = () => {
-    if (optionsRef.current.value.length === 0) return
-
-    const arr = [...optionsArray]
-    if (
-      optionsArray.findIndex((op) => op.text === optionsRef.current.value) !==
-      -1
-    ) {
-      alert('Option already exists.')
-      return
-    }
-    if (optionType === 'radio' && checkBoxRef.current.checked)
-      // For radio options, set all other options incorrect
-      arr.forEach((op) => (op.isCorrect = false))
-
-    arr.push({
-      text: optionsRef.current.value,
-      isCorrect: checkBoxRef.current.checked,
-    })
-    optionsRef.current.value = ''
-    checkBoxRef.current.checked = false
-    setOptionsArray(arr)
-  }
-  const handleTypeChange = (e) => setOptionType(e.target.value)
-
-  const deleteHandler = (ind) => {
-    const temp = [...optionsArray]
-    temp.splice(ind, 1)
-    setOptionsArray(temp)
-    setEditOpIndex(-1)
-  }
-
-  const handleEdit = (ind) => {
-    if (editOpIndex === -1) {
-      setEditOpIndex(ind)
-      setEditedOption(optionsArray[ind].text)
+    if (username) {
+      localStorage.setItem("username", username)
+      setUsername(username)
+      setPath('/')
     }
   }
 
-  const saveEdited = () => {
-    const temp = [...optionsArray]
-    temp[editOpIndex].text = editedOption
-    setOptionsArray(temp)
-    setEditOpIndex(-1)
+  if (!!(localStorage.getItem('username'))) {
+    return <Redirect push to='/' />
+  }
+
+  if (!!path) {
+    return <Redirect push to={path} />
   }
 
   return (
-    <div className={classes.root}>
-      {type === 'add' ? (
-        <button className='button' onClick={handleOpen}>
-          Set Username
-        </button>
-      ) : (
-        <IconButton onClick={handleOpen}>
-          <EditRounded />
-        </IconButton>
-      )}
-      <Modal
-        aria-labelledby='transition-modal-title'
-        aria-describedby='transition-modal-description'
-        className={classes.modal}
-        open={open}
-        disableEnforceFocus={true}
-      >
-        <div className={classes.paper}>
-          <div className='questionCard'>
-            <div id='title'>Question:</div>
-            <input
-              type='text'
-              autoFocus
-              value={titleField}
-              onChange={(e) => setTitleField(e.target.value)}
-              className='input-text question'
-              placeholder='Type Question Here'
-            />
-          </div>
-          <div className={classes.buttons}>
-            <button className='add-btn' onClick={handleClose}>
-              Close
-            </button>
-            <button
-              // disabled={!(optionsArray.length && titleField.length)}
-              className='button'
-              color='secondary'
-              variant='contained'
-              onClick={addQuestionCallBack}
-            >
-              {type === 'add' ? 'Add ' : 'Edit '}
-              Question
-            </button>
-          </div>
+    <div className='one-time-dashboard'>
+      <div id='dashboard-content'>
+        <div className='dash-btns'>
+          <h1 className='white'>
+            <b>Quiz</b>
+          </h1>
+          <button className='button one-time-button'>
+            Dashboard
+          </button>
+          <button className='button one-time-button'>
+            Create Quiz
+          </button>
+          <button className='button one-time-button'>
+            Join Quiz
+          </button>
         </div>
-      </Modal>
+        <div className='blob-svg'>
+          <svg
+            className='blob-1'
+            viewBox='0 0 200 200'
+            xmlns='http://www.w3.org/2000/svg'
+          >
+            <path
+              fill='#D81E5B'
+              d='M55.6,-59.6C71.1,-53.2,82.1,-34.8,85.2,-15.3C88.2,4.2,83.3,24.7,73,41.7C62.7,58.6,46.8,72,29.8,75.4C12.7,78.9,-5.7,72.5,-21.3,64.3C-36.8,56.1,-49.6,46,-55.3,33.3C-61,20.6,-59.6,5.2,-56.6,-9.6C-53.6,-24.4,-48.8,-38.4,-39.1,-45.8C-29.4,-53.2,-14.7,-53.8,2.7,-57C20,-60.2,40.1,-65.9,55.6,-59.6Z'
+              transform='translate(100 100)'
+            />
+          </svg>
+
+          <svg
+            className='blob-3'
+            viewBox='0 0 200 200'
+            xmlns='http://www.w3.org/2000/svg'
+          >
+            <path
+              fill='#F7C550'
+              d='M37.2,-46.1C50.9,-32.8,66.5,-23.6,68.1,-12.3C69.8,-0.9,57.5,12.6,48.4,27.5C39.3,42.4,33.3,58.7,22.7,62.7C12.1,66.7,-3,58.3,-21.7,54C-40.3,49.6,-62.5,49.2,-72.9,38.5C-83.4,27.8,-82.2,6.8,-75.6,-10.4C-69.1,-27.5,-57.2,-40.7,-43.7,-54C-30.2,-67.3,-15.1,-80.6,-1.7,-78.6C11.8,-76.6,23.5,-59.3,37.2,-46.1Z'
+              transform='translate(100 100)'
+            />
+          </svg>
+        </div>
+
+        <Modal
+          aria-labelledby='transition-modal-title'
+          aria-describedby='transition-modal-description'
+          className={classes.modal}
+          open={open}
+          disableEnforceFocus={true}
+        >
+          <div className={classes.paper}>
+            <div className='questionCard'>
+              <div id='title'>Name:</div>
+              <input
+                type='text'
+                autoFocus
+                value={username}
+                onChange={(e) => setName(e.target.value)}
+                className='input-text question'
+                placeholder='Type Name Here'
+              />
+            </div>
+            <div className={classes.buttons}>
+              <button
+                // disabled={!(optionsArray.length && titleField.length)}
+                className='button'
+                color='secondary'
+                variant='contained'
+                onClick={addQuestionCallBack}
+              >
+                Enter
+              </button>
+            </div>
+          </div>
+        </Modal>
+      </div>
     </div>
   )
 }

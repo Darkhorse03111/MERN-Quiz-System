@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import './OneTimeDashboard.css'
+import UsernameModal from '../components/UsernameModal'
 
 const OneTimeDashboard = ({ user }) => {
 	const [path, setPath] = useState('')
@@ -9,7 +10,14 @@ const OneTimeDashboard = ({ user }) => {
 	const onCreateQuiz = () => setPath('/create-quiz')
 	const onJoinQuiz = () => setPath('/join-quiz')
 
+
+	const username = localStorage.getItem('username')
+	// if (!username) {
+	// 	setPath('/name')
+	// }
+
 	if (path.length > 0) return <Redirect push to={path} />
+	if (!username) return <Redirect push to='/name' />
 
 	return (
 		<div className='one-time-dashboard'>
