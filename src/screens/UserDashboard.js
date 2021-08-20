@@ -10,18 +10,26 @@ const UserDashboard = ({ user }) => {
 	const [attemptedQuizzes, setAttemptedQuizzes] = useState([])
 	const [loading, setLoading] = useState(true)
 	const [editQuiz, setEditQuiz] = useState([])
-	const [allQuiz, setAllQuiz] = useState([])
+	const [allQuizzes, setAllQuizzes] = useState([])
 	// Fetch Data from the API
 	useEffect(() => {
-		if (!user.uid) {
-			setLoading(false)
-			return
-		}
+		// if (!user.uid) {
+		// 	setLoading(false)
+		// 	return
+		// }
 		const fetchQuizData = async () => {
-			let results = await fetch(`/API/users/${user.uid}`)
-			const quizData = await results.json()
-			if (quizData.createdQuiz) setCreatedQuizzes(quizData.createdQuiz)
+			let results, quizData
+			if (user.uid) {
+				results = await fetch(`/API/users/${user.uid}`)
+				quizData = await results.json()
+				if (quizData.createdQuiz) setCreatedQuizzes(quizData.createdQuiz)
+			}
 			// if (quizData.attemptedQuiz) setAttemptedQuizzes(quizData.attemptedQuiz)
+			results = await fetch(`/API/quizzes`)
+			quizData = await results.json()
+			if (quizData.quizData) {
+				setAllQuizzes(quizData.quizData)
+			}
 			setLoading(false)
 		}
 		if (user) fetchQuizData()
@@ -77,35 +85,37 @@ const UserDashboard = ({ user }) => {
 		)
 	return (
 		<div className='dash-body'>
+			{
+				user.uid && <div className='quizzes'>
+					<div className='heading'>
+						<div className='line-left' />
+						<h2>Created </h2>
+						<div className='line' />
+					</div>
+					<div className='card-holder'>
+						{createdQuizzes.map((quiz, key) => (
+							<CreatedQuizCard
+								key={key}
+								index={key}
+								setEditQuiz={setEditQuiz}
+								title={quiz.title}
+								code={quiz._id}
+								responses={quiz.responses}
+								questions={quiz.questions.length}
+								isOpen={quiz.isOpen}
+							/>
+						))}
+					</div>
+				</div>
+			}
 			<div className='quizzes'>
 				<div className='heading'>
 					<div className='line-left' />
-					<h2>Created </h2>
+					<h2>Quizzes </h2>
 					<div className='line' />
 				</div>
 				<div className='card-holder'>
-					{createdQuizzes.map((quiz, key) => (
-						<CreatedQuizCard
-							key={key}
-							index={key}
-							setEditQuiz={setEditQuiz}
-							title={quiz.title}
-							code={quiz._id}
-							responses={quiz.responses}
-							questions={quiz.questions.length}
-							isOpen={quiz.isOpen}
-						/>
-					))}
-				</div>
-			</div>
-			<div className='quizzes'>
-				<div className='heading'>
-					<div className='line-left' />
-					<h2>Attempted </h2>
-					<div className='line' />
-				</div>
-				<div className='card-holder'>
-					{attemptedQuizzes.map((quiz, key) => (
+					{allQuizzes.map((quiz, key) => (
 						<JoinedQuizCard
 							key={key}
 							title={quiz.title}
