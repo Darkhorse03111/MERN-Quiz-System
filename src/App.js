@@ -17,9 +17,11 @@ import AttemptQuiz from './screens/AttemptQuiz'
 import Appbar from './components/Appbar'
 import Responses from './screens/Responses'
 import AttemptBlindQuiz from './screens/AttemptBlindQuiz'
+import UsernameModal from './components/UsernameModal'
 
 const App = () => {
 	const [user, setUser] = useState({})
+	const [username, setUsername] = useState(localStorage.getItem('username'))
 	useEffect(() => {
 		const createUserInDB = async () => {
 			if (user.uid)
@@ -47,16 +49,18 @@ const App = () => {
 		}
 		createUserInDB()
 	}, [user])
-
 	return (
 		<div className='App'>
 			<>
 				<div>
-					<Appbar user={user} setUser={setUser} />
+					<Appbar user={user} setUser={setUser} username={username} setUsername={setUsername} />
 				</div>
 				<Switch>
 					<Route exact path='/'>
 						<OneTimeDashBoard user={user} />
+					</Route>
+					<Route path='/name'>
+						<UsernameModal setUsername={setUsername} />
 					</Route>
 					<Route path='/admin'>
 						{

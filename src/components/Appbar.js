@@ -4,11 +4,11 @@ import './Appbar.css'
 import { Link } from 'react-router-dom'
 import { Icon } from '@material-ui/core'
 import { AccountCircle } from '@material-ui/icons'
-const Appbar = ({ user, setUser }) => {
+const Appbar = ({ user, setUser, username, setUsername }) => {
 	return (
 		<div className='appbar'>
 			<div className='slider'>
-				<Sidebar />
+				<Sidebar setUsername={setUsername} />
 				<Link to='/' className='home'>
 					<b>Quiz</b>
 				</Link>
@@ -17,7 +17,7 @@ const Appbar = ({ user, setUser }) => {
 				<Icon>
 					<AccountCircle />
 				</Icon>
-				<p>{user.name}</p>
+				<p>{user.name}{username}</p>
 			</div>
 		</div>
 	)

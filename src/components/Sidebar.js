@@ -12,7 +12,7 @@ import {
 	MenuRounded,
 } from '@material-ui/icons'
 
-function Sidebar() {
+function Sidebar({ setUsername }) {
 	const [signOut, setSignOut] = useState(false)
 	const SidedbarData = [
 		{
@@ -36,7 +36,11 @@ function Sidebar() {
 	]
 	const [sidebar, setSidebar] = useState(false)
 	const showSidebar = () => setSidebar(!sidebar)
-	if (signOut) return <Redirect to='/' />
+	if (signOut) {
+		setUsername('');
+		localStorage.removeItem('username')
+		return <Redirect to='/name' />
+	}
 
 	return (
 		<div>
