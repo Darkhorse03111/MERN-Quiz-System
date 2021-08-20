@@ -12,12 +12,12 @@ const AttemptQuiz = ({ match }) => {
 	const [loading, setLoading] = useState(true)
 	const [result, setResult] = useState({})
 	const [showModal, setShowModal] = useState(false)
-	const uid = firebase.auth().currentUser.uid
+	// const uid = firebase.auth().currentUser.uid
 	useEffect(() => {
 		const fetchQuiz = async () => {
 			const res = await fetch('/API/quizzes/join', {
 				method: 'POST',
-				body: JSON.stringify({ quizId: quizCode, uid }),
+				body: JSON.stringify({ quizId: quizCode }),
 				headers: {
 					'Content-Type': 'application/json',
 				},
@@ -40,7 +40,7 @@ const AttemptQuiz = ({ match }) => {
 			}
 		}
 		fetchQuiz()
-	}, [quizCode, uid])
+	}, [quizCode])
 
 	const handleOptionSelect = (e, option, index) => {
 		const temp = [...attemptedQuestions]
@@ -64,7 +64,6 @@ const AttemptQuiz = ({ match }) => {
 			const res = await fetch('/API/quizzes/submit', {
 				method: 'POST',
 				body: JSON.stringify({
-					uid,
 					quizId: quizCode,
 					questions: attemptedQuestions,
 				}),

@@ -3,9 +3,6 @@
   "version": "0.1.0",
   "proxy": "http://localhost:8000/",
   "private": true,
-  "engines": {
-    "node": "14.x"
-  },
   "dependencies": {
     "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.9.1",
@@ -26,7 +23,6 @@
   },
   "scripts": {
     "start": "concurrently \"react-scripts start\" \"cd backend && npm start\"",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install && npm run build",
     "frontend": "react-scripts start",
     "backend": "cd backend && npm start",
     "build": "react-scripts build",

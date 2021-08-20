@@ -14,7 +14,7 @@ import UserDashboard from './screens/UserDashboard'
 import CreatedSuccessfully from './screens/CreatedSuccessfully'
 import NotFoundPage from './screens/NotFoundPage'
 import AttemptQuiz from './screens/AttemptQuiz'
-import Appbar from './components/Appbar'
+import AppBar from './components/AppBar'
 import Responses from './screens/Responses'
 import AttemptBlindQuiz from './screens/AttemptBlindQuiz'
 import UsernameModal from './components/UsernameModal'
@@ -53,7 +53,7 @@ const App = () => {
 		<div className='App'>
 			<>
 				<div>
-					<Appbar user={user} setUser={setUser} username={username} setUsername={setUsername} />
+					<AppBar user={user} setUser={setUser} username={username} setUsername={setUsername} />
 				</div>
 				<Switch>
 					<Route exact path='/'>

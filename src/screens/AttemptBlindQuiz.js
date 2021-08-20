@@ -21,7 +21,10 @@ const AttemptBlindQuiz = ({ match }) => {
 	const [loading, setLoading] = useState(true)
 	const [result, setResult] = useState({})
 	const [showModal, setShowModal] = useState(false)
-	const uid = firebase.auth().currentUser.uid
+	let uid;
+	if (firebase.auth().currentUser) {
+		uid = firebase.auth().currentUser.uid
+	}
 
 	// Using Speech Recognition Transcript
 	const { transcript, resetTranscript } = useSpeechRecognition({
@@ -68,7 +71,7 @@ const AttemptBlindQuiz = ({ match }) => {
 		const fetchQuiz = async () => {
 			const res = await fetch('/API/quizzes/join', {
 				method: 'POST',
-				body: JSON.stringify({ quizId: quizCode, uid }),
+				body: JSON.stringify({ quizId: quizCode }),
 				headers: {
 					'Content-Type': 'application/json'
 				}
@@ -101,7 +104,7 @@ const AttemptBlindQuiz = ({ match }) => {
 			}
 		}
 		fetchQuiz()
-	}, [quizCode, uid])
+	}, [quizCode])
 	const submitQuiz = React.useCallback(async () => {
 		// send attempted Questions to backend
 		try {

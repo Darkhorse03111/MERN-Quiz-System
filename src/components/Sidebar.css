@@ -13,7 +13,7 @@
 .nav-menu {
 	width: 250px;
 	height: 100vh;
-	background-color: var(--secondary);
+	background-color: #294634;
 	display: flex;
 	justify-content: center;
 	position: fixed;
@@ -42,7 +42,7 @@
 }
 .nav-text a {
 	text-decoration: none;
-	color: white;
+	color: #cb9f64;
 	font-size: 18px;
 	width: 95%;
 	height: 100%;
@@ -57,7 +57,7 @@
 }
 .nav-text button {
 	background-color: transparent;
-	color: white;
+	color: #cb9f64;
 	font-size: 18px;
 	width: 95%;
 	height: 100%;
@@ -69,15 +69,16 @@
 	border-radius: 4px;
 }
 .nav-text button:hover {
-	background-color: var(--accent-pink);
+	background-color: #cb9f64;
+	color: #ffffff;
 	cursor: pointer;
 }
 .nav-text a:hover {
-	background-color: var(--accent-pink);
+	background-color: #cb9f64;
+	color: #ffffff;
 }
 
 .navbar-toggle {
-	background-color: var(--secondary);
 	margin: 7px 25px;
 	text-align: start;
 }
