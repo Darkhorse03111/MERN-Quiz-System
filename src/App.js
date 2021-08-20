@@ -50,42 +50,46 @@ const App = () => {
 
 	return (
 		<div className='App'>
-			{!firebase.auth().currentUser ? (
-				<Home setUser={setUser} />
-			) : (
-				<>
-					<div>
-						<Appbar user={user} setUser={setUser} />
-					</div>
-					<Switch>
-						<Route exact path='/'>
-							<OneTimeDashBoard user={user} />
-						</Route>
-						<Route path='/dashboard'>
-							<UserDashboard user={user} />
-						</Route>
-						<Route path='/create-quiz'>
-							<CreateQuiz user={user} />
-						</Route>
-						<Route
-							path='/created-successfully/:quizCode'
-							component={CreatedSuccessfully}
-						/>
-						<Route path='/join-quiz'>
-							<JoinQuiz user={user} />
-						</Route>
-						<Route path='/attempt-quiz/:quizCode' component={AttemptQuiz} />
-						<Route
-							path='/attempt-blind-quiz/:quizCode'
-							component={AttemptBlindQuiz}
-						/>
-						<Route path='/responses/:quizCode' component={Responses} />
-						<Route component={NotFoundPage} />
-					</Switch>
-				</>
-			)}
+			<>
+				<div>
+					<Appbar user={user} setUser={setUser} />
+				</div>
+				<Switch>
+					<Route exact path='/'>
+						<OneTimeDashBoard user={user} />
+					</Route>
+					<Route path='/admin'>
+						{
+							!firebase.auth().currentUser ? <Home setUser={setUser} /> : <OneTimeDashBoard user={user} />
+						}
+					</Route>
+					<Route path='/dashboard'>
+						<UserDashboard user={user} />
+					</Route>
+					<Route path='/create-quiz'>
+						<CreateQuiz user={user} />
+					</Route>
+					<Route
+						path='/created-successfully/:quizCode'
+						component={CreatedSuccessfully}
+					/>
+					<Route path='/join-quiz'>
+						<JoinQuiz user={user} />
+					</Route>
+					<Route path='/attempt-quiz/:quizCode' component={AttemptQuiz} />
+					<Route
+						path='/attempt-blind-quiz/:quizCode'
+						component={AttemptBlindQuiz}
+					/>
+					<Route path='/responses/:quizCode' component={Responses} />
+					<Route component={NotFoundPage} />
+				</Switch>
+			</>
 		</div>
 	)
 }
 
 export default App
+/*
+!firebase.auth().currentUser ?
+*/

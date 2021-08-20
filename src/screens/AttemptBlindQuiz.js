@@ -103,7 +103,7 @@ const AttemptBlindQuiz = ({ match }) => {
 		fetchQuiz()
 	}, [quizCode, uid])
 	const submitQuiz = React.useCallback(async () => {
-		// send attemped Questions to backend
+		// send attempted Questions to backend
 		try {
 			const res = await fetch('/API/quizzes/submit', {
 				method: 'POST',
@@ -357,7 +357,7 @@ const AttemptBlindQuiz = ({ match }) => {
 						<h2>{quizTitle}</h2>
 					</div>
 					{questions.map((question, index) => (
-						<div className='attempQuestionCard' key={index}>
+						<div className='attemptQuestionCard' key={index}>
 							<div id='title'>{question.title}</div>
 							<div className='option-div'>
 								{question.options.map((option, ind) => (
