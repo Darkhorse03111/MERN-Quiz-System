@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import './CreatedSuccesfully.css'
+import './CreatedSuccessfully.css'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
-const CreatedSuccesfully = ({ match }) => {
+const CreatedSuccessfully = ({ match }) => {
 	const [Copy, setCopy] = useState('copy')
 	return (
 		<div id='created-quiz'>
 			<div id='created-quiz-div'>
 				<div id='message'>
 					<h2 className='b'>Quiz Created Successfully!</h2>
-					<p>Share the follwong code with your students</p>
+					<p>Share the following code with your students</p>
 				</div>
 				<input
 					type='text'
@@ -18,7 +18,7 @@ const CreatedSuccesfully = ({ match }) => {
 					id={Copy}
 					value={match.params.quizCode}
 					disabled={true}
-					// onChange={(e) => {}}
+				// onChange={(e) => {}}
 				/>
 				<CopyToClipboard
 					text={match.params.quizCode}
@@ -37,4 +37,4 @@ const CreatedSuccesfully = ({ match }) => {
 		</div>
 	)
 }
-export default CreatedSuccesfully
+export default CreatedSuccessfully
