@@ -2,6 +2,12 @@ const MongoClient = require('mongodb')
 const Evaluate = require('../Algorithms/EvaluateQuiz')
 const ObjectId = require('mongodb').ObjectId
 const API_KEY = require('../db-config').database
+if (process.env.NODE_ENV === "development") {
+	//...
+}
+if (process.env.NODE_ENV === "production") {
+	//...
+}
 let db
 const DBStart = async () => {
 	console.log('DB server connecting...')

@@ -2,6 +2,7 @@ const express = require('express')
 const ObjectId = require('mongodb').ObjectId
 const Router = express.Router()
 const DB = require('./DB')
+let students = require('../data/students')
 
 // Create User in DB
 Router.post('/create', (req, res) => {
@@ -15,7 +16,8 @@ Router.post('/create', (req, res) => {
 Router.get('/:uid', (req, res) => {
 	const uid = req.params.uid
 	if (!uid) return res.status(500).json({ error: 'Incomplete Parameters' })
-
+	students.push({ name: 'Tom' })
+	console.log('users students ', students)
 	DB.withDB(async (db) => {
 		const createdCursor = db
 			.collection('quizzes')
