@@ -10,7 +10,7 @@
 }
 .one-time-dashboard {
 	height: 100vh;
-	background-color: var(--secondary);
+	background-color: #ffffff;
 }
 .dash-btns {
 	flex: 1;

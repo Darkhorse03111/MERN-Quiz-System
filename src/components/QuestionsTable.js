@@ -129,13 +129,13 @@ const useToolbarStyles = makeStyles((theme) => ({
   highlight:
     theme.palette.type === "light"
       ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
+        color: theme.palette.secondary.main,
+        backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+      }
       : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
+        color: theme.palette.text.primary,
+        backgroundColor: theme.palette.secondary.dark,
+      },
   title: {
     flex: "1 1 100%",
   },
@@ -256,8 +256,8 @@ export default function QuestionsTable({ questionArray, setQuestionArray }) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.title);
-      setSelected(newSelecteds);
+      const newSelects = rows.map((n) => n.title);
+      setSelected(newSelects);
       return;
     }
     setSelected([]);
@@ -387,7 +387,7 @@ export default function QuestionsTable({ questionArray, setQuestionArray }) {
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={handleChangePage}
-          // onChangeRowsPerPage={handleChangeRowsPerPage}
+        // onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
     </div>

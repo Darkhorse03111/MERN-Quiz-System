@@ -5,8 +5,8 @@ const ObjectId = require('mongodb').ObjectId
 
 // Get Quiz Data
 Router.post('/join', (req, res) => {
-	const { quizId, uid } = req.body
-	if (!quizId || !uid)
+	const { quizId } = req.body
+	if (!quizId)
 		return res.status(500).json({ error: 'Incomplete Parameters' })
 
 	DB.withDB(async (db) => {
@@ -25,6 +25,7 @@ Router.post('/join', (req, res) => {
 			if (!quizData[0].isOpen)
 				res.status(500).json({ error: 'ERR:QUIZ_ACCESS_DENIED' })
 			else {
+				/*
 				const cursor2 = db.collection('users').find({
 					$and: [{ uid }, { attemptedQuiz: ObjectId(quizId) }],
 				})
@@ -37,6 +38,8 @@ Router.post('/join', (req, res) => {
 						error: 'ERR:QUIZ_ALREADY_ATTEMPTED',
 					})
 				} else res.status(200).json(quizData[0])
+				*/
+				res.status(200).json(quizData[0])
 			}
 		} catch (error) {
 			res.status(500).json({ error: 'ERR:QUIZ_NOT_FOUND' })

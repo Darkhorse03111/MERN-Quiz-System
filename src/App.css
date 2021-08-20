@@ -71,13 +71,13 @@ input[type='submit'],
 	background-size: 200% auto;
 	border-radius: 50px;
 	border: none;
-	background-image: var(--gradient);
+	background-color: #a17f50;
 	color: var(--primary);
 }
 
 input[type='submit'],
 .button:hover {
-	background-position: right center; /* change the direction of the change here */
+	background-color: #3b563f;
 	color: #fff;
 	cursor: pointer;
 	text-decoration: none;

@@ -1,6 +1,6 @@
 @import "./colors.css";
 
-.appbar {
+.appBar {
 	z-index: 9;
 	position: fixed;
 	width: 100%;
@@ -9,12 +9,12 @@
 	padding: 0px 5px;
 	padding-right: 15px;
 	justify-content: space-between;
-	background-color: var(--secondary);
+	background-color: #294634;
 	box-shadow: black 0px 1px 6px;
 }
 .slider {
   z-index: 9;
-  background-color: var(--secondary);
+  background-color: #294634;
   height: 70px;
   display: flex;
   justify-content: center;
@@ -36,14 +36,14 @@
 .home:hover {
   color: var(--accent-mustard);
 }
-.appbar-user {
+.appBar-user {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	padding: 5px;
 	margin: 0 10px;
 }
-.appbar-user p {
+.appBar-user p {
   font-size: 40;
 }
 @media (max-width: 768px) {
@@ -53,7 +53,7 @@
   .slider {
     height: 50px;
   }
-  .appbar-user p {
+  .appBar-user p {
     margin: 0;
   }
   .home {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Redirect } from 'react-router-dom'
 import './UserDashBoard.css'
 import CreatedQuizCard from '../components/CreatedQuizCard'
 import JoinedQuizCard from '../components/JoinedQuizCard'
@@ -11,6 +12,7 @@ const UserDashboard = ({ user }) => {
 	const [loading, setLoading] = useState(true)
 	const [editQuiz, setEditQuiz] = useState([])
 	const [allQuizzes, setAllQuizzes] = useState([])
+	const [path, setPath] = useState('')
 	// Fetch Data from the API
 	useEffect(() => {
 		// if (!user.uid) {
@@ -73,6 +75,10 @@ const UserDashboard = ({ user }) => {
 
 	if (loading) return <LoadingScreen />
 
+	if (path) {
+		return <Redirect push to={`/attempt-quiz/${path}`} />
+	}
+
 	if (editQuiz.length)
 		return (
 			<CreateQuiz
@@ -120,7 +126,9 @@ const UserDashboard = ({ user }) => {
 							key={key}
 							title={quiz.title}
 							score={quiz.responses[0].score}
-							questions={quiz.totalQuestions}
+							questions={quiz.questions.length}
+							id={quiz._id}
+							joinQuiz={setPath}
 						/>
 					))}
 				</div>
