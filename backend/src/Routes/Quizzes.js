@@ -2,6 +2,7 @@ const express = require('express')
 const Router = express.Router()
 const DB = require('./DB')
 const ObjectId = require('mongodb').ObjectId
+let students = require('../data/students')
 
 // Get Quiz Data
 Router.post('/join', (req, res) => {
@@ -102,6 +103,8 @@ Router.post('/responses', (req, res) => {
 
 Router.get('/', (req, res) => {
 	let quizData;
+	students.push({ name: 'Jack' })
+	console.log('quizzes students ', students)
 	DB.withDB(async (db) => {
 		try {
 			const cursor = db
