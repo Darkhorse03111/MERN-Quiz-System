@@ -1,5 +1,5 @@
 {
-  "name": "quizdom-backend",
+  "name": "quiz-backend",
   "version": "1.0.0",
   "description": "",
   "main": "back.js",
@@ -8,7 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
-    "node": "^14.0.0"
+    "node": "^14.0.0",
+    "npm": "^7.0.0"
   },
   "keywords": [],
   "author": "",
