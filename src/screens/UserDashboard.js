@@ -125,7 +125,7 @@ const UserDashboard = ({ user }) => {
 						<JoinedQuizCard
 							key={key}
 							title={quiz.title}
-							score={quiz.responses[0].score}
+							// score={quiz.responses[0].score}
 							questions={quiz.questions.length}
 							id={quiz._id}
 							joinQuiz={setPath}
