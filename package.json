@@ -24,7 +24,7 @@
   },
   "scripts": {
     "start": "concurrently \"react-scripts start\" \"cd backend && npm start\"",
-    "heroku-postbuild": "concurrently \"set NODE_ENV=production&&cd backend && npm install && npm start\" \"set NODE_ENV=production&& npm install && react-scripts build\"",
+    "heroku-postbuild": "concurrently \"set NODE_ENV=production&& npm install && react-scripts build\" \"set NODE_ENV=production&&cd backend && npm install && npm start\"",
     "startProduction": "set NODE_ENV=production&& concurrently \"react-scripts start\" \"cd backend && npm start\"",
     "frontend": "react-scripts start",
     "backend": "cd backend && npm start",
