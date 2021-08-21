@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import firebase from '../firebase/firebase'
 import LoadingScreen from './LoadingScreen'
 import AttemptedModal from './AttemptedModal'
 
 const AttemptQuiz = ({ match }) => {
 	const quizCode = match.params.quizCode
+	const [number, setNumber] = useState(parseInt(localStorage.getItem('number')))
 	const [questions, setQuestions] = useState([])
 	const [attemptedQuestions, setAttemptedQuestions] = useState([])
 	const [quizTitle, setQuizTitle] = useState('')
 	const [loading, setLoading] = useState(true)
 	const [result, setResult] = useState({})
 	const [showModal, setShowModal] = useState(false)
+	const [path, setPath] = useState('')
 	// const uid = firebase.auth().currentUser.uid
 	useEffect(() => {
 		const fetchQuiz = async () => {
@@ -23,11 +25,15 @@ const AttemptQuiz = ({ match }) => {
 				},
 			})
 			const quizData = await res.json()
-			setLoading(false)
-			if (quizData.error) setQuizTitle(quizData.error)
+			console.log('fetch res:', quizData)
+			if (!!quizData.error) {
+				setQuizTitle(quizData.error)
+				setLoading(false)
+			}
 			else {
 				setQuizTitle(quizData.title)
 				setQuestions(quizData.questions)
+				setLoading(false)
 				const temp = quizData.questions.map((question) => {
 					return {
 						id: question.id,
@@ -56,6 +62,11 @@ const AttemptQuiz = ({ match }) => {
 		}
 		temp[index].selectedOptions = options
 		setAttemptedQuestions(temp)
+	}
+
+	const increaseNumber = () => {
+		localStorage.setItem('number', `${number + 1}`)
+		setNumber(number + 1)
 	}
 
 	const submitQuiz = async () => {
@@ -94,6 +105,9 @@ const AttemptQuiz = ({ match }) => {
 				</h3>
 			</div>
 		)
+	if (!!path) {
+		return <Redirect push to={`/attempt-quiz/${quizCode}/${path}`} />
+	}
 	// For Quiz not accessible
 	else if (quizTitle === 'ERR:QUIZ_ACCESS_DENIED')
 		return (
@@ -122,47 +136,55 @@ const AttemptQuiz = ({ match }) => {
 				</h3>
 			</div>
 		)
-	else
+	else {
+		let question = questions[number], options = attemptedQuestions.length > number ? attemptedQuestions[number].selectedOptions : []
 		return (
 			<div id='main-body'>
 				<div id='create-quiz-body'>
 					<div className='quiz-header'>
 						<h2>{quizTitle}</h2>
 					</div>
-					{questions.map((question, index) => (
-						<div className='attempQuestionCard' key={index}>
-							<div id='title'>{question.title}</div>
-							<div className='option-div'>
-								{question.options.map((option, ind) => (
-									<div className='option' key={ind}>
-										{question.optionType === 'radio' ? (
-											<input
-												type='radio'
-												name={`option${index}`}
-												onChange={(e) =>
-													handleOptionSelect(e, option.text, index)
-												}
-											/>
-										) : (
-											<input
-												type='checkbox'
-												name='option'
-												onChange={(e) =>
-													handleOptionSelect(e, option.text, index)
-												}
-											/>
-										)}
-										<label className='label' style={{ padding: '0px 5px' }}>
-											{option.text}
-										</label>
-									</div>
-								))}
-							</div>
+					<div className='attemptQuestionCard'>
+						<div id='title'>{question.title}</div>
+						<div className='option-div'>
+							{question.options.map((option, ind) => (
+								<div className='option' key={ind}>
+									{question.optionType === 'radio' ? (
+										<input
+											type='radio'
+											name={`option${number}`}
+											checked={options.findIndex(opt => opt === option.text) >= 0}
+											onChange={(e) =>
+												handleOptionSelect(e, option.text, number)
+											}
+										/>
+									) : (
+										<input
+											type='checkbox'
+											name='option'
+											checked={options.findIndex(opt => opt === option.text) >= 0}
+											onChange={(e) =>
+												handleOptionSelect(e, option.text, number)
+											}
+										/>
+									)}
+									<label className='label' style={{ padding: '0px 5px' }}>
+										{option.text}
+									</label>
+								</div>
+							))}
 						</div>
-					))}
-					<button className='button wd-200' onClick={submitQuiz}>
-						Submit
-					</button>
+					</div>
+					<div id='row'>
+						<button className='button wd-200' onClick={submitQuiz}>
+							Submit
+						</button>
+						{
+							(number < questions.length - 1) && <button className='button wd-200' onClick={e => increaseNumber()}>
+								Next
+							</button>
+						}
+					</div>
 					<AttemptedModal
 						result={result}
 						showModal={showModal}
@@ -171,6 +193,7 @@ const AttemptQuiz = ({ match }) => {
 				</div>
 			</div>
 		)
+	}
 }
 
 export default AttemptQuiz

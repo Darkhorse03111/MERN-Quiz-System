@@ -102,15 +102,22 @@ Router.post('/responses', (req, res) => {
 })
 
 Router.get('/', (req, res) => {
-	let quizData;
-	students.push({ name: 'Jack' })
 	console.log('quizzes students ', students)
 	DB.withDB(async (db) => {
 		try {
-			const cursor = db
+			const createdCursor = db
 				.collection('quizzes')
-				.find({ isOpen: true })
-			quizData = await cursor.toArray()
+				.find({})
+				.project({
+					isOpen: 1,
+					title: 1,
+					questions: 1,
+					responses: {
+						$size: '$responses',
+					},
+				})
+			const quizData = await createdCursor.toArray();
+			console.log('getting quiz ' + quizData)
 			res.status(200).json({
 				quizData
 			})

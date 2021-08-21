@@ -23,18 +23,24 @@ const UserDashboard = ({ user }) => {
 			let results, quizData
 			if (user.uid) {
 				results = await fetch(`/API/users/${user.uid}`)
+				console.log('results:', results)
 				quizData = await results.json()
 				if (quizData.createdQuiz) setCreatedQuizzes(quizData.createdQuiz)
 			}
 			// if (quizData.attemptedQuiz) setAttemptedQuizzes(quizData.attemptedQuiz)
-			results = await fetch(`/API/quizzes`)
+			results = await fetch(`/API/quizzes`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
 			quizData = await results.json()
 			if (quizData.quizData) {
 				setAllQuizzes(quizData.quizData)
 			}
 			setLoading(false)
 		}
-		if (user) fetchQuizData()
+		fetchQuizData()
 	}, [user])
 
 	const editQuizHandle = async (title, questions, isOpen) => {
@@ -76,6 +82,7 @@ const UserDashboard = ({ user }) => {
 	if (loading) return <LoadingScreen />
 
 	if (path) {
+		localStorage.setItem('number', '0')
 		return <Redirect push to={`/attempt-quiz/${path}`} />
 	}
 

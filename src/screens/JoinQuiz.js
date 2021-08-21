@@ -12,7 +12,7 @@ const JoinQuiz = () => {
 	const handleJoinBlindQuiz = () => {
 		if (code.length) setValid('attempt-blind-quiz')
 	}
-	if (valid !== 'false') return <Redirect push to={`/${valid}/${code}`} />
+	if (valid !== 'false') return <Redirect push to={`/${valid}/${code}/0`} />
 	// if (valid === 'join-blind')
 	// 	return <Redirect push to={`attempt-blind-quiz/${code}`} />
 

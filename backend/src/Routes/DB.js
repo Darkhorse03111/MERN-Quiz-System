@@ -20,7 +20,7 @@ const DBStart = async () => {
 	const client = new MongoClient(API_KEY, { useNewUrlParser: true, useUnifiedTopology: true })//, { useNewUrlParser: true, useUnifiedTopology: true }
 	try {
 		await client.connect()
-		db = client.db('users')
+		db = client.db('quiz')
 	}
 	catch (e) {
 		console.log(e);
