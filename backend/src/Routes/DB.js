@@ -1,22 +1,35 @@
-const MongoClient = require('mongodb')
+const { MongoClient } = require('mongodb')
 const Evaluate = require('../Algorithms/EvaluateQuiz')
 const ObjectId = require('mongodb').ObjectId
 const API_KEY = require('../db-config').database
-if (process.env.NODE_ENV === "development") {
-	//...
-}
-if (process.env.NODE_ENV === "production") {
-	//...
-}
+
+console.log('api key ' + API_KEY)
 let db
+// const DBStart = async () => {
+// 	console.log('DB server connecting...')
+// 	const client = await MongoClient.connect(API_KEY, {
+// 		useNewUrlParser: true,
+// 		useUnifiedTopology: true
+// 	})
+// 	console.log('DB Connected Successfully.')
+// 	db = client.db('quiz')
+// }
+
 const DBStart = async () => {
 	console.log('DB server connecting...')
-	const client = await MongoClient.connect(API_KEY, {
-		useNewUrlParser: true,
-		useUnifiedTopology: true
-	})
-	console.log('DB Connected Successfully.')
-	db = client.db('quiz')
+	const client = new MongoClient(API_KEY, { useNewUrlParser: true, useUnifiedTopology: true })//, { useNewUrlParser: true, useUnifiedTopology: true }
+	try {
+		await client.connect()
+		db = client.db('users')
+	}
+	catch (e) {
+		console.log(e);
+	}
+	// db = client.db("QuizAlharamain")
+	// client.connect(err => {
+	// 	db = client.db("test");
+	// 	// perform actions on the collection object
+	// });
 }
 DBStart()
 const withDB = async (operations, res) => {

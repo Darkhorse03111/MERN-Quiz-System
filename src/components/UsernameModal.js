@@ -35,10 +35,18 @@ export default function UsernameModal({ setUsername }) {
 
   useEffect(() => {
   }, [open])
-  const addQuestionCallBack = () => {
+  const addQuestionCallBack = async () => {
     // Error Handling
     if (username) {
-      localStorage.setItem("username", username)
+      const res = await fetch('/API/users/login', {
+        method: 'POST',
+        body: JSON.stringify({ name: username }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      localStorage.setItem('username', username)
+      localStorage.setItem('id', res.id)
       setUsername(username)
       setPath('/')
     }

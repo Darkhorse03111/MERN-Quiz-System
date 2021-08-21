@@ -10,7 +10,6 @@
 # production
 /build
 backend/src/public
-db-config.js
 # misc
 .DS_Store
 .env.local

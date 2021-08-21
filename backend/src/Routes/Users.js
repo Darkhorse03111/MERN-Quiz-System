@@ -12,6 +12,13 @@ Router.post('/create', (req, res) => {
 	DB.createUser(uid, name, email, res)
 })
 
+Router.post('/login', (req, res) => {
+	const { name } = req.body
+	const id = Date.now();
+	students.push({ name, id })
+	return res.status(200).json({ name, id })
+})
+
 // Get user Data
 Router.get('/:uid', (req, res) => {
 	const uid = req.params.uid
