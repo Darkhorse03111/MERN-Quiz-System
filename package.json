@@ -32,7 +32,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "totalBuild": "concurrently \"react-scripts build\" \"cd backend && npm start\"",
-    "heroku-postbuild": "set NODE_ENV=production&& react-scripts start"
+    "heroku-postbuild": "set NODE_ENV=production&& react-scripts build"
   },
   "eslintConfig": {
     "extends": [
