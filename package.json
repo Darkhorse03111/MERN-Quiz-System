@@ -24,14 +24,13 @@
   },
   "scripts": {
     "start": "concurrently \"react-scripts start\" \"cd backend && npm start\"",
+    "heroku-postbuild": "concurrently \"set NODE_ENV=production&& npm install && react-scripts build\" \"set NODE_ENV=production&&cd backend && npm start\"",
     "startProduction": "set NODE_ENV=production&& concurrently \"react-scripts start\" \"cd backend && npm start\"",
     "frontend": "react-scripts start",
     "backend": "cd backend && npm start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "totalBuild": "concurrently \"react-scripts build\" \"cd backend && npm start\"",
-    "heroku-postbuild": "set NODE_ENV=production&& npm install && react-scripts build"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
