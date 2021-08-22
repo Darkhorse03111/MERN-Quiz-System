@@ -84,6 +84,7 @@ createQuiz = async (quiz, res) => {
 }
 
 submitQuiz = async (submittedQuiz, res) => {
+	console.log('quiz:', submittedQuiz)
 	withDB(async (db) => {
 		try {
 			// Check whether the user has already submitted the Quiz
@@ -96,7 +97,6 @@ submitQuiz = async (submittedQuiz, res) => {
 
 			const quizData = await validationCursor.toArray()
 
-			console.log({ quizData })
 			// If the quiz is already submitted, DONOT submit it.
 			if (quizData[0]) {
 				console.log('in quiz already attempted')

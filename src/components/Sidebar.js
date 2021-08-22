@@ -39,6 +39,7 @@ function Sidebar({ setUsername }) {
 	if (signOut) {
 		setUsername('');
 		localStorage.removeItem('username')
+		localStorage.removeItem('id')
 		return <Redirect to='/name' />
 	}
 

@@ -45,8 +45,9 @@ export default function UsernameModal({ setUsername }) {
           'Content-Type': 'application/json',
         },
       })
+      const body = await res.json()
       localStorage.setItem('username', username)
-      localStorage.setItem('id', res.id)
+      localStorage.setItem('id', body.id)
       setUsername(username)
       setPath('/')
     }

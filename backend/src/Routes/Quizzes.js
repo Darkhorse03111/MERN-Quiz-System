@@ -22,7 +22,6 @@ Router.post('/join', (req, res) => {
 				})
 
 			const quizData = await cursor.toArray()
-			console.log(quizData)
 			if (!quizData[0].isOpen)
 				res.status(500).json({ error: 'ERR:QUIZ_ACCESS_DENIED' })
 			else {
@@ -102,7 +101,6 @@ Router.post('/responses', (req, res) => {
 })
 
 Router.get('/', (req, res) => {
-	console.log('quizzes students ', students)
 	DB.withDB(async (db) => {
 		try {
 			const createdCursor = db
@@ -117,7 +115,6 @@ Router.get('/', (req, res) => {
 					},
 				})
 			const quizData = await createdCursor.toArray();
-			console.log('getting quiz ' + quizData)
 			res.status(200).json({
 				quizData
 			})
