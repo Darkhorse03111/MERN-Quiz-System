@@ -23,7 +23,7 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "npm --prefix ./backend start",
+    "start": "react-scripts start npm --prefix ./backend start",
     "startAll": "concurrently \"react-scripts start\" \"cd backend && npm start\"",
     "startProduction": "set NODE_ENV=production&& concurrently \"react-scripts start\" \"cd backend && npm start\"",
     "frontend": "react-scripts start",
