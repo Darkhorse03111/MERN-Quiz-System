@@ -23,12 +23,11 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "concurrently \"react-scripts start\" \"cd backend && npm start\"",
+    "start": "npm --prefix ./backend start",
+    "startAll": "concurrently \"react-scripts start\" \"cd backend && npm start\"",
     "startProduction": "set NODE_ENV=production&& concurrently \"react-scripts start\" \"cd backend && npm start\"",
     "frontend": "react-scripts start",
     "backend": "cd backend && npm start",
-    "installbackend": "cd backend && npm install",
-    "buildbackend": "cd backend && set NODE_ENV=production && npm install && node src/server.js",
     "build": "set NODE_ENV=production react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
