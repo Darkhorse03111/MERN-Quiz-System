@@ -32,7 +32,7 @@
     "build": "set NODE_ENV=production react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "heroku-postbuild": "npm install && npm --prefix ./backend install && npm run build"
+    "heroku-postbuild": "npm install && npm run build && npm --prefix ./backend install"
   },
   "eslintConfig": {
     "extends": [
