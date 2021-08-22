@@ -24,14 +24,15 @@
     "http-proxy-middleware": "^2.0.1"
   },
   "scripts": {
-    "start": "concurrently \"react-scripts start\"",
+    "start": "npm --prefix ./backend start",
+    "startAll": "concurrently \"react-scripts start\" \"cd backend && npm start\"",
     "startProduction": "set NODE_ENV=production&& concurrently \"react-scripts start\" \"cd backend && npm start\"",
     "frontend": "react-scripts start",
     "backend": "cd backend && npm start",
     "build": "set NODE_ENV=production react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "heroku-postbuild": "npm install && npm run build"
+    "heroku-postbuild": "npm install && npm --prefix ./backend install && npm run build"
   },
   "eslintConfig": {
     "extends": [

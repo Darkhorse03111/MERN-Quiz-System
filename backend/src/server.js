@@ -7,14 +7,19 @@ const quizzesRoute = require('./Routes/Quizzes')
 
 // Hosting Frontend
 // Create a production build of the frontend and paste the files in the public folder
-app.use(express.static(path.join(__dirname, '/public/')))
-
-// Middleware
 app.use(express.json())
 app.use('/API/users', userRoute)
 app.use('/API/quizzes', quizzesRoute)
 
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, '../../build')))
+app.use('*', (req, res) => {
+	res.sendFile(path.join(__dirname, '../../build/index.html'))
+})
+
+// Middleware
+
+
+// app.use(express.static(path.join(__dirname, 'build')));
 // app.use('*', (req, res) => {
 // 	res.sendFile(path.join(__dirname, '/public/index.html'))
 // })
