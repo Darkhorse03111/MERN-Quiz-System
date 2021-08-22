@@ -17,8 +17,7 @@ Router.post('/join', (req, res) => {
 				.find({ _id: new ObjectId(quizId) })
 				.project({
 					// Excluded Fields
-					responses: 0,
-					'questions.options.isCorrect': 0,
+					responses: 0
 				})
 
 			const quizData = await cursor.toArray()

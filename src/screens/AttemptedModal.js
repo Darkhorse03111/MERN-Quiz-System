@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import { Modal } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 import { Link } from "react-router-dom"
+import useInterval from './useInterval'
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -27,9 +28,15 @@ const useStyles = makeStyles((theme) => ({
 	},
 }))
 
-const AttemptedModal = ({ result, totalScore, showModal }) => {
+const AttemptedModal = ({ result, totalScore, showModal, hideModal, time }) => {
 	const classes = useStyles()
 	const [open, setOpen] = useState(showModal)
+
+	useInterval(() => {
+		if (time) {
+			hideModal()
+		}
+	}, 5000);
 
 	useEffect(() => {
 		setOpen(showModal)
@@ -49,7 +56,7 @@ const AttemptedModal = ({ result, totalScore, showModal }) => {
 					<h1 className="score_h2">
 						{result.error
 							? "Not Submitted ! "
-							: `Score: ${result.score}/${totalScore}`}
+							: `Score: ${result}/${totalScore}`}
 					</h1>
 					<Link to={"/dashboard"}>
 						<button className="button wd-200">Dashboard</button>

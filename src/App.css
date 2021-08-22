@@ -23,6 +23,10 @@ p {
 	font-size: 1rem;
 	/* padding:5px; */
 }
+body {
+	background-color: #f5f3ef;
+	color: #4b4b4b;
+}
 
 .white {
 	color: var(--primary);

@@ -10,7 +10,7 @@ const io = require('socket.io')(server, { cors: { origin: "*" } });
 let students = require('./data/students')
 io.on('connect', client => {
 	client.on('login', name => {
-		students.push({ name, id: client.id })
+		students.push({ name, id: client.id, mark: 0 })
 		console.log(students)
 	})
 	client.on('disconnect', () => {

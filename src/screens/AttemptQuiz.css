@@ -1,0 +1,27 @@
+.mybtn {
+	border: none;
+	color: #fff;
+	padding: 10px 33px;
+	border-radius: 8px;
+	background: #8854c0;
+	cursor: pointer;
+	font-weight: 700;
+	font-size: 16px;
+	-webkit-box-shadow: 0 4px 0 #7842b1;
+	box-shadow: 0 4px 0 #7842b1;
+	display: -webkit-inline-box;
+	display: -webkit-inline-flex;
+	display: -ms-inline-flexbox;
+	display: inline-flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	-ms-flex-align: center;
+	align-items: center;
+	position: relative;
+	bottom: 2px;
+	-webkit-transition: -webkit-transform .1s ease-in;
+	transition: -webkit-transform .1s ease-in;
+	transition: transform .1s ease-in;
+	transition: transform .1s ease-in,-webkit-transform .1s ease-in;
+	overflow: hidden;
+}
