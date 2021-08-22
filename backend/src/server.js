@@ -14,9 +14,10 @@ app.use(express.json())
 app.use('/API/users', userRoute)
 app.use('/API/quizzes', quizzesRoute)
 
-app.use('*', (req, res) => {
-	res.sendFile(path.join(__dirname, '/public/index.html'))
-})
+app.use(express.static(path.join(__dirname, 'build')));
+// app.use('*', (req, res) => {
+// 	res.sendFile(path.join(__dirname, '/public/index.html'))
+// })
 // Listening to APIs
 app.listen(process.env.PORT || 8000, () =>
 	console.log('Listening on Port ' + process.env.PORT || 8000)

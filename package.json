@@ -25,7 +25,6 @@
   },
   "scripts": {
     "start": "concurrently \"react-scripts start\"",
-    "startAll": "concurrently \"react-scripts start\" \"cd backend && npm start\"",
     "startProduction": "set NODE_ENV=production&& concurrently \"react-scripts start\" \"cd backend && npm start\"",
     "frontend": "react-scripts start",
     "backend": "cd backend && npm start",
