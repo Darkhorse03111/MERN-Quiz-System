@@ -24,7 +24,6 @@
   },
   "scripts": {
     "start": "concurrently \"react-scripts start\" \"cd backend && npm start\"",
-    "heroku-postbuild": "concurrently \"npm install\" && \"npm run installbackend\" && concurrently \"npm run build\" \"npm run buildbackend\"",
     "startProduction": "set NODE_ENV=production&& concurrently \"react-scripts start\" \"cd backend && npm start\"",
     "frontend": "react-scripts start",
     "backend": "cd backend && npm start",
@@ -32,7 +31,8 @@
     "buildbackend": "cd backend && set NODE_ENV=production && npm install && node src/server.js",
     "build": "set NODE_ENV=production react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "heroku-postbuild": "concurrently \"npm install\" && \"npm run installbackend\" && concurrently \"npm run build\" \"npm run buildbackend\""
   },
   "eslintConfig": {
     "extends": [
