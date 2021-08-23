@@ -88,7 +88,6 @@ class AttemptQuiz extends React.Component {
 				options.push(option)
 			}
 		}
-		console.log('options:', options)
 		temp[number].selectedOptions = options
 		let score = this.getMark(temp, number)
 		if (attemptedQuestions[number].optionType === 'radio') {
