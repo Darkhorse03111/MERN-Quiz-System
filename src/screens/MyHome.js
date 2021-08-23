@@ -4,10 +4,11 @@ import { Carousel } from 'react-bootstrap'
 export default class MyHome extends Component {
   render() {
     const height = window.innerHeight, width = window.innerWidth
-    return <Carousel style={{ marginTop: '70px' }}>
+    return <Carousel style={{ height: '100%' }}>
       <Carousel.Item interval={4000}>
         <img
-          className="d-block img-fluid mx-auto my-auto"
+          className="d-block"
+          style={{ width: `${width}px`, height: `${height}px` }}
           src="/Quiz/1495315685183.jpg"
           alt="First slide"
         />
@@ -16,10 +17,10 @@ export default class MyHome extends Component {
           <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
         </Carousel.Caption>
       </Carousel.Item>
-      <Carousel.Item interval={4000} style={{ height: '100%' }}>
+      <Carousel.Item interval={4000}>
         <img
-          className="d-block img-fluid mx-auto my-auto"
-          style={{ maxWidth: `${width}px`, maxHeight: `${height}px` }}
+          className="d-block"
+          style={{ width: `${width}px`, height: `${height}px` }}
           src="/Quiz/banner-23.jpg"
           alt="Second slide"
         />
@@ -28,10 +29,10 @@ export default class MyHome extends Component {
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
         </Carousel.Caption>
       </Carousel.Item>
-      <Carousel.Item interval={4000} style={{ height: '100%' }}>
+      <Carousel.Item interval={4000}>
         <img
-          className="d-block img-fluid mx-auto my-auto"
-          style={{ height: '100%' }}
+          className="d-block"
+          style={{ width: `${width}px`, height: `${height}px` }}
           src="/Quiz/education-technology-and-school-children.jpg"
           alt="Third slide"
         />
