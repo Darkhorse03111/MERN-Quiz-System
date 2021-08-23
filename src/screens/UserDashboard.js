@@ -90,7 +90,7 @@ const UserDashboard = ({ user }) => {
 		const submitData = await results.json()
 		console.dir(submitData)
 		const temp = [...createdQuizzes]
-		temp.splice(index,1)
+		temp.splice(index, 1)
 		setCreatedQuizzes(temp)
 		setEditQuiz([])
 		setLoading(false)
@@ -99,7 +99,6 @@ const UserDashboard = ({ user }) => {
 	if (loading) return <LoadingScreen />
 
 	if (path) {
-		localStorage.setItem('number', '0')
 		return <Redirect push to={`/attempt-quiz/${path}`} />
 	}
 

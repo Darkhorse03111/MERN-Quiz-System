@@ -73,7 +73,7 @@ class AttemptQuiz extends React.Component {
 		const { attemptedQuestions, questions } = this.state
 		const temp = [...attemptedQuestions]
 		let options;
-		if (temp.length <= number) {
+		if (temp.length >= number-1) {
 			options = temp[number].selectedOptions
 		}
 		else {
@@ -81,9 +81,9 @@ class AttemptQuiz extends React.Component {
 		}
 		if (attemptedQuestions[number].optionType === 'radio') options[0] = option
 		else {
-			const index = options.findIndex(opt => opt === option)
-			if (index >= 0) {
-				options.splice(index, 1)
+			console.log('option select:',options,option)
+			if (options.find(opt => opt === option)) {
+				options.splice(options.findIndex(opt => opt === option), 1)
 			} else {
 				options.push(option)
 			}
@@ -100,7 +100,7 @@ class AttemptQuiz extends React.Component {
 			setTimeout(() => this.increaseNumber(), 3000)
 		} else if (attemptedQuestions[number].optionType === 'check') {
 			this.setState({
-				attemptedQuestions: temp
+				attemptedQuestions: [...temp]
 			})
 		}
 		console.log('select current number:', number)
@@ -307,8 +307,6 @@ class AttemptQuiz extends React.Component {
 			)
 		else {
 			let question = questions[number], options = attemptedQuestions.length > number ? attemptedQuestions[number].selectedOptions : []
-			console.log('render Options:', options)
-			console.log('question options:', question.options)
 			return (
 				<div id='main-body' className='flex-container grow'>
 					<div id='create-quiz-body' className='flex-container grow'>

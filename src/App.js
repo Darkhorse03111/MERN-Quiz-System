@@ -5,6 +5,7 @@ import firebase from './firebase/firebase'
 // Stylesheet
 import './App.css'
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 // Components
 import Home from './screens/Home'
 import OneTimeDashBoard from './screens/OneTimeDashboard'
@@ -18,6 +19,7 @@ import AppBar from './components/AppBar'
 import Responses from './screens/Responses'
 import AttemptBlindQuiz from './screens/AttemptBlindQuiz'
 import UsernameModal from './components/UsernameModal'
+import MyHome from './screens/MyHome'
 
 const App = () => {
 	const [user, setUser] = useState({})
@@ -51,44 +53,43 @@ const App = () => {
 	}, [user])
 	return (
 		<div className='App flex-container grow'>
-			<>
-				<div className='fixed'>
-					<AppBar user={user} setUser={setUser} username={username} setUsername={setUsername} />
-				</div>
-				<Switch>
-					<Route exact path='/'>
-						<OneTimeDashBoard user={user} />
-					</Route>
-					<Route path='/name'>
-						<UsernameModal setUsername={setUsername} />
-					</Route>
-					<Route path='/admin'>
-						{
-							!firebase.auth().currentUser ? <Home setUser={setUser} /> : <OneTimeDashBoard user={user} />
-						}
-					</Route>
-					<Route path='/dashboard'>
-						<UserDashboard user={user} />
-					</Route>
-					<Route path='/create-quiz'>
-						<CreateQuiz user={user} />
-					</Route>
-					<Route
-						path='/created-successfully/:quizCode'
-						component={CreatedSuccessfully}
-					/>
-					<Route path='/join-quiz'>
-						<JoinQuiz user={user} />
-					</Route>
-					<Route path='/attempt-quiz/:quizCode' component={AttemptQuiz} />
-					<Route
-						path='/attempt-blind-quiz/:quizCode'
-						component={AttemptBlindQuiz}
-					/>
-					<Route path='/responses/:quizCode' component={Responses} />
-					<Route component={NotFoundPage} />
-				</Switch>
-			</>
+			<div className='fixed'>
+				<AppBar user={user} setUser={setUser} username={username} setUsername={setUsername} />
+			</div>
+			<Switch>
+				<Route path='/name'>
+					<UsernameModal setUsername={setUsername} />
+				</Route>
+				<Route path='/admin'>
+					{
+						!firebase.auth().currentUser ? <Home setUser={setUser} /> : <OneTimeDashBoard user={user} />
+					}
+				</Route>
+				<Route path='/dashboard'>
+					<UserDashboard user={user} />
+				</Route>
+				<Route path='/create-quiz'>
+					<CreateQuiz user={user} />
+				</Route>
+				<Route
+					path='/created-successfully/:quizCode'
+					component={CreatedSuccessfully}
+				/>
+				<Route path='/join-quiz'>
+					<JoinQuiz user={user} />
+				</Route>
+				<Route path='/attempt-quiz/:quizCode' component={AttemptQuiz} />
+				<Route
+					path='/attempt-blind-quiz/:quizCode'
+					component={AttemptBlindQuiz}
+				/>
+				<Route path='/responses/:quizCode' component={Responses} />
+				<Route path='/home' component={MyHome} />
+				<Route path='/'>
+					<MyHome />
+				</Route>
+				<Route component={NotFoundPage} />
+			</Switch>
 		</div>
 	)
 }

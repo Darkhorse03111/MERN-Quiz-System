@@ -2,15 +2,20 @@ import React, { useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import './JoinQuiz.css'
 
+
 const JoinQuiz = () => {
 	const [valid, setValid] = useState('false')
 	const [code, setCode] = useState('')
+	const [modal, setModal] = useState(localStorage.getItem('username') != undefined)
 
 	const handleJoinQuiz = () => {
 		if (code.length) setValid('attempt-quiz')
 	}
 	const handleJoinBlindQuiz = () => {
 		if (code.length) setValid('attempt-blind-quiz')
+	}
+	if (localStorage.getItem('username') == undefined) {
+		return <Redirect to='/name' />
 	}
 	if (valid !== 'false') return <Redirect push to={`/${valid}/${code}/0`} />
 	// if (valid === 'join-blind')

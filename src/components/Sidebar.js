@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { Link, Redirect } from 'react-router-dom'
+import { Icon } from '@material-ui/core'
 import './Sidebar.css'
 import firebase from '../firebase/firebase'
-import { Icon } from '@material-ui/core'
+
 import {
 	CreateNewFolder,
 	Dashboard,
@@ -37,10 +38,10 @@ function Sidebar({ setUsername }) {
 	const [sidebar, setSidebar] = useState(false)
 	const showSidebar = () => setSidebar(!sidebar)
 	if (signOut) {
-		setUsername('');
 		localStorage.removeItem('username')
 		localStorage.removeItem('id')
-		return <Redirect to='/name' />
+		setUsername('');
+		return <Redirect to='/' />
 	}
 
 	return (
@@ -89,3 +90,14 @@ function Sidebar({ setUsername }) {
 }
 
 export default Sidebar
+/*
+if (!!(firebase.auth().currentUser) || index === 1)
+							return (
+								<li key={index} className='nav-text'>
+									<Link to={item.path}>
+										<Icon>{item.icon}</Icon>
+										<span className='nav-item-title'>{item.title}</span>
+									</Link>
+								</li>
+							)
+*/
