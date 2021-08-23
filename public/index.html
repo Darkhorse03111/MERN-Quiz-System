@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="full-height">
 
 <head>
   <meta charset="utf-8" />
@@ -23,11 +23,73 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
   <title>Quiz</title>
+  <style>
+    .full-height {
+      height: 100%;
+    }
+
+    .flex-container {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      background-color: #f1f1f1;
+    }
+
+    .fixed {
+      flex-grow: 0;
+    }
+
+    .grow {
+      flex-grow: 1;
+    }
+
+    .half-height {
+      height: 50%;
+    }
+
+    .puzzle-text {
+      font-size: 32px;
+    }
+
+    .option-selected {
+      background-image: url('%PUBLIC_URL%/game_sprites22.png');
+      width: 26px;
+      height: 29px;
+      background-size: 80px auto;
+      background-position: -54px -28px;
+    }
+
+    .pink-background {
+      background-color: #8854c0 !important;
+    }
+
+    .mycorrect-answer {
+      background-color: #04AA6D !important;
+      text-align: center;
+      height: 80px;
+      color: #ffffff;
+    }
+
+    .mywrong-answer {
+      background-color: #dc3545 !important;
+      text-align: center;
+      height: 80px;
+      color: #ffffff;
+    }
+
+    .right-color {
+      background-color: #04AA6D !important;
+    }
+
+    .wrong-color {
+      background-color: #dc3545 !important;
+    }
+  </style>
 </head>
 
-<body>
+<body class="full-height flex-container">
   <noscript>You need to enable JavaScript to run this app.</noscript>
-  <div id="root"></div>
+  <div id="root" class="flex-container grow"></div>
   <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

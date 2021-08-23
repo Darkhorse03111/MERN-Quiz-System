@@ -243,7 +243,7 @@ export default function QuestionsTable({ questionArray, setQuestionArray }) {
 
   const editQuestionHandle = (title, optionType, options, index) => {
     const temp = [...questionArray];
-    temp[index] = { title, optionType, options };
+    temp[index] = { ...temp[index], title, optionType, options };
     setQuestionArray(temp);
   };
 

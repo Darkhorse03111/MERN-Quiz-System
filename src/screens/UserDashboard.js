@@ -79,6 +79,23 @@ const UserDashboard = ({ user }) => {
 		}
 	}
 
+	const deleteQuiz = async index => {
+		setLoading(true)
+		const results = await fetch(`/API/quizzes/${createdQuizzes[index]._id}`, {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		})
+		const submitData = await results.json()
+		console.dir(submitData)
+		const temp = [...createdQuizzes]
+		temp.splice(index,1)
+		setCreatedQuizzes(temp)
+		setEditQuiz([])
+		setLoading(false)
+	}
+
 	if (loading) return <LoadingScreen />
 
 	if (path) {
@@ -111,6 +128,7 @@ const UserDashboard = ({ user }) => {
 								key={key}
 								index={key}
 								setEditQuiz={setEditQuiz}
+								deleteQuiz={deleteQuiz}
 								title={quiz.title}
 								code={quiz._id}
 								responses={quiz.responses}

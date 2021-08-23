@@ -34,6 +34,7 @@ export default function AddQuestionModal({
 	opArray,
 	index = -1,
 	addQuestionHandle,
+	editQuestionHandle
 }) {
 	const classes = useStyles()
 	const [open, setOpen] = React.useState(false)
@@ -261,7 +262,7 @@ export default function AddQuestionModal({
 							className='button'
 							color='secondary'
 							variant='contained'
-							onClick={addQuestionCallBack}
+							onClick={e => addQuestionCallBack()}
 						>
 							{type === 'add' ? 'Add ' : 'Edit '}
 							Question

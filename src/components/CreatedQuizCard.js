@@ -1,5 +1,5 @@
 import { IconButton } from '@material-ui/core'
-import { EditRounded } from '@material-ui/icons'
+import { EditRounded, DeleteRounded } from '@material-ui/icons'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import './QuizCard.css'
@@ -12,6 +12,7 @@ const CreatedQuizCard = ({
 	isOpen,
 	index,
 	setEditQuiz,
+	deleteQuiz
 }) => {
 	return (
 		<div className='quiz-card'>
@@ -32,6 +33,9 @@ const CreatedQuizCard = ({
 				{isOpen ? <div id='open'>open</div> : <div id='closed'>closed</div>}
 				<IconButton onClick={() => setEditQuiz([index])}>
 					<EditRounded />
+				</IconButton>
+				<IconButton onClick={() => deleteQuiz(index)}>
+					<DeleteRounded />
 				</IconButton>
 			</div>
 		</div>

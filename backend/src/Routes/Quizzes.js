@@ -64,6 +64,28 @@ Router.post('/create', (req, res) => {
 	DB.createQuiz(quiz, res)
 })
 
+Router.delete('/:id', (req, res) => {
+	const id = req.params.id
+	console.log('deleting:',id)
+	DB.withDB(async (db) => {
+		try {
+			await db.collection('quizzes').deleteOne(
+				{
+					_id: new ObjectId(id)
+				},
+				(err, result) => {
+					if (err) throw err
+					res.status(200).json({
+						id
+					})
+				}
+			)
+		} catch (error) {
+			res.status(500).json({ error })
+		}
+	})
+})
+
 Router.post('/edit', (req, res) => {
 	const { quizId, uid, title, questions, isOpen } = req.body
 

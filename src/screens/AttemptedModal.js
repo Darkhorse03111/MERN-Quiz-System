@@ -28,15 +28,9 @@ const useStyles = makeStyles((theme) => ({
 	},
 }))
 
-const AttemptedModal = ({ result, totalScore, showModal, hideModal, time }) => {
+const AttemptedModal = ({ result, totalScore, showModal}) => {
 	const classes = useStyles()
 	const [open, setOpen] = useState(showModal)
-
-	useInterval(() => {
-		if (time) {
-			hideModal()
-		}
-	}, 5000);
 
 	useEffect(() => {
 		setOpen(showModal)

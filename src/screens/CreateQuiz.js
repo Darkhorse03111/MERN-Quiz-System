@@ -16,7 +16,7 @@ const CreateQuiz = ({
 }) => {
 	const [questionArray, setQuestionArray] = useState([])
 	const [title, setTitle] = useState('')
-	const [access, setAccess] = useState(true)
+	const [access, setAccesss] = useState(true)
 	const [loading, setLoading] = useState('stop')
 	const [quizCode, setQuizCode] = useState(null)
 
@@ -29,7 +29,7 @@ const CreateQuiz = ({
 		if (quizTitle) {
 			setTitle(quizTitle)
 			setQuestionArray(questions)
-			setAccess(isOpen)
+			setAccesss(isOpen)
 		}
 	}, [quizTitle, questions, isOpen])
 
@@ -88,11 +88,11 @@ const CreateQuiz = ({
 					/>
 				</div>
 				<div className='controls'>
-					<AddQuestionModal addQuestionHandle={addQuestionHandle} />
+					<AddQuestionModal addQuestionHandle={addQuestionHandle}/>
 					<div className='switch'>
 						<Switch
 							checked={access}
-							onChange={(e) => setAccess(e.target.checked)}
+							onChange={(e) => setAccesss(e.target.checked)}
 							color='secondary'
 							name='access'
 						/>

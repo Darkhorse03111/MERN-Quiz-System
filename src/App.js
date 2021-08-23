@@ -50,9 +50,9 @@ const App = () => {
 		createUserInDB()
 	}, [user])
 	return (
-		<div className='App'>
+		<div className='App flex-container grow'>
 			<>
-				<div>
+				<div className='fixed'>
 					<AppBar user={user} setUser={setUser} username={username} setUsername={setUsername} />
 				</div>
 				<Switch>
