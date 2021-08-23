@@ -15,7 +15,6 @@ Router.post('/create', (req, res) => {
 Router.post('/login', (req, res) => {
 	const { name } = req.body
 	const id = Date.now();
-	students.push({ name, id })
 	return res.status(200).json({ name, id })
 })
 
@@ -23,7 +22,6 @@ Router.post('/login', (req, res) => {
 Router.get('/:uid', (req, res) => {
 	const uid = req.params.uid
 	if (!uid) return res.status(500).json({ error: 'Incomplete Parameters' })
-	students.push({ name: 'Tom' })
 	console.log('users students ', students)
 	DB.withDB(async (db) => {
 		const createdCursor = db

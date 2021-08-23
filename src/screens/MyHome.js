@@ -5,7 +5,7 @@ export default class MyHome extends Component {
   render() {
     const height = window.innerHeight, width = window.innerWidth
     return <Carousel style={{ marginTop: '70px' }}>
-      <Carousel.Item interval={1000}>
+      <Carousel.Item interval={4000}>
         <img
           className="d-block img-fluid mx-auto my-auto"
           src="/Quiz/1495315685183.jpg"
@@ -16,7 +16,7 @@ export default class MyHome extends Component {
           <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
         </Carousel.Caption>
       </Carousel.Item>
-      <Carousel.Item interval={500} style={{ height: '100%' }}>
+      <Carousel.Item interval={4000} style={{ height: '100%' }}>
         <img
           className="d-block img-fluid mx-auto my-auto"
           style={{ maxWidth: `${width}px`, maxHeight: `${height}px` }}
@@ -28,7 +28,7 @@ export default class MyHome extends Component {
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
         </Carousel.Caption>
       </Carousel.Item>
-      <Carousel.Item style={{ height: '100%' }}>
+      <Carousel.Item interval={4000} style={{ height: '100%' }}>
         <img
           className="d-block img-fluid mx-auto my-auto"
           style={{ height: '100%' }}

@@ -3,6 +3,7 @@ import { Link, Redirect } from 'react-router-dom'
 import * as io from 'socket.io-client';
 import LoadingScreen from './LoadingScreen'
 import AttemptedModal from './AttemptedModal'
+import Marks from './Marks'
 import './AttemptQuiz.css'
 
 let socket
@@ -22,7 +23,9 @@ class AttemptQuiz extends React.Component {
 			score: 0,
 			time: true,
 			mark: 0,
-			totalScore: 0
+			totalScore: 0,
+			students: [],
+			showMark: false
 		}
 	}
 	async componentDidMount() {
@@ -51,7 +54,10 @@ class AttemptQuiz extends React.Component {
 			const env = process.env.NODE_ENV;
 			socket = io.connect((!!env && env.includes('production')) ? 'https://arcane-atoll-82454.herokuapp.com:4000' : 'http://192.168.104.16:4000')
 			const username = localStorage.getItem('username')
-			socket.emit('login', username)
+			socket.emit('login', { username, quizCode })
+			socket.on('mark', students => {
+				this.setState({ students })
+			})
 			const temp = quizData.questions.map((question) => {
 				return {
 					id: question.id,
@@ -73,7 +79,7 @@ class AttemptQuiz extends React.Component {
 		const { attemptedQuestions, questions } = this.state
 		const temp = [...attemptedQuestions]
 		let options;
-		if (temp.length >= number-1) {
+		if (temp.length >= number - 1) {
 			options = temp[number].selectedOptions
 		}
 		else {
@@ -81,7 +87,7 @@ class AttemptQuiz extends React.Component {
 		}
 		if (attemptedQuestions[number].optionType === 'radio') options[0] = option
 		else {
-			console.log('option select:',options,option)
+			console.log('option select:', options, option)
 			if (options.find(opt => opt === option)) {
 				options.splice(options.findIndex(opt => opt === option), 1)
 			} else {
@@ -92,12 +98,15 @@ class AttemptQuiz extends React.Component {
 		let score = this.getMark(temp, number)
 		if (attemptedQuestions[number].optionType === 'radio') {
 			console.log('select score:', score)
+			let currentScore = this.evaluateQuiz(questions, temp)
+			socket.emit('mark', { id: localStorage.getItem('id'), currentScore })
 			this.setState({
 				attemptedQuestions: temp,
 				time: number < questions.length - 1,
-				mark: score === 1 ? 1 : 2
+				mark: score === 1 ? 1 : 2,
+				showMark: true
 			})
-			setTimeout(() => this.increaseNumber(), 3000)
+			setTimeout(() => this.increaseNumber(), 1500)
 		} else if (attemptedQuestions[number].optionType === 'check') {
 			this.setState({
 				attemptedQuestions: [...temp]
@@ -132,27 +141,32 @@ class AttemptQuiz extends React.Component {
 		const { attemptedQuestions, questions, number } = this.state
 		let score = this.getMark(attemptedQuestions, number)
 		if (attemptedQuestions[number].optionType === 'check') {
+			let currentScore = this.evaluateQuiz(questions, attemptedQuestions)
+			socket.emit('mark', { id: localStorage.getItem('id'), currentScore })
 			this.setState({
-				mark: score === 1 ? 1 : 2
+				mark: score === 1 ? 1 : 2,
+				showMark: true
 			})
+			setTimeout(() => this.increaseNumber(), 1500)
 		}
-		setTimeout(() => this.increaseNumber(), 1500)
 	}
 
 	increaseNumber = () => {
 		const { number, questions, attemptedQuestions } = this.state
 		if (number < questions.length - 1) {
 			this.setState({
-				number:number+1,
+				number: number + 1,
+				showMark: false,
 				mark: 0
 			})
 		}
 		else {
-			let totals = 0;
 			this.setState({
 				showModal: true,
-				result: this.evaluateQuiz(questions,attemptedQuestions)
+				result: this.evaluateQuiz(questions, attemptedQuestions),
+				showMark: false
 			})
+			setTimeout(() => this.increaseNumber(), 1500)
 		}
 	}
 	submitQuiz = async () => {
@@ -211,10 +225,10 @@ class AttemptQuiz extends React.Component {
 	}
 	evaluateQuiz = (quizQuestions, attemptedQuestions) => {
 		let score = 0
-		console.log('quiestions:',quizQuestions, attemptedQuestions)
+		console.log('quiestions:', quizQuestions, attemptedQuestions)
 		attemptedQuestions.forEach((question) => {
 			const realQues = quizQuestions.find((x) => x.id === question.id)
-			console.log('current question:',realQues)
+			console.log('current question:', realQues)
 			const correctOptions = realQues.options.filter((op) => op.isCorrect)
 			// Error for Quiz with no correct answers
 			if (correctOptions.length < 1) return 0
@@ -222,7 +236,7 @@ class AttemptQuiz extends React.Component {
 			const attemptedOptions = question.selectedOptions
 			if (realQues.optionType === 'check') {
 				let cnt = 0
-				for (let i = 0 ; i < attemptedOptions.length ; ++i) {
+				for (let i = 0; i < attemptedOptions.length; ++i) {
 					if (correctOptions.find(opt => opt.text == attemptedOptions[i])) {
 						++cnt
 					} else {
@@ -230,7 +244,7 @@ class AttemptQuiz extends React.Component {
 					}
 				}
 				if (cnt === correctOptions.length) {
-					console.log(`pro${question.title} right` )
+					console.log(`pro${question.title} right`)
 					++score
 				}
 				else {
@@ -238,8 +252,8 @@ class AttemptQuiz extends React.Component {
 				}
 			}
 			else if (realQues.optionType === 'radio') {
-				console.log('correct option:',correctOptions)
-				console.log('attempt:',attemptedOptions)
+				console.log('correct option:', correctOptions)
+				console.log('attempt:', attemptedOptions)
 				if (correctOptions[0].text === attemptedOptions[0]) {
 					console.log('same')
 					++score
@@ -257,7 +271,7 @@ class AttemptQuiz extends React.Component {
 
 	render = () => {
 		console.log('width and height:', window.innerWidth, window.innerHeight)
-		const { number, questions, attemptedQuestions, quizTitle, loading, result, path, showModal, score, time, mark } = this.state
+		const { number, questions, attemptedQuestions, quizTitle, loading, result, path, showModal, score, time, mark, students, showMark } = this.state
 		const { handleOptionSelect, submitQuiz, increaseNumber, hideModal, checkNext } = this
 		const quizCode = this.props.match.params.quizCode
 		if (loading) return <LoadingScreen />
@@ -385,9 +399,8 @@ class AttemptQuiz extends React.Component {
 								</div> : '')
 							}
 						</div>
-						{
-							<AttemptedModal result={result} totalScore={questions.length} showModal={showModal} />
-						}
+						<AttemptedModal result={result} totalScore={questions.length} showModal={showModal} />
+						<Marks students={students} showModal={showMark} />
 					</div>
 				</div >
 			)

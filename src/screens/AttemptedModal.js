@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react"
 import { Modal } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 import { Link } from "react-router-dom"
-import useInterval from './useInterval'
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -28,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }))
 
-const AttemptedModal = ({ result, totalScore, showModal}) => {
+const AttemptedModal = ({ result, totalScore, showModal }) => {
 	const classes = useStyles()
 	const [open, setOpen] = useState(showModal)
 

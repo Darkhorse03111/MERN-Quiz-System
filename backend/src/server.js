@@ -9,9 +9,14 @@ const server = require('http').createServer();
 const io = require('socket.io')(server, { cors: { origin: "*" } });
 let students = require('./data/students')
 io.on('connect', client => {
-	client.on('login', name => {
-		students.push({ name, id: client.id, mark: 0 })
+	client.on('login', body => {
+		students.push({ name: body.username, id: client.id, quizCode: body.quizCode, mark: 0 })
 		console.log(students)
+	})
+	client.on('mark', body => {
+		let index = students.findIndex(std => std.id === client.id)
+		students[index].mark = body.currentScore
+		client.emit('mark', students.filter(std => std.quizCode === students[index].quizCode).sort((a, b) => a.mark > b.mark))
 	})
 	client.on('disconnect', () => {
 		console.log('client disconnected:', client.id)
