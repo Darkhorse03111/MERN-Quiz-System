@@ -4,7 +4,6 @@ import { Row, Table } from 'react-bootstrap'
 import * as io from 'socket.io-client';
 import LoadingScreen from './LoadingScreen'
 import AttemptedModal from './AttemptedModal'
-import Marks from './Marks'
 import './AttemptQuiz.css'
 
 let socket
@@ -402,7 +401,6 @@ class AttemptQuiz extends React.Component {
 								}
 							</div>
 							<AttemptedModal result={result} totalScore={questions.length} showModal={showModal} />
-							<Marks students={students} showModal={showMark} />
 						</div>
 						<div className='grow' style={{ flexGrow: '0', width: '200px', marginTop: '100px' }}>
 							<Table striped bordered hover>
