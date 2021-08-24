@@ -6,7 +6,10 @@ const userRoute = require('./Routes/Users')
 const quizzesRoute = require('./Routes/Quizzes')
 const cors = require('cors')
 const server = require('http').createServer();
-const io = require('socket.io')(server, { cors: { origin: "*" } });
+const io = require('socket.io')(server, {
+	origins: ['http://localhost:8000', 'https://arcane-atoll-82454.herokuapp.com'],
+	cors: { origin: '*' }
+});
 let students = require('./data/students')
 io.on('connect', client => {
 	client.on('login', body => {

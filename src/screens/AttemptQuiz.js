@@ -52,7 +52,7 @@ class AttemptQuiz extends React.Component {
 				loading: false
 			})
 			const env = process.env.NODE_ENV;
-			socket = io.connect('http://localhost:4000')
+			socket = io.connect((!!env && env.includes('production')) ? 'https://arcane-atoll-82454.herokuapp.com:4000' : 'http://192.168.104.16:4000')
 			const username = localStorage.getItem('username')
 			socket.emit('login', { username, quizCode })
 			socket.on('mark', students => {
