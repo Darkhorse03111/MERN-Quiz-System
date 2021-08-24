@@ -19,6 +19,7 @@ import AppBar from './components/AppBar'
 import Responses from './screens/Responses'
 import AttemptBlindQuiz from './screens/AttemptBlindQuiz'
 import UsernameModal from './components/UsernameModal'
+import AdminDashboard from './screens/AdminDashboard'
 import MyHome from './screens/MyHome'
 
 const App = () => {
@@ -66,7 +67,9 @@ const App = () => {
 					}
 				</Route>
 				<Route path='/dashboard'>
-					<UserDashboard user={user} />
+					{
+						!!firebase.auth().currentUser ? <AdminDashboard setUser={setUser} /> : <UserDashboard user={user} />
+					}
 				</Route>
 				<Route path='/create-quiz'>
 					<CreateQuiz user={user} />
@@ -85,7 +88,9 @@ const App = () => {
 				/>
 				<Route path='/responses/:quizCode' component={Responses} />
 				<Route path='/'>
-					<UserDashboard user={user} />
+					{
+						!!firebase.auth().currentUser ? <AdminDashboard setUser={setUser} /> : <UserDashboard user={user} />
+					}
 				</Route>
 				<Route component={NotFoundPage} />
 			</Switch>

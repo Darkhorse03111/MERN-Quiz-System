@@ -42,19 +42,7 @@ Router.get('/:uid', (req, res) => {
 		})
 		const userInfo = await userCursor.toArray()
 		if (userInfo) {
-			const attemptedCursor = db
-				.collection('quizzes')
-				.find({ _id: { $in: userInfo[0].attemptedQuiz } })
-				.project({
-					title: 1,
-					totalQuestions: {
-						$size: '$questions',
-					},
-					responses: { $elemMatch: { uid } },
-				})
-			const attemptedQuiz = await attemptedCursor.toArray()
-			console.log(attemptedQuiz)
-			res.status(200).json({ createdQuiz, attemptedQuiz })
+			res.status(200).json({ createdQuiz })
 		} else {
 			res.status(200).json({ createdQuiz })
 		}

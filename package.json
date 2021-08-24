@@ -33,6 +33,7 @@
     "startProduction": "set NODE_ENV=production&& concurrently \"npm run frontend\" \"cd backend && npm run backend\"",
     "frontend": "react-scripts start",
     "backend": "nodemon backend/src/server.js",
+    "backendProduction": "set NODE_ENV=production&&npm run backend",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { Link, Redirect } from 'react-router-dom'
-import { Row, Table } from 'react-bootstrap'
+import { ListGroup, Badge } from 'react-bootstrap'
 import * as io from 'socket.io-client';
 import LoadingScreen from './LoadingScreen'
 import AttemptedModal from './AttemptedModal'
 import './AttemptQuiz.css'
 
 let socket
-const socketUrl = "/"
+const env = process.env.NODE_ENV;
+const socketUrl = "http://localhost:3000"
 
 class AttemptQuiz extends React.Component {
 	constructor(props) {
@@ -326,10 +327,7 @@ class AttemptQuiz extends React.Component {
 			return (
 				<div id='main-body' className='flex-container grow'>
 					<div className='flex-horizontal-container grow'>
-						<div id='create-quiz-body' className='flex-container grow' style={{ flexGrow: '1' }}>
-							<div className='quiz-header fixed' style={{ height: '100px' }}>
-								<h2>{quizTitle}</h2>
-							</div>
+						<div id='create-quiz-body' className='flex-container grow' style={{ flexGrow: '1', marginTop: '100px' }}>
 							<div className='attemptQuestionCard theme-classic flex-container grow' style={{ backgroundColor: '#ddffdd' }}>
 								<div className='grow vertical-center puzzle-text'>
 									{question.title}
@@ -405,22 +403,14 @@ class AttemptQuiz extends React.Component {
 							<AttemptedModal result={result} totalScore={questions.length} showModal={showModal} />
 						</div>
 						<div className='grow' style={{ flexGrow: '0', width: '200px', marginTop: '100px' }}>
-							<Table striped bordered hover>
-								<thead>
-									<tr>
-										<th>Name</th>
-										<th>Score</th>
-									</tr>
-								</thead>
-								<tbody>
-									{
-										students.map(std => <tr>
-											<td>{std.name}</td>
-											<td>{std.mark}</td>
-										</tr>)
-									}
-								</tbody>
-							</Table>
+							<ListGroup>
+								{
+									students.map(std => <ListGroup.Item style={{ display: 'flex', justifyContent: 'space-between' }} active={std.id === socket.id}>{std.name}<Badge pill bg="primary">
+										{std.mark}
+									</Badge></ListGroup.Item>
+									)
+								}
+							</ListGroup>
 						</div>
 					</div>
 				</div >

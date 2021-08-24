@@ -27,9 +27,6 @@ const OneTimeDashboard = ({ user }) => {
 					<h1 className='white'>
 						<b>Quiz</b>
 					</h1>
-					<button className='button one-time-button' onClick={onDashboard}>
-						Dashboard
-					</button>
 					<button className='button one-time-button' onClick={onCreateQuiz}>
 						Create Quiz
 					</button>

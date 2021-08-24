@@ -15,6 +15,9 @@ const AppBar = ({ user, setUser, username, setUsername }) => {
 			</div>
 			<div className='appBar-user' style={{ marginRight: '80px' }}>
 				<div id='row' style={{ height: '100%' }}>
+					<Link to='/admin' className='home'>
+						<b>Admin Page</b>
+					</Link>
 					<div style={{ marginRight: '10px', paddingTop: '10px' }}>
 						<Icon>
 							<AccountCircle />

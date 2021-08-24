@@ -6,10 +6,10 @@ import JoinedQuizCard from '../components/JoinedQuizCard'
 import LoadingScreen from './LoadingScreen'
 import CreateQuiz from './CreateQuiz'
 import { Carousel } from 'react-bootstrap'
+import firebase from '../firebase/firebase'
 
 const UserDashboard = ({ user }) => {
 	const [createdQuizzes, setCreatedQuizzes] = useState([])
-	const [attemptedQuizzes, setAttemptedQuizzes] = useState([])
 	const [loading, setLoading] = useState(true)
 	const [editQuiz, setEditQuiz] = useState([])
 	const [allQuizzes, setAllQuizzes] = useState([])
@@ -28,7 +28,6 @@ const UserDashboard = ({ user }) => {
 				quizData = await results.json()
 				if (quizData.createdQuiz) setCreatedQuizzes(quizData.createdQuiz)
 			}
-			// if (quizData.attemptedQuiz) setAttemptedQuizzes(quizData.attemptedQuiz)
 			results = await fetch(`/API/quizzes`, {
 				method: 'GET',
 				headers: {
@@ -116,36 +115,7 @@ const UserDashboard = ({ user }) => {
 
 	return (
 		<div className='dash-body'>
-			{
-				user.uid && <div className='quizzes'>
-					<div className='heading'>
-						<div className='line-left' />
-						<h2>Created </h2>
-						<div className='line' />
-					</div>
-					<div className='card-holder'>
-						{createdQuizzes.map((quiz, key) => (
-							<CreatedQuizCard
-								key={key}
-								index={key}
-								setEditQuiz={setEditQuiz}
-								deleteQuiz={deleteQuiz}
-								title={quiz.title}
-								code={quiz._id}
-								responses={quiz.responses}
-								questions={quiz.questions.length}
-								isOpen={quiz.isOpen}
-							/>
-						))}
-					</div>
-				</div>
-			}
 			<div className='quizzes'>
-				<div className='heading'>
-					<div className='line-left' />
-					<h2>Quizzes </h2>
-					<div className='line' />
-				</div>
 				<div>
 					<Carousel style={{ height: '100%' }}>
 						<Carousel.Item interval={4000}>
@@ -186,114 +156,6 @@ const UserDashboard = ({ user }) => {
 						</Carousel.Item>
 					</Carousel>
 					<div className='card-holder' style={{ justifyContent: 'center' }}>
-						{
-							allQuizzes.map((quiz, key) => (
-								<JoinedQuizCard
-									key={key}
-									title={quiz.title}
-									// score={quiz.responses[0].score}
-									questions={quiz.questions.length}
-									id={quiz._id}
-									joinQuiz={setPath}
-								/>
-							))
-						}
-						{
-							allQuizzes.map((quiz, key) => (
-								<JoinedQuizCard
-									key={key}
-									title={quiz.title}
-									// score={quiz.responses[0].score}
-									questions={quiz.questions.length}
-									id={quiz._id}
-									joinQuiz={setPath}
-								/>
-							))
-						}
-						{
-							allQuizzes.map((quiz, key) => (
-								<JoinedQuizCard
-									key={key}
-									title={quiz.title}
-									// score={quiz.responses[0].score}
-									questions={quiz.questions.length}
-									id={quiz._id}
-									joinQuiz={setPath}
-								/>
-							))
-						}
-						{
-							allQuizzes.map((quiz, key) => (
-								<JoinedQuizCard
-									key={key}
-									title={quiz.title}
-									// score={quiz.responses[0].score}
-									questions={quiz.questions.length}
-									id={quiz._id}
-									joinQuiz={setPath}
-								/>
-							))
-						}
-						{
-							allQuizzes.map((quiz, key) => (
-								<JoinedQuizCard
-									key={key}
-									title={quiz.title}
-									// score={quiz.responses[0].score}
-									questions={quiz.questions.length}
-									id={quiz._id}
-									joinQuiz={setPath}
-								/>
-							))
-						}
-						{
-							allQuizzes.map((quiz, key) => (
-								<JoinedQuizCard
-									key={key}
-									title={quiz.title}
-									// score={quiz.responses[0].score}
-									questions={quiz.questions.length}
-									id={quiz._id}
-									joinQuiz={setPath}
-								/>
-							))
-						}
-						{
-							allQuizzes.map((quiz, key) => (
-								<JoinedQuizCard
-									key={key}
-									title={quiz.title}
-									// score={quiz.responses[0].score}
-									questions={quiz.questions.length}
-									id={quiz._id}
-									joinQuiz={setPath}
-								/>
-							))
-						}
-						{
-							allQuizzes.map((quiz, key) => (
-								<JoinedQuizCard
-									key={key}
-									title={quiz.title}
-									// score={quiz.responses[0].score}
-									questions={quiz.questions.length}
-									id={quiz._id}
-									joinQuiz={setPath}
-								/>
-							))
-						}
-						{
-							allQuizzes.map((quiz, key) => (
-								<JoinedQuizCard
-									key={key}
-									title={quiz.title}
-									// score={quiz.responses[0].score}
-									questions={quiz.questions.length}
-									id={quiz._id}
-									joinQuiz={setPath}
-								/>
-							))
-						}
 						{
 							allQuizzes.map((quiz, key) => (
 								<JoinedQuizCard
