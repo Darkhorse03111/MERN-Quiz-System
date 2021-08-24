@@ -84,9 +84,8 @@ const App = () => {
 					component={AttemptBlindQuiz}
 				/>
 				<Route path='/responses/:quizCode' component={Responses} />
-				<Route path='/home' component={MyHome} />
 				<Route path='/'>
-					<MyHome />
+					<UserDashboard user={user} />
 				</Route>
 				<Route component={NotFoundPage} />
 			</Switch>

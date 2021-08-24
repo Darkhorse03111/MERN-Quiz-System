@@ -13,11 +13,17 @@ const AppBar = ({ user, setUser, username, setUsername }) => {
 					<b>Quiz</b>
 				</Link>
 			</div>
-			<div className='appBar-user'>
-				<Icon>
-					<AccountCircle />
-				</Icon>
-				<p>{user.name}{username}</p>
+			<div className='appBar-user' style={{ marginRight: '80px' }}>
+				<div id='row' style={{ height: '100%' }}>
+					<div style={{ marginRight: '10px', paddingTop: '10px' }}>
+						<Icon>
+							<AccountCircle />
+						</Icon>
+					</div>
+					<div className='vertical-center'>
+						<div>{user.name || username}</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	)

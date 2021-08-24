@@ -15,7 +15,7 @@ const CreatedQuizCard = ({
 	deleteQuiz
 }) => {
 	return (
-		<div className='quiz-card'>
+		<div className='quiz-card' style={{ backgroundImage: 'src="/Quiz/1495315685183.jpg"' }}>
 			<div>
 				<h1 id='created-quiz-title'>{title}</h1>
 				<p className='card-code'>Code: {code}</p>

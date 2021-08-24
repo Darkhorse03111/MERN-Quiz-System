@@ -5,6 +5,7 @@ import CreatedQuizCard from '../components/CreatedQuizCard'
 import JoinedQuizCard from '../components/JoinedQuizCard'
 import LoadingScreen from './LoadingScreen'
 import CreateQuiz from './CreateQuiz'
+import { Carousel } from 'react-bootstrap'
 
 const UserDashboard = ({ user }) => {
 	const [createdQuizzes, setCreatedQuizzes] = useState([])
@@ -99,7 +100,7 @@ const UserDashboard = ({ user }) => {
 	if (loading) return <LoadingScreen />
 
 	if (path) {
-		return <Redirect push to={`/attempt-quiz/${path}`} />
+		return localStorage.getItem('username') == undefined ? <Redirect push to='join-quiz' /> : <Redirect push to={`/attempt-quiz/${path}`} />
 	}
 
 	if (editQuiz.length)
@@ -112,6 +113,7 @@ const UserDashboard = ({ user }) => {
 				editQuizHandle={editQuizHandle}
 			/>
 		)
+
 	return (
 		<div className='dash-body'>
 			{
@@ -144,17 +146,167 @@ const UserDashboard = ({ user }) => {
 					<h2>Quizzes </h2>
 					<div className='line' />
 				</div>
-				<div className='card-holder'>
-					{allQuizzes.map((quiz, key) => (
-						<JoinedQuizCard
-							key={key}
-							title={quiz.title}
-							// score={quiz.responses[0].score}
-							questions={quiz.questions.length}
-							id={quiz._id}
-							joinQuiz={setPath}
-						/>
-					))}
+				<div>
+					<Carousel style={{ height: '100%' }}>
+						<Carousel.Item interval={4000}>
+							<img
+								className="d-block w-100"
+								style={{ width: `100%`, height: `auto` }}
+								src="/Quiz/dashboard/dashboard-1.jpg"
+								alt="First slide"
+							/>
+							<Carousel.Caption>
+								<h3>First Slide</h3>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+							</Carousel.Caption>
+						</Carousel.Item>
+						<Carousel.Item interval={4000}>
+							<img
+								className="d-block"
+								style={{ width: `100%`, height: `auto` }}
+								src="/Quiz/dashboard/dashboard-2.jpg"
+								alt="Second slide"
+							/>
+							<Carousel.Caption>
+								<h3>Second slide label</h3>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+							</Carousel.Caption>
+						</Carousel.Item>
+						<Carousel.Item interval={4000}>
+							<img
+								className="d-block"
+								style={{ width: `100%`, height: `auto` }}
+								src="/Quiz/dashboard/dashboard-3.jpg"
+								alt="Third slide"
+							/>
+							<Carousel.Caption>
+								<h3>Third slide label</h3>
+								<p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+							</Carousel.Caption>
+						</Carousel.Item>
+					</Carousel>
+					<div className='card-holder' style={{ justifyContent: 'center' }}>
+						{
+							allQuizzes.map((quiz, key) => (
+								<JoinedQuizCard
+									key={key}
+									title={quiz.title}
+									// score={quiz.responses[0].score}
+									questions={quiz.questions.length}
+									id={quiz._id}
+									joinQuiz={setPath}
+								/>
+							))
+						}
+						{
+							allQuizzes.map((quiz, key) => (
+								<JoinedQuizCard
+									key={key}
+									title={quiz.title}
+									// score={quiz.responses[0].score}
+									questions={quiz.questions.length}
+									id={quiz._id}
+									joinQuiz={setPath}
+								/>
+							))
+						}
+						{
+							allQuizzes.map((quiz, key) => (
+								<JoinedQuizCard
+									key={key}
+									title={quiz.title}
+									// score={quiz.responses[0].score}
+									questions={quiz.questions.length}
+									id={quiz._id}
+									joinQuiz={setPath}
+								/>
+							))
+						}
+						{
+							allQuizzes.map((quiz, key) => (
+								<JoinedQuizCard
+									key={key}
+									title={quiz.title}
+									// score={quiz.responses[0].score}
+									questions={quiz.questions.length}
+									id={quiz._id}
+									joinQuiz={setPath}
+								/>
+							))
+						}
+						{
+							allQuizzes.map((quiz, key) => (
+								<JoinedQuizCard
+									key={key}
+									title={quiz.title}
+									// score={quiz.responses[0].score}
+									questions={quiz.questions.length}
+									id={quiz._id}
+									joinQuiz={setPath}
+								/>
+							))
+						}
+						{
+							allQuizzes.map((quiz, key) => (
+								<JoinedQuizCard
+									key={key}
+									title={quiz.title}
+									// score={quiz.responses[0].score}
+									questions={quiz.questions.length}
+									id={quiz._id}
+									joinQuiz={setPath}
+								/>
+							))
+						}
+						{
+							allQuizzes.map((quiz, key) => (
+								<JoinedQuizCard
+									key={key}
+									title={quiz.title}
+									// score={quiz.responses[0].score}
+									questions={quiz.questions.length}
+									id={quiz._id}
+									joinQuiz={setPath}
+								/>
+							))
+						}
+						{
+							allQuizzes.map((quiz, key) => (
+								<JoinedQuizCard
+									key={key}
+									title={quiz.title}
+									// score={quiz.responses[0].score}
+									questions={quiz.questions.length}
+									id={quiz._id}
+									joinQuiz={setPath}
+								/>
+							))
+						}
+						{
+							allQuizzes.map((quiz, key) => (
+								<JoinedQuizCard
+									key={key}
+									title={quiz.title}
+									// score={quiz.responses[0].score}
+									questions={quiz.questions.length}
+									id={quiz._id}
+									joinQuiz={setPath}
+								/>
+							))
+						}
+						{
+							allQuizzes.map((quiz, key) => (
+								<JoinedQuizCard
+									key={key}
+									title={quiz.title}
+									// score={quiz.responses[0].score}
+									questions={quiz.questions.length}
+									id={quiz._id}
+									joinQuiz={setPath}
+								/>
+							))
+						}
+					</div>
 				</div>
 			</div>
 		</div>

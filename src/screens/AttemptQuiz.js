@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, Redirect } from 'react-router-dom'
+import { Row, Table } from 'react-bootstrap'
 import * as io from 'socket.io-client';
 import LoadingScreen from './LoadingScreen'
 import AttemptedModal from './AttemptedModal'
@@ -323,84 +324,104 @@ class AttemptQuiz extends React.Component {
 			let question = questions[number], options = attemptedQuestions.length > number ? attemptedQuestions[number].selectedOptions : []
 			return (
 				<div id='main-body' className='flex-container grow'>
-					<div id='create-quiz-body' className='flex-container grow'>
-						<div className='quiz-header fixed' style={{ height: '100px' }}>
-							<h2>{quizTitle}</h2>
-						</div>
-						<div className='attemptQuestionCard theme-classic flex-container grow'>
-							<div className='grow vertical-center puzzle-text'>
-								{question.title}
+					<div className='flex-horizontal-container grow'>
+						<div id='create-quiz-body' className='flex-container grow' style={{ flexGrow: '1' }}>
+							<div className='quiz-header fixed' style={{ height: '100px' }}>
+								<h2>{quizTitle}</h2>
 							</div>
-							{
-								mark === 0 ? <div className='option-div options-grid grow' style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
-									{question.options.map((option, ind) => (
-										<div className={
-											`option option-${ind + 1} is-mcq myoption-text is-selected option-pressed `
-										} style={{ width: '100%' }} key={ind}>
-											<div
-												className='option-inner vertical-center puzzle-text option-pressed is-selected theme-option-container'
-												style={{ width: '100%' }}
-												name={`option${number}`}
-												checked={options.findIndex(opt => opt === option.text) >= 0}
-												onClick={e =>
-													handleOptionSelect(option.text, number)
-												}>
-												{option.text}
-												{
-													question.optionType === 'check' && <span className={"select-icon-wrapper flex-view all-center is-selected" + (options.findIndex(opt => opt === option.text) >= 0 ? " pink-background option-selected" : '')}>
-														<span className="icon"></span>
-													</span>
-												}
-											</div>
-										</div>
-									))}
-								</div> : <div className='option-div options-grid grow' style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
-									{question.options.map((option, ind) => (
-										<div className={'option is-mcq myoption-text is-selected option-pressed ' + (option.isCorrect ? `right-color ` : '') + ((option.isCorrect === false && options.findIndex(opt => opt === option.text) >= 0) ? 'wrong-color ' : '')} style={{ width: '100%' }} key={ind}>
-											{
-												(option.isCorrect || options.findIndex(opt => opt === option.text) >= 0) && <div
+							<div className='attemptQuestionCard theme-classic flex-container grow' style={{ backgroundColor: '#ddffdd' }}>
+								<div className='grow vertical-center puzzle-text'>
+									{question.title}
+								</div>
+								{
+									mark === 0 ? <div className='option-div options-grid grow' style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+										{question.options.map((option, ind) => (
+											<div className={
+												`option option-${ind + 1} is-mcq myoption-text is-selected option-pressed `
+											} style={{ width: '100%' }} key={ind}>
+												<div
 													className='option-inner vertical-center puzzle-text option-pressed is-selected theme-option-container'
 													style={{ width: '100%' }}
 													name={`option${number}`}
 													checked={options.findIndex(opt => opt === option.text) >= 0}
 													onClick={e =>
 														handleOptionSelect(option.text, number)
-													}
-												>
+													}>
 													{option.text}
 													{
-														question.optionType === 'check' && <span className={"select-icon-wrapper flex-view all-center is-selected " + (options.findIndex(opt => opt === option.text) >= 0 ? "pink-background" : '')}>
-															<span className={"icon " + (options.findIndex(opt => opt === option.text) >= 0 ? "option-selected" : '')}></span>
+														question.optionType === 'check' && <span className={"select-icon-wrapper flex-view all-center is-selected" + (options.findIndex(opt => opt === option.text) >= 0 ? " pink-background option-selected" : '')}>
+															<span className="icon"></span>
 														</span>
 													}
 												</div>
-											}
-										</div>
-									))}
-								</div>
-							}
-							<div className='fixed' style={{ height: '70px' }}>
-								{
-									number === questions.length - 1 && question.optionType === 'check' && <button className='button wd-200' onClick={e => checkNext()}>
-										Submit
-									</button>
+											</div>
+										))}
+									</div> : <div className='option-div options-grid grow' style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+										{question.options.map((option, ind) => (
+											<div className={'option is-mcq myoption-text is-selected option-pressed ' + (option.isCorrect ? `right-color ` : '') + ((option.isCorrect === false && options.findIndex(opt => opt === option.text) >= 0) ? 'wrong-color ' : '')} style={{ width: '100%' }} key={ind}>
+												{
+													(option.isCorrect || options.findIndex(opt => opt === option.text) >= 0) && <div
+														className='option-inner vertical-center puzzle-text option-pressed is-selected theme-option-container'
+														style={{ width: '100%' }}
+														name={`option${number}`}
+														checked={options.findIndex(opt => opt === option.text) >= 0}
+														onClick={e =>
+															handleOptionSelect(option.text, number)
+														}
+													>
+														{option.text}
+														{
+															question.optionType === 'check' && <span className={"select-icon-wrapper flex-view all-center is-selected " + (options.findIndex(opt => opt === option.text) >= 0 ? "pink-background" : '')}>
+																<span className={"icon " + (options.findIndex(opt => opt === option.text) >= 0 ? "option-selected" : '')}></span>
+															</span>
+														}
+													</div>
+												}
+											</div>
+										))}
+									</div>
 								}
+								<div className='fixed' style={{ height: '70px' }}>
+									{
+										number === questions.length - 1 && question.optionType === 'check' && <button className='button wd-200' onClick={e => checkNext()}>
+											Submit
+										</button>
+									}
+									{
+										question.optionType === 'check' && number < questions.length - 1 && <button className='button wd-200' onClick={e => checkNext()}>
+											Next
+										</button>
+									}
+								</div>
 								{
-									question.optionType === 'check' && number < questions.length - 1 && <button className='button wd-200' onClick={e => checkNext()}>
-										Next
-									</button>
+									mark === 1 ? <div className='fixed mycorrect-answer vertical-center puzzle-text'>
+										Correct
+									</div> : (mark == 2 ? <div className='fixed mywrong-answer vertical-center puzzle-text'>
+										Wrong
+									</div> : '')
 								}
 							</div>
-							{
-								mark === 1 ? <div className='fixed mycorrect-answer vertical-center puzzle-text'>
-									Correct
-								</div> : (mark == 2 ? <div className='fixed mywrong-answer vertical-center puzzle-text'>
-									Wrong
-								</div> : '')
-							}
+							<AttemptedModal result={result} totalScore={questions.length} showModal={showModal} />
+							<Marks students={students} showModal={showMark} />
 						</div>
-						<AttemptedModal result={result} totalScore={questions.length} showModal={showModal} />
-						<Marks students={students} showModal={showMark} />
+						<div className='grow' style={{ flexGrow: '0', width: '200px', marginTop: '100px' }}>
+							<Table striped bordered hover>
+								<thead>
+									<tr>
+										<th>Name</th>
+										<th>Score</th>
+									</tr>
+								</thead>
+								<tbody>
+									{
+										students.map(std => <tr>
+											<td>{std.name}</td>
+											<td>{std.mark}</td>
+										</tr>)
+									}
+								</tbody>
+							</Table>
+						</div>
 					</div>
 				</div >
 			)
