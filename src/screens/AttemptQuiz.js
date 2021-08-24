@@ -5,6 +5,10 @@ import * as io from 'socket.io-client';
 import LoadingScreen from './LoadingScreen'
 import AttemptedModal from './AttemptedModal'
 import './AttemptQuiz.css'
+import { Icon } from '@material-ui/core'
+import {
+	MusicNote, MusicOff
+} from '@material-ui/icons'
 
 let socket
 const env = process.env.NODE_ENV;
@@ -26,10 +30,13 @@ class AttemptQuiz extends React.Component {
 			score: 0,
 			time: true,
 			mark: 0,
-			totalScore: 0,
 			students: [],
-			showMark: false
+			showMark: false,
+			music: true
 		}
+		this.url = "/Music.wav";
+		this.audio = new Audio(this.url);
+		this.audio.play()
 	}
 	async componentDidMount() {
 		const quizCode = this.props.match.params.quizCode
@@ -100,14 +107,15 @@ class AttemptQuiz extends React.Component {
 		temp[number].selectedOptions = options
 		let score = this.getMark(temp, number)
 		if (attemptedQuestions[number].optionType === 'radio') {
-			console.log('select score:', score)
 			let currentScore = this.evaluateQuiz(questions, temp)
+			console.log('current score:', currentScore)
 			socket.emit('mark', { id: localStorage.getItem('id'), currentScore })
 			this.setState({
 				attemptedQuestions: temp,
 				time: number < questions.length - 1,
 				mark: score === 1 ? 1 : 2,
-				showMark: true
+				showMark: true,
+				score: currentScore
 			})
 			setTimeout(() => this.increaseNumber(), 1500)
 		} else if (attemptedQuestions[number].optionType === 'check') {
@@ -146,9 +154,11 @@ class AttemptQuiz extends React.Component {
 		if (attemptedQuestions[number].optionType === 'check') {
 			let currentScore = this.evaluateQuiz(questions, attemptedQuestions)
 			socket.emit('mark', { id: localStorage.getItem('id'), currentScore })
+			console.log('current score:', currentScore)
 			this.setState({
 				mark: score === 1 ? 1 : 2,
-				showMark: true
+				showMark: true,
+				score: currentScore
 			})
 			setTimeout(() => this.increaseNumber(), 1500)
 		}
@@ -271,10 +281,15 @@ class AttemptQuiz extends React.Component {
 	hideModal = () => {
 		this.setState({ showModal: false, mark: 0, number: this.state.number + 1 })
 	}
+	handleMusic = () => {
+		const { music } = this.state
+		music ? this.audio.pause() : this.audio.play()
+		this.setState({ music: !music })
+	}
 
 	render = () => {
 		console.log('width and height:', window.innerWidth, window.innerHeight)
-		const { number, questions, attemptedQuestions, quizTitle, loading, result, path, showModal, score, time, mark, students, showMark } = this.state
+		const { number, questions, attemptedQuestions, quizTitle, loading, result, path, showModal, score, time, mark, students, showMark, music } = this.state
 		const { handleOptionSelect, submitQuiz, increaseNumber, hideModal, checkNext } = this
 		const quizCode = this.props.match.params.quizCode
 		if (loading) return <LoadingScreen />
@@ -329,6 +344,10 @@ class AttemptQuiz extends React.Component {
 					<div className='flex-horizontal-container grow'>
 						<div id='create-quiz-body' className='flex-container grow' style={{ flexGrow: '1', marginTop: '100px' }}>
 							<div className='attemptQuestionCard theme-classic flex-container grow' style={{ backgroundColor: '#ddffdd' }}>
+								<div className='fixed' style={{ height: '40px', display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+									<div>{number + 1}/{questions.length}</div>
+									<div>Score:{score}</div>
+								</div>
 								<div className='grow vertical-center puzzle-text'>
 									{question.title}
 								</div>
@@ -412,6 +431,11 @@ class AttemptQuiz extends React.Component {
 								}
 							</ListGroup>
 						</div>
+					</div>
+					<div style={{ width: '100%', height: '50px' }}>
+						<Icon onClick={e => this.handleMusic()}>
+							{music ? <MusicNote fontSize='large' /> : <MusicOff fontSize='large' />}
+						</Icon>
 					</div>
 				</div >
 			)

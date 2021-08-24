@@ -30,6 +30,9 @@ io.on('connect', client => {
 	})
 	client.on('mark', body => {
 		let index = students.findIndex(std => std.id === client.id)
+		if (index < 0) {
+			return;
+		}
 		students[index].mark = body.currentScore
 		let res = students.filter(std => std.quizCode === students[index].quizCode).sort((a, b) => parseInt(b.mark) - parseInt(a.mark))
 		clients.map(clnt => clnt.emit('mark', res))
@@ -37,8 +40,14 @@ io.on('connect', client => {
 	client.on('disconnect', () => {
 		console.log('client disconnected:', client.id)
 		let index = students.findIndex(std => std.id === client.id)
+		if (index < 0) {
+			return;
+		}
 		students.splice(index, 1)
 		index = clients.findIndex(clnt => clnt.id === client.id)
+		if (index < 0) {
+			return;
+		}
 		clients.splice(index, 1)
 		console.log(students)
 	});
