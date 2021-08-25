@@ -1,5 +1,6 @@
 'use strict'
 const express = require('express')
+const path = require('path')
 const app = express()
 const server = require('http').Server(app)
 const io = module.exports.io = require('socket.io')(server)
@@ -16,10 +17,10 @@ app.use(express.json())
 app.use('/API/users', userRoute)
 app.use('/API/quizzes', quizzesRoute)
 
-app.use(express.static(__dirname + '/build'))
+app.use(express.static(path.join(__dirname, 'build')))
 
-app.use('*', (req, res) => {
-	res.sendFile(__dirname, '/build/index.html')
+app.use('/*', (req, res) => {
+	res.sendFile(path.join(__dirname, 'build', 'index.html'))
 })
 io.on('connect', client => {
 	client.on('login', body => {

@@ -29,6 +29,18 @@
   color: var(--primary);
   text-decoration: none;
 }
+.admin {
+  text-align: center;
+  /* font-family: Roboto; */
+  font-style: normal;
+  padding: 10px;
+  font-size: 18px;
+  color: var(--primary);
+  text-decoration: none;
+}
+.admin:hover {
+  color: var(--accent-mustard);
+}
 .home b {
   /* font-family: Roboto; */
   font-size: 30px;

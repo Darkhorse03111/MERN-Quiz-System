@@ -15,14 +15,15 @@ const AppBar = ({ user, setUser, username, setUsername }) => {
 			</div>
 			<div className='appBar-user' style={{ marginRight: '80px' }}>
 				<div id='row' style={{ height: '100%' }}>
-					<Link to='/admin' className='home'>
-						<b>Admin Page</b>
+					{(!username && !user.name) && <Link to='/admin' className='admin vertical-center'>
+						<b>Log in</b>
 					</Link>
-					<div style={{ marginRight: '10px', paddingTop: '10px' }}>
+					}
+					{!!username && <div style={{ marginRight: '10px', paddingTop: '10px' }}>
 						<Icon>
 							<AccountCircle />
 						</Icon>
-					</div>
+					</div>}
 					<div className='vertical-center'>
 						<div>{user.name || username}</div>
 					</div>

@@ -37,7 +37,11 @@ class AttemptQuiz extends React.Component {
 		this.url = "/Music.wav";
 		this.audio = new Audio(this.url);
 		this.audio.play()
+		this.audio.addEventListener('ended', function () {
+			this.audio.play()
+		}, false);
 	}
+
 	async componentDidMount() {
 		const quizCode = this.props.match.params.quizCode
 		const res = await fetch('/API/quizzes/join', {
@@ -84,6 +88,7 @@ class AttemptQuiz extends React.Component {
 	}
 	componentWillUnmount() {
 		socket.close()
+		this.audio.pause()
 	}
 	handleOptionSelect = (option, number) => {
 		const { attemptedQuestions, questions } = this.state
@@ -344,9 +349,12 @@ class AttemptQuiz extends React.Component {
 					<div className='flex-horizontal-container grow'>
 						<div id='create-quiz-body' className='flex-container grow' style={{ flexGrow: '1', marginTop: '100px' }}>
 							<div className='attemptQuestionCard theme-classic flex-container grow' style={{ backgroundColor: '#ddffdd' }}>
-								<div className='fixed' style={{ height: '40px', display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-									<div>{number + 1}/{questions.length}</div>
-									<div>Score:{score}</div>
+								<div className='fixed' style={{ height: '60px', display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+									<div className='topText'>Quiz {number + 1}/{questions.length}</div>
+									<Icon onClick={e => this.handleMusic()} style={{ height: '60px' }}>
+										{music ? <MusicNote fontSize='large' /> : <MusicOff fontSize='large' />}
+									</Icon>
+									<div className='topText'>Score:{score}</div>
 								</div>
 								<div className='grow vertical-center puzzle-text'>
 									{question.title}
@@ -421,21 +429,16 @@ class AttemptQuiz extends React.Component {
 							</div>
 							<AttemptedModal result={result} totalScore={questions.length} showModal={showModal} />
 						</div>
-						<div className='grow' style={{ flexGrow: '0', width: '200px', marginTop: '100px' }}>
+						<div className='grow' style={{ flexGrow: '0', width: '280px', marginTop: '110px' }}>
 							<ListGroup>
 								{
-									students.map(std => <ListGroup.Item style={{ display: 'flex', justifyContent: 'space-between' }} active={std.id === socket.id}>{std.name}<Badge pill bg="primary">
+									students.map((std, index) => <ListGroup.Item style={{ display: 'flex', justifyContent: 'space-between' }} variant={std.id === socket.id ? 'primary' : 'secondary'}>{`${index + 1} ${std.name.length < 15 ? std.name : std.name.left(12) + '...'}`}<Badge pill bg="primary">
 										{std.mark}
 									</Badge></ListGroup.Item>
 									)
 								}
 							</ListGroup>
 						</div>
-					</div>
-					<div style={{ width: '100%', height: '50px' }}>
-						<Icon onClick={e => this.handleMusic()}>
-							{music ? <MusicNote fontSize='large' /> : <MusicOff fontSize='large' />}
-						</Icon>
 					</div>
 				</div >
 			)

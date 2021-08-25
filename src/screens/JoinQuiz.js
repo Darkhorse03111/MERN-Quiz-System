@@ -25,7 +25,7 @@ const JoinQuiz = () => {
 		<div id='join-quiz'>
 			<div id='join-quiz-div'>
 				<div id='logo-name'>
-					<b style={{ fontweight: 600 }}>Quiz</b>dom
+					<b style={{ fontweight: 600 }}>Quiz</b>
 				</div>
 				<input
 					value={code}
@@ -38,11 +38,8 @@ const JoinQuiz = () => {
 						if (event.key === 'Enter') handleJoinQuiz()
 					}}
 				/>
-				<button className='join-button' onClick={handleJoinQuiz}>
+				<button className='button wd-200' onClick={handleJoinQuiz}>
 					Join Quiz
-				</button>
-				<button className='join-button' onClick={handleJoinBlindQuiz}>
-					Join As a Blind
 				</button>
 			</div>
 		</div>

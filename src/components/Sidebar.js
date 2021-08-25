@@ -58,7 +58,7 @@ function Sidebar({ setUsername }) {
 						</Icon>
 					</li>
 					{SidedbarData.map((item, index) => {
-						return (
+						return (index < 2 || !!firebase.auth().currentUser) && (
 							<li key={index} className='nav-text'>
 								<Link to={item.path}>
 									<Icon>{item.icon}</Icon>
