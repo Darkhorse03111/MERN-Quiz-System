@@ -414,36 +414,6 @@ class AttemptQuiz extends React.Component {
 									</Badge></ListGroup.Item>
 									)
 								}
-								{
-									students.map((std, index) => <ListGroup.Item style={{ display: 'flex', justifyContent: 'space-between' }} variant={std.id === socket.id ? 'primary' : 'secondary'}>{`${index + 1}.${std.name.length < 15 ? std.name : std.name.left(12) + '...'}`}<Badge pill bg="primary">
-										{std.mark}
-									</Badge></ListGroup.Item>
-									)
-								}
-								{
-									students.map((std, index) => <ListGroup.Item style={{ display: 'flex', justifyContent: 'space-between' }} variant={std.id === socket.id ? 'primary' : 'secondary'}>{`${index + 1}.${std.name.length < 15 ? std.name : std.name.left(12) + '...'}`}<Badge pill bg="primary">
-										{std.mark}
-									</Badge></ListGroup.Item>
-									)
-								}
-								{
-									students.map((std, index) => <ListGroup.Item style={{ display: 'flex', justifyContent: 'space-between' }} variant={std.id === socket.id ? 'primary' : 'secondary'}>{`${index + 1}.${std.name.length < 15 ? std.name : std.name.left(12) + '...'}`}<Badge pill bg="primary">
-										{std.mark}
-									</Badge></ListGroup.Item>
-									)
-								}
-								{
-									students.map((std, index) => <ListGroup.Item style={{ display: 'flex', justifyContent: 'space-between' }} variant={std.id === socket.id ? 'primary' : 'secondary'}>{`${index + 1}.${std.name.length < 15 ? std.name : std.name.left(12) + '...'}`}<Badge pill bg="primary">
-										{std.mark}
-									</Badge></ListGroup.Item>
-									)
-								}
-								{
-									students.map((std, index) => <ListGroup.Item style={{ display: 'flex', justifyContent: 'space-between' }} variant={std.id === socket.id ? 'primary' : 'secondary'}>{`${index + 1}.${std.name.length < 15 ? std.name : std.name.left(12) + '...'}`}<Badge pill bg="primary">
-										{std.mark}
-									</Badge></ListGroup.Item>
-									)
-								}
 							</ListGroup>
 						</div>
 					</div>
