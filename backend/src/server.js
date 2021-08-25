@@ -17,11 +17,11 @@ app.use(express.json())
 app.use('/API/users', userRoute)
 app.use('/API/quizzes', quizzesRoute)
 
-app.use(express.static(path.join(__dirname.substr(0, __dirname.length - 12), 'build')))
+app.use(express.static(path.resolve('build')))
 
 app.use('/*', (req, res) => {
 	// res.sendFile(path.join(__dirname.substr(0, __dirname.length - 12), 'build', 'index.html'))
-	res.sendFile(path.join(__dirname.substr(0, __dirname.length - 12), 'build', 'index.html'))
+	res.sendFile(path.resolve('build/index.html'))
 })
 io.on('connect', client => {
 	client.on('login', body => {
