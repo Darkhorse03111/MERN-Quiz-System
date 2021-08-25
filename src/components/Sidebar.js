@@ -13,7 +13,7 @@ import {
 	MenuRounded,
 } from '@material-ui/icons'
 
-function Sidebar({ setUsername }) {
+function Sidebar({ setUsername, setPath }) {
 	const [signOut, setSignOut] = useState(false)
 	const SidedbarData = [
 		{
@@ -38,20 +38,24 @@ function Sidebar({ setUsername }) {
 	const [sidebar, setSidebar] = useState(false)
 	const showSidebar = () => setSidebar(!sidebar)
 	if (signOut) {
-		localStorage.removeItem('username')
-		localStorage.removeItem('id')
-		setUsername('');
+		if (!!firebase.auth().currentUser) {
+			firebase.auth().signOut()
+		}
+		else {
+			localStorage.removeItem('username')
+			localStorage.removeItem('id')
+		}
+		setUsername('')
 		return <Redirect to='/' />
 	}
 
 	return (
 		<div>
-			<Icon className='menu-bars' onClick={showSidebar}>
+			<Icon className='menu-bars' onClick={e => showSidebar()}>
 				<MenuRounded />
 			</Icon>
-			{/* <FaIcons.FaBars  onClick={} /> */}
 			<nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
-				<ul className='nav-menu-items' onClick={showSidebar}>
+				<ul className='nav-menu-items' onClick={e => showSidebar()}>
 					<li className='navbar-toggle'>
 						<Icon>
 							<MenuOpenRounded fontSize='large' />
@@ -61,28 +65,24 @@ function Sidebar({ setUsername }) {
 						return (index < 2 || !!firebase.auth().currentUser) && (
 							<li key={index} className='nav-text'>
 								<Link to={item.path}>
-									<Icon>{item.icon}</Icon>
+									<Icon style={{ height: '40px' }}>{item.icon}</Icon>
 									<span className='nav-item-title'>{item.title}</span>
 								</Link>
 							</li>
 						)
 					})}
 					{/* Sign Out Button */}
-					<li className='nav-text sign-out'>
-						<button
-							onClick={() => {
-								console.log('clicked')
-								// setUser({})
-								firebase.auth().signOut()
-								setSignOut(true)
-							}}
-						>
-							<Icon>
-								<ExitToApp />
-							</Icon>
-							<span className='nav-item-title'>{'SignOut'}</span>
-						</button>
-					</li>
+					{
+						(!!firebase.auth().currentUser || !!localStorage.getItem('username')) && <li className='nav-text sign-out' style={{ display: 'flex', justifyContent: 'left' }}>
+							<button
+								onClick={() => setSignOut(true)}>
+								<Icon style={{ height: '40px' }}	>
+									<ExitToApp />
+								</Icon>
+								<span className='nav-item-title'>{'SignOut'}</span>
+							</button>
+						</li>
+					}
 				</ul>
 			</nav>
 		</div>

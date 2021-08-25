@@ -63,12 +63,12 @@ const App = () => {
 				</Route>
 				<Route path='/admin'>
 					{
-						!firebase.auth().currentUser ? <Home setUser={setUser} /> : <OneTimeDashBoard user={user} />
+						!firebase.auth().currentUser ? <Home setUser={setUser} /> : <UserDashboard user={user} />
 					}
 				</Route>
 				<Route path='/dashboard'>
 					{
-						!!firebase.auth().currentUser ? <AdminDashboard setUser={setUser} /> : <UserDashboard user={user} />
+						!!firebase.auth().currentUser ? <AdminDashboard setUser={setUser} user={user} /> : <UserDashboard user={user} />
 					}
 				</Route>
 				<Route path='/create-quiz'>

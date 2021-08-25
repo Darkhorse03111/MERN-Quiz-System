@@ -1,9 +1,10 @@
 import React from 'react'
-import Sidebar from './Sidebar'
-import './AppBar.css'
 import { Link } from 'react-router-dom'
 import { Icon } from '@material-ui/core'
 import { AccountCircle } from '@material-ui/icons'
+import './AppBar.css'
+import Sidebar from './Sidebar'
+import firebase from '../firebase/firebase'
 const AppBar = ({ user, setUser, username, setUsername }) => {
 	return (
 		<div className='appBar'>
@@ -15,7 +16,7 @@ const AppBar = ({ user, setUser, username, setUsername }) => {
 			</div>
 			<div className='appBar-user' style={{ marginRight: '80px' }}>
 				<div id='row' style={{ height: '100%' }}>
-					{(!username && !user.name) && <Link to='/admin' className='admin vertical-center'>
+					{!firebase.auth().currentUser && <Link to='/admin' className='admin vertical-center'>
 						<b>Log in</b>
 					</Link>
 					}

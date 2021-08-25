@@ -38,7 +38,7 @@ const Home = ({ setUser }) => {
 		return () => (isMounted = false)
 	}, [setUser])
 	return (
-		<>
+		<div className='vertical-center'>
 			{loading ? (
 				<LoadingScreen />
 			) : (
@@ -66,7 +66,7 @@ const Home = ({ setUser }) => {
 					</div>
 				</div>
 			)}
-		</>
+		</div>
 	)
 }
 

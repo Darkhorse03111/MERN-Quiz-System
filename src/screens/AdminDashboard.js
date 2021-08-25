@@ -22,7 +22,7 @@ const AdminDashboard = ({ user }) => {
     // }
     const fetchQuizData = async () => {
       let results, quizData
-      if (user.uid) {
+      if (!!user && !!user.uid) {
         results = await fetch(`/API/users/${user.uid}`)
         console.log('results:', results)
         quizData = await results.json()

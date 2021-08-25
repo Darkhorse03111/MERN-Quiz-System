@@ -10,7 +10,7 @@ const JoinedQuizCard = ({ title, questions, id, joinQuiz }) => {
 		</Card.Body>
 		<ListGroup className="list-group-flush">
 			<ListGroupItem>{id}</ListGroupItem>
-			<ListGroupItem><Button variant="success" onClick={e => joinQuiz(id)} style={{ height: '38px' }}>Join</Button></ListGroupItem>
+			<ListGroupItem><Button variant="success" onClick={e => joinQuiz(id)} style={{ height: '38px', width: '100%' }}>Join</Button></ListGroupItem>
 		</ListGroup>
 	</Card>
 }

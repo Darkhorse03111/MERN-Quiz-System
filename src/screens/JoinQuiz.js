@@ -11,9 +11,6 @@ const JoinQuiz = () => {
 	const handleJoinQuiz = () => {
 		if (code.length) setValid('attempt-quiz')
 	}
-	const handleJoinBlindQuiz = () => {
-		if (code.length) setValid('attempt-blind-quiz')
-	}
 	if (localStorage.getItem('username') == undefined) {
 		return <Redirect to='/name' />
 	}

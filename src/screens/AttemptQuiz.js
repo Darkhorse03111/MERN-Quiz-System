@@ -347,7 +347,7 @@ class AttemptQuiz extends React.Component {
 			return (
 				<div id='main-body' className='flex-container grow'>
 					<div className='flex-horizontal-container grow'>
-						<div id='create-quiz-body' className='flex-container grow' style={{ flexGrow: '1', marginTop: '100px' }}>
+						<div id='create-quiz-body' className='flex-container grow' style={{ flexGrow: '1', marginTop: '100px', marginBottom: '50px' }}>
 							<div className='attemptQuestionCard theme-classic flex-container grow' style={{ backgroundColor: '#ddffdd' }}>
 								<div className='fixed' style={{ height: '60px', display: 'flex', justifyContent: 'space-between', width: '100%' }}>
 									<div className='topText'>Quiz {number + 1}/{questions.length}</div>
@@ -429,10 +429,40 @@ class AttemptQuiz extends React.Component {
 							</div>
 							<AttemptedModal result={result} totalScore={questions.length} showModal={showModal} />
 						</div>
-						<div className='grow' style={{ flexGrow: '0', width: '280px', marginTop: '110px' }}>
+						<div className='grow' style={{ flexGrow: '0', width: '280px', marginTop: '110px', overflow: 'visible', height: `${window.innerHeight - 170}` }}>
 							<ListGroup>
 								{
-									students.map((std, index) => <ListGroup.Item style={{ display: 'flex', justifyContent: 'space-between' }} variant={std.id === socket.id ? 'primary' : 'secondary'}>{`${index + 1} ${std.name.length < 15 ? std.name : std.name.left(12) + '...'}`}<Badge pill bg="primary">
+									students.map((std, index) => <ListGroup.Item style={{ display: 'flex', justifyContent: 'space-between' }} variant={std.id === socket.id ? 'primary' : 'secondary'}>{`${index + 1}.${std.name.length < 15 ? std.name : std.name.left(12) + '...'}`}<Badge pill bg="primary">
+										{std.mark}
+									</Badge></ListGroup.Item>
+									)
+								}
+								{
+									students.map((std, index) => <ListGroup.Item style={{ display: 'flex', justifyContent: 'space-between' }} variant={std.id === socket.id ? 'primary' : 'secondary'}>{`${index + 1}.${std.name.length < 15 ? std.name : std.name.left(12) + '...'}`}<Badge pill bg="primary">
+										{std.mark}
+									</Badge></ListGroup.Item>
+									)
+								}
+								{
+									students.map((std, index) => <ListGroup.Item style={{ display: 'flex', justifyContent: 'space-between' }} variant={std.id === socket.id ? 'primary' : 'secondary'}>{`${index + 1}.${std.name.length < 15 ? std.name : std.name.left(12) + '...'}`}<Badge pill bg="primary">
+										{std.mark}
+									</Badge></ListGroup.Item>
+									)
+								}
+								{
+									students.map((std, index) => <ListGroup.Item style={{ display: 'flex', justifyContent: 'space-between' }} variant={std.id === socket.id ? 'primary' : 'secondary'}>{`${index + 1}.${std.name.length < 15 ? std.name : std.name.left(12) + '...'}`}<Badge pill bg="primary">
+										{std.mark}
+									</Badge></ListGroup.Item>
+									)
+								}
+								{
+									students.map((std, index) => <ListGroup.Item style={{ display: 'flex', justifyContent: 'space-between' }} variant={std.id === socket.id ? 'primary' : 'secondary'}>{`${index + 1}.${std.name.length < 15 ? std.name : std.name.left(12) + '...'}`}<Badge pill bg="primary">
+										{std.mark}
+									</Badge></ListGroup.Item>
+									)
+								}
+								{
+									students.map((std, index) => <ListGroup.Item style={{ display: 'flex', justifyContent: 'space-between' }} variant={std.id === socket.id ? 'primary' : 'secondary'}>{`${index + 1}.${std.name.length < 15 ? std.name : std.name.left(12) + '...'}`}<Badge pill bg="primary">
 										{std.mark}
 									</Badge></ListGroup.Item>
 									)
