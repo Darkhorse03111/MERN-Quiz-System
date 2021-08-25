@@ -66,7 +66,7 @@ Router.post('/create', (req, res) => {
 
 Router.delete('/:id', (req, res) => {
 	const id = req.params.id
-	console.log('deleting:',id)
+	console.log('deleting:', id)
 	DB.withDB(async (db) => {
 		try {
 			await db.collection('quizzes').deleteOne(
@@ -126,7 +126,9 @@ Router.get('/', (req, res) => {
 		try {
 			const createdCursor = db
 				.collection('quizzes')
-				.find({})
+				.find({
+					isOpen: true
+				})
 				.project({
 					isOpen: 1,
 					title: 1,
