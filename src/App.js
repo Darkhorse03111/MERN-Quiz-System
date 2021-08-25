@@ -44,7 +44,6 @@ const App = () => {
 								'Content-Type': 'application/json',
 							},
 						})
-						console.log('posted')
 					} catch (error) {
 						console.log('User Creation Error: ', error)
 					}

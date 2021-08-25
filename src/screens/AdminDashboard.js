@@ -24,7 +24,6 @@ const AdminDashboard = ({ user }) => {
       let results, quizData
       if (!!user && !!user.uid) {
         results = await fetch(`/API/users/${user.uid}`)
-        console.log('results:', results)
         quizData = await results.json()
         if (quizData.createdQuiz) setCreatedQuizzes(quizData.createdQuiz)
       }

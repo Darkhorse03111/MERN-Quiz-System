@@ -24,7 +24,6 @@ const UserDashboard = ({ user }) => {
 			let results, quizData
 			if (user.uid) {
 				results = await fetch(`/API/users/${user.uid}`)
-				console.log('results:', results)
 				quizData = await results.json()
 				if (quizData.createdQuiz) setCreatedQuizzes(quizData.createdQuiz)
 			}

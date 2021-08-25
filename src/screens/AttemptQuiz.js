@@ -52,7 +52,6 @@ class AttemptQuiz extends React.Component {
 			},
 		})
 		const quizData = await res.json()
-		console.log('fetch res:', quizData)
 		if (!!quizData.error) {
 			this.setState({
 				quizTitle: quizData.error,
@@ -102,7 +101,6 @@ class AttemptQuiz extends React.Component {
 		}
 		if (attemptedQuestions[number].optionType === 'radio') options[0] = option
 		else {
-			console.log('option select:', options, option)
 			if (options.find(opt => opt === option)) {
 				options.splice(options.findIndex(opt => opt === option), 1)
 			} else {
@@ -113,7 +111,6 @@ class AttemptQuiz extends React.Component {
 		let score = this.getMark(temp, number)
 		if (attemptedQuestions[number].optionType === 'radio') {
 			let currentScore = this.evaluateQuiz(questions, temp)
-			console.log('current score:', currentScore)
 			socket.emit('mark', { id: localStorage.getItem('id'), currentScore })
 			this.setState({
 				attemptedQuestions: temp,
@@ -128,14 +125,11 @@ class AttemptQuiz extends React.Component {
 				attemptedQuestions: [...temp]
 			})
 		}
-		console.log('select current number:', number)
 	}
 
 	getMark = (attemptedQuestions, number) => {
 		const { questions } = this.state
-		console.log('get marK:', number)
 		const correctOptions = questions[number].options.filter((op) => op.isCorrect)
-		console.log('options:', correctOptions)
 		let question = questions[number]
 		let mark
 		// Error for Quiz with no correct answers
@@ -159,7 +153,6 @@ class AttemptQuiz extends React.Component {
 		if (attemptedQuestions[number].optionType === 'check') {
 			let currentScore = this.evaluateQuiz(questions, attemptedQuestions)
 			socket.emit('mark', { id: localStorage.getItem('id'), currentScore })
-			console.log('current score:', currentScore)
 			this.setState({
 				mark: score === 1 ? 1 : 2,
 				showMark: true,
@@ -236,17 +229,14 @@ class AttemptQuiz extends React.Component {
 				time: false,
 				mark
 			})
-			// console.log('res body : ', body)
 		} catch (e) {
 			console.log('Error Submitting quiz', e)
 		}
 	}
 	evaluateQuiz = (quizQuestions, attemptedQuestions) => {
 		let score = 0
-		console.log('quiestions:', quizQuestions, attemptedQuestions)
 		attemptedQuestions.forEach((question) => {
 			const realQues = quizQuestions.find((x) => x.id === question.id)
-			console.log('current question:', realQues)
 			const correctOptions = realQues.options.filter((op) => op.isCorrect)
 			// Error for Quiz with no correct answers
 			if (correctOptions.length < 1) return 0
@@ -257,27 +247,15 @@ class AttemptQuiz extends React.Component {
 				for (let i = 0; i < attemptedOptions.length; ++i) {
 					if (correctOptions.find(opt => opt.text == attemptedOptions[i])) {
 						++cnt
-					} else {
-						console.log('diff ', attemptedOptions[i])
 					}
 				}
 				if (cnt === correctOptions.length) {
-					console.log(`pro${question.title} right`)
 					++score
-				}
-				else {
-					console.log(`pro${question.title} wrong`, correctOptions, attemptedOptions)
 				}
 			}
 			else if (realQues.optionType === 'radio') {
-				console.log('correct option:', correctOptions)
-				console.log('attempt:', attemptedOptions)
 				if (correctOptions[0].text === attemptedOptions[0]) {
-					console.log('same')
 					++score
-				}
-				else {
-					console.log('different')
 				}
 			}
 		})
@@ -293,7 +271,6 @@ class AttemptQuiz extends React.Component {
 	}
 
 	render = () => {
-		console.log('width and height:', window.innerWidth, window.innerHeight)
 		const { number, questions, attemptedQuestions, quizTitle, loading, result, path, showModal, score, time, mark, students, showMark, music } = this.state
 		const { handleOptionSelect, submitQuiz, increaseNumber, hideModal, checkNext } = this
 		const quizCode = this.props.match.params.quizCode

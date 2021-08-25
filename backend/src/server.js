@@ -39,7 +39,6 @@ io.on('connect', client => {
 		clients.map(clnt => clnt.emit('mark', res))
 	})
 	client.on('disconnect', () => {
-		console.log('client disconnected:', client.id)
 		let index = students.findIndex(std => std.id === client.id)
 		if (index < 0) {
 			return;
@@ -50,7 +49,6 @@ io.on('connect', client => {
 			return;
 		}
 		clients.splice(index, 1)
-		console.log(students)
 	});
 });
 

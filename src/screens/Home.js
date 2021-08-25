@@ -27,12 +27,9 @@ const Home = ({ setUser }) => {
 					name: firebase.auth().currentUser.displayName,
 					email: firebase.auth().currentUser.email,
 				})
-				console.log('User Logged In')
 			} else {
-				console.log('User Signed Out')
 				setUser({})
 			}
-			console.log('auth change')
 			if (isMounted) setLoading(false)
 		})
 		return () => (isMounted = false)

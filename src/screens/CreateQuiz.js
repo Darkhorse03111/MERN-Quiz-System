@@ -44,7 +44,6 @@ const CreateQuiz = ({
 			alert('Please add any questions.')
 			return
 		}
-		console.log('Quiz Creation Starts...')
 		setLoading('start')
 		try {
 			const result = await fetch('/API/quizzes/create', {
@@ -59,12 +58,9 @@ const CreateQuiz = ({
 					'Content-Type': 'application/json'
 				}
 			})
-			console.log('Quiz posted ! ')
 			const body = await result.json()
-			console.log('Quiz Code : ', body.quizId)
 			setQuizCode(body.quizId)
 		} catch (e) {
-			console.log('Quiz creation error : ', e)
 			setLoading('error')
 		}
 	}
@@ -88,7 +84,7 @@ const CreateQuiz = ({
 					/>
 				</div>
 				<div className='controls'>
-					<AddQuestionModal addQuestionHandle={addQuestionHandle}/>
+					<AddQuestionModal addQuestionHandle={addQuestionHandle} />
 					<div className='switch'>
 						<Switch
 							checked={access}
