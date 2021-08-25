@@ -12,7 +12,7 @@ import {
 
 let socket
 const env = process.env.NODE_ENV;
-const socketUrl = "http://localhost:3000"
+const socketUrl = "/"
 
 class AttemptQuiz extends React.Component {
 	constructor(props) {
