@@ -41,10 +41,8 @@ function Sidebar({ setUsername, setPath }) {
 		if (!!firebase.auth().currentUser) {
 			firebase.auth().signOut()
 		}
-		else {
-			localStorage.removeItem('username')
-			localStorage.removeItem('id')
-		}
+		localStorage.removeItem('username')
+		localStorage.removeItem('id')
 		setUsername('')
 		return <Redirect to='/' />
 	}

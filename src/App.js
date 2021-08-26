@@ -54,7 +54,7 @@ const App = () => {
 	return (
 		<div className='App flex-container grow'>
 			<div className='fixed'>
-				<AppBar user={user} setUser={setUser} username={username} setUsername={setUsername} />
+				<AppBar user={user} setUser={setUser} setUsername={setUsername} />
 			</div>
 			<Switch>
 				<Route path='/name'>
@@ -62,7 +62,7 @@ const App = () => {
 				</Route>
 				<Route path='/admin'>
 					{
-						!firebase.auth().currentUser ? <Home setUser={setUser} /> : <UserDashboard user={user} />
+						!firebase.auth().currentUser ? <Home setUser={setUser} user={user} /> : <AdminDashboard setUser={setUser} user={user} />
 					}
 				</Route>
 				<Route path='/dashboard'>
@@ -88,7 +88,7 @@ const App = () => {
 				<Route path='/responses/:quizCode' component={Responses} />
 				<Route path='/'>
 					{
-						!!firebase.auth().currentUser ? <AdminDashboard setUser={setUser} /> : <UserDashboard user={user} />
+						!!firebase.auth().currentUser ? <AdminDashboard setUser={setUser} user={user} /> : <UserDashboard user={user} />
 					}
 				</Route>
 				<Route component={NotFoundPage} />

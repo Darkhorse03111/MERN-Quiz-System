@@ -5,7 +5,8 @@ import { AccountCircle } from '@material-ui/icons'
 import './AppBar.css'
 import Sidebar from './Sidebar'
 import firebase from '../firebase/firebase'
-const AppBar = ({ user, setUser, username, setUsername }) => {
+const AppBar = ({ user, setUser, setUsername }) => {
+	const username = localStorage.getItem('username')
 	return (
 		<div className='appBar'>
 			<div className='slider'>
@@ -17,7 +18,7 @@ const AppBar = ({ user, setUser, username, setUsername }) => {
 			<div className='appBar-user' style={{ marginRight: '80px' }}>
 				<div id='row' style={{ height: '100%' }}>
 					{!firebase.auth().currentUser && <Link to='/admin' className='admin vertical-center'>
-						<b>Log in</b>
+						<b>Admin</b>
 					</Link>
 					}
 					{!!username && <div style={{ marginRight: '10px', paddingTop: '10px' }}>
@@ -26,7 +27,7 @@ const AppBar = ({ user, setUser, username, setUsername }) => {
 						</Icon>
 					</div>}
 					<div className='vertical-center'>
-						<div>{user.name || username}</div>
+						<div>{username}</div>
 					</div>
 				</div>
 			</div>

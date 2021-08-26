@@ -12,7 +12,7 @@ import {
 
 let socket
 const env = process.env.NODE_ENV;
-const socketUrl = "/"
+const socketUrl = "ws://localhost:3000"
 
 class AttemptQuiz extends React.Component {
 	constructor(props) {
@@ -59,17 +59,13 @@ class AttemptQuiz extends React.Component {
 			})
 		}
 		else {
-			this.setState({
-				quizTitle: quizData.title,
-				questions: quizData.questions,
-				loading: false
-			})
-			const env = process.env.NODE_ENV;
 			socket = io.connect(socketUrl)
 			const username = localStorage.getItem('username')
 			socket.emit('login', { username, quizCode })
 			socket.on('mark', students => {
-				this.setState({ students })
+				this.setState({
+					students
+				})
 			})
 			const temp = quizData.questions.map((question) => {
 				return {
@@ -80,6 +76,9 @@ class AttemptQuiz extends React.Component {
 				}
 			})
 			this.setState({
+				quizTitle: quizData.title,
+				questions: quizData.questions,
+				loading: false,
 				attemptedQuestions: temp,
 				quizCode
 			})
@@ -273,7 +272,7 @@ class AttemptQuiz extends React.Component {
 	render = () => {
 		const { number, questions, attemptedQuestions, quizTitle, loading, result, path, showModal, score, time, mark, students, showMark, music } = this.state
 		const { handleOptionSelect, submitQuiz, increaseNumber, hideModal, checkNext } = this
-		const quizCode = this.props.match.params.quizCode
+		const { quizCode } = this.props.match.params
 		if (loading) return <LoadingScreen />
 		// For Quiz not Found
 		if (quizTitle === 'ERR:QUIZ_NOT_FOUND')
@@ -321,6 +320,7 @@ class AttemptQuiz extends React.Component {
 			)
 		else {
 			let question = questions[number], options = attemptedQuestions.length > number ? attemptedQuestions[number].selectedOptions : []
+			console.log('students:', students)
 			return (
 				<div id='main-body' className='flex-container grow'>
 					<div className='flex-horizontal-container grow'>
@@ -409,7 +409,7 @@ class AttemptQuiz extends React.Component {
 						<div className='grow' style={{ flexGrow: '0', width: '280px', marginTop: '110px', overflow: 'visible', height: `${window.innerHeight - 170}` }}>
 							<ListGroup>
 								{
-									students.map((std, index) => <ListGroup.Item style={{ display: 'flex', justifyContent: 'space-between' }} variant={std.id === socket.id ? 'primary' : 'secondary'}>{`${index + 1}.${std.name.length < 15 ? std.name : std.name.left(12) + '...'}`}<Badge pill bg="primary">
+									students.map((std, index) => <ListGroup.Item style={{ display: 'flex', justifyContent: 'space-between' }} variant={std.id === socket.id ? 'primary' : 'secondary'}>{`${index + 1}.${(std.name.length < 15) ? std.name : (std.name.substr(0, 12) + '...')}`}<Badge pill bg="primary">
 										{std.mark}
 									</Badge></ListGroup.Item>
 									)

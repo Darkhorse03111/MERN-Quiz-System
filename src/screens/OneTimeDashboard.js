@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import './OneTimeDashboard.css'
-import UsernameModal from '../components/UsernameModal'
 import firebase from '../firebase/firebase'
 
 const OneTimeDashboard = ({ user }) => {

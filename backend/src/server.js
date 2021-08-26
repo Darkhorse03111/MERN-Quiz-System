@@ -25,9 +25,11 @@ app.use('/*', (req, res) => {
 })
 io.on('connect', client => {
 	client.on('login', body => {
+		console.log('logging in', body)
 		clients.push(client)
 		students.push({ name: body.username, id: client.id, quizCode: body.quizCode, mark: '0' })
 		let res = students.filter(std => std.quizCode === body.quizCode).sort((a, b) => parseInt(b.mark) - parseInt(a.mark))
+		console.log('log in ', res)
 		clients.map(clnt => clnt.emit('mark', res))
 	})
 	client.on('mark', body => {

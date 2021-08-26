@@ -26,16 +26,13 @@ const AdminDashboard = ({ user }) => {
         results = await fetch(`/API/users/${user.uid}`)
         quizData = await results.json()
         if (quizData.createdQuiz) setCreatedQuizzes(quizData.createdQuiz)
-      }
-      results = await fetch(`/API/quizzes`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
+        console.log('created quiz:', quizData.createdQuiz)
+        results = await fetch(`/API/quizzes`)
+        quizData = await results.json()
+        console.log('all quiz:', quizData)
+        if (quizData.quizData) {
+          setAllQuizzes(quizData.quizData)
         }
-      })
-      quizData = await results.json()
-      if (quizData.quizData) {
-        setAllQuizzes(quizData.quizData)
       }
       setLoading(false)
     }
@@ -121,7 +118,7 @@ const AdminDashboard = ({ user }) => {
             <h2>My Quiz </h2>
             <div className='line' />
           </div>
-          <div className='card-holder'>
+          <div className='card-holder' style={{ justifyContent: 'center' }}>
             {createdQuizzes.map((quiz, key) => (
               <CreatedQuizCard
                 key={key}
@@ -134,6 +131,25 @@ const AdminDashboard = ({ user }) => {
                 isOpen={quiz.isOpen}
               />
             ))}
+          </div>
+          <div className='heading'>
+            <div className='line-left' />
+            <h2>All Quiz </h2>
+            <div className='line' />
+          </div>
+          <div className='card-holder' style={{ justifyContent: 'center' }}>
+            {
+              allQuizzes.map((quiz, key) => (
+                <JoinedQuizCard
+                  key={key}
+                  title={quiz.title}
+                  // score={quiz.responses[0].score}
+                  questions={quiz.questions.length}
+                  id={quiz._id}
+                  joinQuiz={setPath}
+                />
+              ))
+            }
           </div>
         </div>
       }
