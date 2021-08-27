@@ -10,6 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // Components
 import Home from './screens/Home'
 import CreateQuiz from './screens/CreateQuiz'
+import EditQuiz from './screens/editQuiz'
 import JoinQuiz from './screens/JoinQuiz'
 import UserDashboard from './screens/UserDashboard'
 import CreatedSuccessfully from './screens/CreatedSuccessfully'
@@ -67,11 +68,20 @@ const App = () => {
 				<Route path='/name'>
 					<UsernameModal setUsername={setUsername} />
 				</Route>
+				<Route path='/admin/dashboard/editQuiz'>
+					<EditQuiz setUser={setUser} user={user} />
+				</Route>
+			
+				<Route path='/admin/dashboard'>
+					<AdminDashboard setUser={setUser} user={user} showToast={showToast} />
+				</Route>
+
 				<Route path='/admin'>
 					{
 						!firebase.auth().currentUser ? <Home setUser={setUser} user={user} /> : <AdminDashboard setUser={setUser} user={user} showToast={showToast} />
 					}
 				</Route>
+				
 				<Route path='/dashboard'>
 					{
 						!!firebase.auth().currentUser ? <AdminDashboard setUser={setUser} user={user} showToast={showToast} /> : <UserDashboard user={user} />
