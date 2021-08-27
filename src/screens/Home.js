@@ -22,7 +22,7 @@ const Home = ({ setUser }) => {
 	}
 
 	return (
-		<div className='vertical-center' style={{ backgroundColor: '#294634' }}>
+		<div className='vertical-center pt-5' style={{ backgroundColor: '#294634', height:'100%'}}>
 			<div id='Home'>
 				<div id='logo'>
 					<div id='logo-name'>
@@ -37,7 +37,12 @@ const Home = ({ setUser }) => {
 
 				<div id='login-card'>
 					<label className='login-label'>
-						<b>Q</b>
+						<img
+							style={{width:'100px'}}
+							src="/Quiz/logo/admin_login_logo.png"
+							className="rounded"
+							alt=""
+						/>
 					</label>
 					<div>
 					<InputGroup className="mb-3">
@@ -51,6 +56,7 @@ const Home = ({ setUser }) => {
 						<FormControl
 						placeholder="Password"
 						aria-label="Password"
+						type="password"
 						aria-describedby="basic-addon1"
 						/>
 					</InputGroup>
