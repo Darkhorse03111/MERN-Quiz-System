@@ -3,12 +3,12 @@ import "./QuizCard.css"
 import { Card, ListGroup, ListGroupItem, Button } from 'react-bootstrap'
 
 const JoinedQuizCard = ({ title, questions, id, joinQuiz }) => {
-	return <Card style={{ width: '18rem' }} className="m-4">
-		<Card.Img variant="top" src="/Quiz/download.jpg" />
-		<Card.Body className="myCard">
-			<Card.Title>{title.length < 15 ? title : title.substr(0, 12) + '...'}({questions})</Card.Title>
-		</Card.Body>
-		<ListGroup className="myCard list-group-flush">
+	return <Card style={{ width: '18rem' }} className="m-4" style={{ border: '1px solid #a17f50', backgroundColor: 'rgb(41, 70, 52)', borderRadius: '10px' }}>
+		<Card.Img variant="top" src="/Quiz/Links/tariq-bin-ziyad-for-burning-the-boats-azhar-abbas.jpg" style={{ borderRadius: '10px' }} />
+		<b style={{ marginTop: '30px', borderBottom: '1px solid #ffffff', marginLeft: '12px', marginRight: '12px', paddingBottom: '10px' }}>{title}</b>
+		<p style={{ borderBottom: '1px solid #ffffff', marginLeft: '12px', marginRight: '12px', paddingTop: '10px', paddingBottom: '10px' }}>Lesson Quiz</p>
+		<p style={{ borderBottom: '1px solid #ffffff', marginLeft: '12px', marginRight: '12px', paddingBottom: '10px' }}>Teacher Shavez Muhammad</p>
+		<ListGroup className="myCard list-group-flush" style={{ display: 'none' }}>
 			<ListGroupItem className="myCard">{id}</ListGroupItem>
 			<ListGroupItem className="myCard"><Button variant="success" onClick={e => joinQuiz(id)} style={{ height: '38px', width: '100%' }}>Join</Button></ListGroupItem>
 		</ListGroup>

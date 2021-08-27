@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, Redirect } from 'react-router-dom'
-import { ListGroup, Badge, Col } from 'react-bootstrap'
+import { ListGroup, Badge, Row, Col } from 'react-bootstrap'
 import * as io from 'socket.io-client';
 import {
 	MusicNote, MusicOff
@@ -328,19 +328,24 @@ class AttemptQuiz extends React.Component {
 						<img src="/Quiz/banner.png"></img>
 						<Col style={{ marginTop: '20px' }}>
 							Time Remaining
-							<img src='/Quiz/Number/01.png'></img>
+							<img src='/Quiz/Number/01.png' style={{ width: '60px', height: '40px' }}></img>
 						</Col>
-						<div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between' }}>
-							<div id='create-quiz-body' className='flex-container' style={{ width: '840px', color: '#ffffff', marginTop: '0px' }}>
-								<div className='attemptQuestionCard theme-classic flex-container' style={{ backgroundColor: '#294634', width: '100%', height: '700px' }}>
+						<div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between', height: '1000px' }}>
+							<div id='create-quiz-body' className='flex-container' style={{ width: '650px', color: '#ffffff', marginTop: '0px' }}>
+								<div className='attemptQuestionCard theme-classic' style={{ backgroundColor: '#294634', marginLeft: '250px', width: '100%', height: '1000px' }}>
 									<div className='fixed' style={{ height: '60px', display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-										<div className='topText'>Quiz {number + 1}/{questions.length}</div>
-										<Icon onClick={e => this.handleMusic()} style={{ height: '60px' }}>
-											{music ? <MusicNote fontSize='large' /> : <MusicOff fontSize='large' />}
-										</Icon>
-										<div className='topText'>Score:{score}</div>
+										<Row style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+											<Col><div className='topText' style={{ width: '200px' }}>Quiz 1</div></Col>
+											<Col><Icon style={{ height: '60px' }}>
+												<MusicNote fontSize='large' />
+											</Icon>
+											</Col>
+											<Col>
+												<div className='topText' style={{ width: '200px' }}>Score:10</div>
+											</Col>
+										</Row>
 									</div>
-									<div className='grow vertical-center puzzle-text' style={{ color: '#ffffff' }}>
+									<div className='grow vertical-center puzzle-text' style={{ color: '#ffffff', marginTop: '120px' }}>
 										{question.title}
 									</div>
 									{
@@ -348,7 +353,7 @@ class AttemptQuiz extends React.Component {
 											{question.options.map((option, ind) => (
 												<div className={
 													`option is-mcq myoption-text is-selected option-pressed `
-												} style={{ width: '100%', backgroundColor: '#ffffff' }} key={ind}>
+												} style={{ width: '100%', height: '140px', backgroundColor: '#ffffff' }} key={ind}>
 													<div
 														className='option-inner vertical-center puzzle-text option-pressed is-selected theme-option-container'
 														style={{ width: '100%' }}
@@ -368,7 +373,7 @@ class AttemptQuiz extends React.Component {
 											))}
 										</div> : <div className='option-div options-grid grow' style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
 											{question.options.map((option, ind) => (
-												<div className={'option is-mcq myoption-text is-selected option-pressed ' + (option.isCorrect ? `right-color ` : '') + ((option.isCorrect === false && options.findIndex(opt => opt === option.text) >= 0) ? 'wrong-color ' : '')} style={{ width: '100%' }} key={ind}>
+												<div className={'option is-mcq myoption-text is-selected option-pressed ' + (option.isCorrect ? `right-color ` : '') + ((option.isCorrect === false && options.findIndex(opt => opt === option.text) >= 0) ? 'wrong-color ' : '')} style={{ width: '100%', height: '140px' }} key={ind}>
 													{
 														(option.isCorrect || options.findIndex(opt => opt === option.text) >= 0) && <div
 															className='option-inner vertical-center puzzle-text option-pressed is-selected theme-option-container'
@@ -404,9 +409,9 @@ class AttemptQuiz extends React.Component {
 										}
 									</div>
 									{
-										mark === 1 ? <div className='fixed mycorrect-answer vertical-center puzzle-text'>
+										mark === 1 ? <div className='fixed mycorrect-answer vertical-center puzzle-text' style={{ marginTop: '20px' }}>
 											Correct
-										</div> : (mark == 2 ? <div className='fixed mywrong-answer vertical-center puzzle-text'>
+										</div> : (mark == 2 ? <div className='fixed mywrong-answer vertical-center puzzle-text' style={{ marginTop: '20px' }}>
 											Wrong
 										</div> : '')
 									}
@@ -422,26 +427,26 @@ class AttemptQuiz extends React.Component {
 
 								<AttemptedModal result={result} totalScore={questions.length} showModal={showModal} />
 							</div>
-							<div className='grow' style={{ flexGrow: '0', overflow: 'visible', height: `${window.innerHeight - 170}`, width: '400px' }}>
+							<div className='grow' style={{ flexGrow: '0', overflow: 'visible', height: `${window.innerHeight - 170}`, width: '350px' }}>
 								<ListGroup horizontal>
-									<ListGroup.Item variant='primary'><img src='/Quiz/Avatar/1.png' /></ListGroup.Item>
-									<ListGroup.Item variant='primary' style={{ width: '270px' }}>Al Haramain Madrash</ListGroup.Item>
-									<ListGroup.Item variant='primary' style={{ width: '53px' }}>11</ListGroup.Item>
+									<ListGroup.Item variant='primary' className='markItem' style={{ backgroundColor: 'rgb(230,230,230)', color: 'rgb(41,70,52)' }}><img src='/Quiz/Avatar/1.png' /></ListGroup.Item>
+									<ListGroup.Item variant='primary' className='markItem' style={{ width: '270px' }}><div style={{ marginTop: '10px' }}>Al Haramain Madrash</div></ListGroup.Item>
+									<ListGroup.Item variant='primary' className='markItem' style={{ width: '53px' }}><div style={{ marginTop: '10px' }}>11</div></ListGroup.Item>
 								</ListGroup>
 								<ListGroup horizontal>
-									<ListGroup.Item variant='primary'><img src='/Quiz/Avatar/1.png' /></ListGroup.Item>
-									<ListGroup.Item variant='primary' style={{ width: '270px' }}>adsfasdf</ListGroup.Item>
-									<ListGroup.Item variant='primary' style={{ width: '53px' }}>2</ListGroup.Item>
+									<ListGroup.Item variant='primary' className='markItem' style={{ backgroundColor: 'rgb(230,230,230)', color: 'rgb(41,70,52)' }}><img src='/Quiz/Avatar/1.png' /></ListGroup.Item>
+									<ListGroup.Item variant='primary' className='markItem' style={{ width: '270px' }}><div style={{ marginTop: '10px' }}>Al Haramain Madrash</div></ListGroup.Item>
+									<ListGroup.Item variant='primary' className='markItem' style={{ width: '53px' }}><div style={{ marginTop: '10px' }}>11</div></ListGroup.Item>
 								</ListGroup>
 								<ListGroup horizontal>
-									<ListGroup.Item variant='primary'><img src='/Quiz/Avatar/1.png' /></ListGroup.Item>
-									<ListGroup.Item variant='primary' style={{ width: '270px' }}>aaaa</ListGroup.Item>
-									<ListGroup.Item variant='primary' style={{ width: '53px' }}>3</ListGroup.Item>
+									<ListGroup.Item variant='primary' className='markItem' style={{ backgroundColor: 'rgb(230,230,230)', color: 'rgb(41,70,52)' }}><img src='/Quiz/Avatar/1.png' /></ListGroup.Item>
+									<ListGroup.Item variant='primary' className='markItem' style={{ width: '270px' }}><div style={{ marginTop: '10px' }}>Al Haramain Madrash</div></ListGroup.Item>
+									<ListGroup.Item variant='primary' className='markItem' style={{ width: '53px' }}><div style={{ marginTop: '10px' }}>11</div></ListGroup.Item>
 								</ListGroup>
 								<ListGroup horizontal>
-									<ListGroup.Item variant='primary'><img src='/Quiz/Avatar/1.png' /></ListGroup.Item>
-									<ListGroup.Item variant='primary' style={{ width: '270px' }}>a</ListGroup.Item>
-									<ListGroup.Item variant='primary' style={{ width: '53px' }}>11</ListGroup.Item>
+									<ListGroup.Item variant='primary' className='markItem' style={{ backgroundColor: 'rgb(230,230,230)', color: 'rgb(41,70,52)' }}><img src='/Quiz/Avatar/1.png' /></ListGroup.Item>
+									<ListGroup.Item variant='primary' className='markItem' style={{ width: '270px' }}><div style={{ marginTop: '10px' }}>Al Haramain Madrash</div></ListGroup.Item>
+									<ListGroup.Item variant='primary' className='markItem' style={{ width: '53px' }}><div style={{ marginTop: '10px' }}>11</div></ListGroup.Item>
 								</ListGroup>
 							</div>
 						</div>

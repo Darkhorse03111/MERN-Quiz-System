@@ -122,14 +122,19 @@ const UserDashboard = ({ user }) => {
 			<div className='quizzes' style={{ width: '1250px' }}>
 				<img src="/Quiz/banner.png"></img>
 				<div style={{ marginTop: '40px', display: 'flex', justifyContent: 'space-between' }}>
-					<div id='create-quiz-body' className='flex-container' style={{ width: '840px', color: '#ffffff', marginTop: '0px' }}>
-						<div className='attemptQuestionCard theme-classic flex-container' style={{ backgroundColor: '#294634', width: '100%' }}>
+					<div id='create-quiz-body' className='flex-container' style={{ width: '650px', color: '#ffffff', marginTop: '0px' }}>
+						<div className='attemptQuestionCard theme-classic flex-container' style={{ backgroundColor: '#294634', marginLeft: '250px', width: '100%' }}>
 							<div className='fixed' style={{ height: '60px', display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-								<div className='topText'>Quiz 1</div>
-								<Icon style={{ height: '60px' }}>
-									<MusicNote fontSize='large' />
-								</Icon>
-								<div className='topText'>Score:10</div>
+								<Row style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+									<Col><div className='topText' style={{ width: '200px' }}>Quiz 1</div></Col>
+									<Col><Icon style={{ height: '60px' }}>
+										<MusicNote fontSize='large' />
+									</Icon>
+									</Col>
+									<Col>
+										<div className='topText' style={{ width: '200px' }}>Score:10</div>
+									</Col>
+								</Row>
 							</div>
 							<Row>
 								<Col className='vertical-center'>
@@ -150,8 +155,8 @@ const UserDashboard = ({ user }) => {
 											<img src='Quiz/Number/01.png'></img>
 										</Row>
 										<Row>
-											<button className='button wd-200'>
-												Join Quiz
+											<button className='button' style={{ width: '250px', borderRadius: '7px', margin: 'auto', marginTop: '40px', fontSize: '20px', height: '40px', paddingTop: '5px' }}>
+												Start
 											</button>
 										</Row>
 									</div>
@@ -159,26 +164,26 @@ const UserDashboard = ({ user }) => {
 							</Row>
 						</div>
 					</div>
-					<div className='grow' style={{ flexGrow: '0', overflow: 'visible', height: `${window.innerHeight - 170}`, width: '400px' }}>
+					<div className='grow' style={{ flexGrow: '0', overflow: 'visible', height: `${window.innerHeight - 170}`, width: '350px' }}>
 						<ListGroup horizontal>
-							<ListGroup.Item variant='primary'><img src='/Quiz/Avatar/1.png' /></ListGroup.Item>
-							<ListGroup.Item variant='primary' style={{ width: '270px' }}>Al Haramain Madrash</ListGroup.Item>
-							<ListGroup.Item variant='primary' style={{ width: '53px' }}>11</ListGroup.Item>
+							<ListGroup.Item variant='primary' className='markItem' style={{ backgroundColor: 'rgb(230,230,230)', color: 'rgb(41,70,52)' }}><img src='/Quiz/Avatar/1.png' /></ListGroup.Item>
+							<ListGroup.Item variant='primary' className='markItem' style={{ width: '270px' }}><div style={{ marginTop: '10px' }}>Al Haramain Madrash</div></ListGroup.Item>
+							<ListGroup.Item variant='primary' className='markItem' style={{ width: '53px' }}><div style={{ marginTop: '10px' }}>11</div></ListGroup.Item>
 						</ListGroup>
 						<ListGroup horizontal>
-							<ListGroup.Item variant='primary'><img src='/Quiz/Avatar/1.png' /></ListGroup.Item>
-							<ListGroup.Item variant='primary' style={{ width: '270px' }}>adsfasdf</ListGroup.Item>
-							<ListGroup.Item variant='primary' style={{ width: '53px' }}>2</ListGroup.Item>
+							<ListGroup.Item variant='primary' className='markItem' style={{ backgroundColor: 'rgb(230,230,230)', color: 'rgb(41,70,52)' }}><img src='/Quiz/Avatar/1.png' /></ListGroup.Item>
+							<ListGroup.Item variant='primary' className='markItem' style={{ width: '270px' }}><div style={{ marginTop: '10px' }}>Al Haramain Madrash</div></ListGroup.Item>
+							<ListGroup.Item variant='primary' className='markItem' style={{ width: '53px' }}><div style={{ marginTop: '10px' }}>11</div></ListGroup.Item>
 						</ListGroup>
 						<ListGroup horizontal>
-							<ListGroup.Item variant='primary'><img src='/Quiz/Avatar/1.png' /></ListGroup.Item>
-							<ListGroup.Item variant='primary' style={{ width: '270px' }}>aaaa</ListGroup.Item>
-							<ListGroup.Item variant='primary' style={{ width: '53px' }}>3</ListGroup.Item>
+							<ListGroup.Item variant='primary' className='markItem' style={{ backgroundColor: 'rgb(230,230,230)', color: 'rgb(41,70,52)' }}><img src='/Quiz/Avatar/1.png' /></ListGroup.Item>
+							<ListGroup.Item variant='primary' className='markItem' style={{ width: '270px' }}><div style={{ marginTop: '10px' }}>Al Haramain Madrash</div></ListGroup.Item>
+							<ListGroup.Item variant='primary' className='markItem' style={{ width: '53px' }}><div style={{ marginTop: '10px' }}>11</div></ListGroup.Item>
 						</ListGroup>
 						<ListGroup horizontal>
-							<ListGroup.Item variant='primary'><img src='/Quiz/Avatar/1.png' /></ListGroup.Item>
-							<ListGroup.Item variant='primary' style={{ width: '270px' }}>a</ListGroup.Item>
-							<ListGroup.Item variant='primary' style={{ width: '53px' }}>11</ListGroup.Item>
+							<ListGroup.Item variant='primary' className='markItem' style={{ backgroundColor: 'rgb(230,230,230)', color: 'rgb(41,70,52)' }}><img src='/Quiz/Avatar/1.png' /></ListGroup.Item>
+							<ListGroup.Item variant='primary' className='markItem' style={{ width: '270px' }}><div style={{ marginTop: '10px' }}>Al Haramain Madrash</div></ListGroup.Item>
+							<ListGroup.Item variant='primary' className='markItem' style={{ width: '53px' }}><div style={{ marginTop: '10px' }}>11</div></ListGroup.Item>
 						</ListGroup>
 					</div>
 				</div>

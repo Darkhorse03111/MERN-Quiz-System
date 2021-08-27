@@ -113,7 +113,7 @@ input[type='submit'],
 .attemptQuestionCard {
 	padding: 20px;
 	box-shadow: var(--light-shadow) 1px 1px 1px 1px;
-	margin: 10px 0px;
+	margin: 0px 0px;
 	border-radius: 10px;
 	display: flex;
 	flex-direction: column;
@@ -167,4 +167,10 @@ input[type='submit'],
 }
 .topText {
 	font-size: 20px;
+}
+.markItem {
+	background-color: rgb(230,230,230) !important;
+	color: rgb(41,70,52) !important;
+	padding-top: 20px !important;
+	padding-bottom: 20px !important;
 }
