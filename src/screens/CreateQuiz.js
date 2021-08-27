@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
+import { Row } from 'react-bootstrap'
 import './CreateQuiz.css'
 import AddQuestionModal from '../components/AddQuestionModal'
 import QuestionsTable from '../components/QuestionsTable'
@@ -10,13 +11,13 @@ const CreateQuiz = ({
 	user,
 	quizTitle,
 	questions,
-
 	isOpen,
-	editQuizHandle
+	editQuizHandle,
+	showToast
 }) => {
 	const [questionArray, setQuestionArray] = useState([])
 	const [title, setTitle] = useState('')
-	const [access, setAccesss] = useState(true)
+	const [access, setAccess] = useState(true)
 	const [loading, setLoading] = useState('stop')
 	const [quizCode, setQuizCode] = useState(null)
 
@@ -29,7 +30,7 @@ const CreateQuiz = ({
 		if (quizTitle) {
 			setTitle(quizTitle)
 			setQuestionArray(questions)
-			setAccesss(isOpen)
+			setAccess(isOpen)
 		}
 	}, [quizTitle, questions, isOpen])
 
@@ -60,6 +61,7 @@ const CreateQuiz = ({
 			})
 			const body = await result.json()
 			setQuizCode(body.quizId)
+			showToast('Create Quiz', 'Success')
 		} catch (e) {
 			setLoading('error')
 		}
@@ -72,26 +74,35 @@ const CreateQuiz = ({
 		<div id='main-body'>
 			<div id='create-quiz-body'>
 				<div className='quiz-header'>
-					<input
-						type='text'
-						className='input-text'
-						value={title}
-						onChange={(e) => setTitle(e.target.value)}
-						id='quiz-title'
-						placeholder='Untitled Quiz'
-						autoFocus
-						autocomplete='off'
-					/>
+					<Row>
+						<input
+							type='text'
+							className='input-text'
+							value={title}
+							onChange={(e) => setTitle(e.target.value)}
+							id='quiz-title'
+							placeholder='Untitled Quiz'
+							autoFocus
+							autocomplete='off'
+							style={{ width: '50%' }}
+						/>
+						<div>Subject</div>
+						<select style={{ width: '100px' }}>
+							<option>Qur'an</option>
+							<option>Arabic</option>
+							<option>Islamic Studies</option>
+						</select>
+						<Switch
+							checked={access}
+							onChange={(e) => setAccess(e.target.checked)}
+							color='secondary'
+							name='access'
+						/>
+					</Row>
 				</div>
 				<div className='controls'>
 					<AddQuestionModal addQuestionHandle={addQuestionHandle} />
 					<div className='switch'>
-						<Switch
-							checked={access}
-							onChange={(e) => setAccesss(e.target.checked)}
-							color='secondary'
-							name='access'
-						/>
 						<h4>{access ? 'Public' : 'Private'}</h4>
 					</div>
 				</div>

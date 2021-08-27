@@ -78,7 +78,7 @@ export default function AddQuestionModal({
 		}
 		// Error Handling
 		if (!titleField.length && optionsArray.length < 2) {
-			alert('Please add Question and atleast 2 options.')
+			alert('Please add Question and at least 2 options.')
 			return
 		} else if (!titleField.length) {
 			alert('Please add Question.')

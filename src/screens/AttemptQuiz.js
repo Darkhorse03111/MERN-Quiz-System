@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { ListGroup, Badge } from 'react-bootstrap'
 import * as io from 'socket.io-client';
+import {
+	MusicNote, MusicOff
+} from '@material-ui/icons'
 import LoadingScreen from './LoadingScreen'
 import AttemptedModal from './AttemptedModal'
 import './AttemptQuiz.css'
 import { Icon } from '@material-ui/core'
-import {
-	MusicNote, MusicOff
-} from '@material-ui/icons'
 
 let socket
 const env = process.env.NODE_ENV;
-const socketUrl = "/"
+const socketUrl = "ws://localhost:3000"
 
 class AttemptQuiz extends React.Component {
 	constructor(props) {
@@ -325,7 +325,7 @@ class AttemptQuiz extends React.Component {
 				<div id='main-body' className='flex-container grow'>
 					<div className='flex-horizontal-container grow'>
 						<div id='create-quiz-body' className='flex-container grow' style={{ flexGrow: '1', marginTop: '100px', marginBottom: '50px' }}>
-							<div className='attemptQuestionCard theme-classic flex-container grow' style={{ backgroundColor: '#ddffdd' }}>
+							<div className='attemptQuestionCard theme-classic flex-container grow' style={{ backgroundColor: '#294634' }}>
 								<div className='fixed' style={{ height: '60px', display: 'flex', justifyContent: 'space-between', width: '100%' }}>
 									<div className='topText'>Quiz {number + 1}/{questions.length}</div>
 									<Icon onClick={e => this.handleMusic()} style={{ height: '60px' }}>
@@ -340,7 +340,7 @@ class AttemptQuiz extends React.Component {
 									mark === 0 ? <div className='option-div options-grid grow' style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
 										{question.options.map((option, ind) => (
 											<div className={
-												`option option-${ind + 1} is-mcq myoption-text is-selected option-pressed `
+												`option is-mcq myoption-text is-selected option-pressed `
 											} style={{ width: '100%' }} key={ind}>
 												<div
 													className='option-inner vertical-center puzzle-text option-pressed is-selected theme-option-container'

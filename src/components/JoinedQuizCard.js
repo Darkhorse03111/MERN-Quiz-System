@@ -5,12 +5,12 @@ import { Card, ListGroup, ListGroupItem, Button } from 'react-bootstrap'
 const JoinedQuizCard = ({ title, questions, id, joinQuiz }) => {
 	return <Card style={{ width: '18rem' }} className="m-4">
 		<Card.Img variant="top" src="/Quiz/download.jpg" />
-		<Card.Body>
-			<Card.Title>{title}({questions})</Card.Title>
+		<Card.Body className="myCard">
+			<Card.Title>{title.length < 15 ? title : title.substr(0, 12) + '...'}({questions})</Card.Title>
 		</Card.Body>
-		<ListGroup className="list-group-flush">
-			<ListGroupItem>{id}</ListGroupItem>
-			<ListGroupItem><Button variant="success" onClick={e => joinQuiz(id)} style={{ height: '38px', width: '100%' }}>Join</Button></ListGroupItem>
+		<ListGroup className="myCard list-group-flush">
+			<ListGroupItem className="myCard">{id}</ListGroupItem>
+			<ListGroupItem className="myCard"><Button variant="success" onClick={e => joinQuiz(id)} style={{ height: '38px', width: '100%' }}>Join</Button></ListGroupItem>
 		</ListGroup>
 	</Card>
 }

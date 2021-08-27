@@ -53,14 +53,14 @@ const Home = ({ setUser }) => {
 	}
 
 	return (
-		<div className='vertical-center'>
+		<div className='vertical-center' style={{ backgroundColor: '#294634' }}>
 			{loading ? (
 				<LoadingScreen />
 			) : (
 				<div id='Home'>
 					<div id='logo'>
 						<div id='logo-name'>
-							<b>Quiz</b>
+							<b>Create Al Haramain Games</b>
 						</div>
 						<div id='description'>
 							Now create and join quiz at a single platform.You can create

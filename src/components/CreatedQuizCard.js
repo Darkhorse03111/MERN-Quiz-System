@@ -14,22 +14,21 @@ const CreatedQuizCard = ({
 	deleteQuiz
 }) => <Card style={{ width: '18rem' }} className="m-4">
 		<Card.Img variant="top" src="/Quiz/download.jpg" />
-		<Card.Body>
-			<Card.Title>{title}</Card.Title>
+		<Card.Body className="myCard">
+			<Card.Title>{title.length < 15 ? title : title.substr(0, 12) + '...'}({questions})</Card.Title>
+			<ListGroup className="myCard">
+				<ListGroupItem className="myCard">{code}</ListGroupItem>
+				<ListGroupItem className="myCard">{isOpen ? 'Opened' : 'Not Opened'}</ListGroupItem>
+				<ListGroupItem className="myCard">
+					<IconButton onClick={() => setEditQuiz([index])}>
+						<EditRounded />
+					</IconButton>
+					<IconButton onClick={() => deleteQuiz(index)}>
+						<DeleteRounded />
+					</IconButton>
+				</ListGroupItem>
+			</ListGroup>
 		</Card.Body>
-		<ListGroup className="list-group-flush">
-			<ListGroupItem>{questions} Questions</ListGroupItem>
-			<ListGroupItem>{code}</ListGroupItem>
-			<ListGroupItem>{isOpen ? 'Opened' : 'Not Opened'}</ListGroupItem>
-			<ListGroupItem>
-				<IconButton onClick={() => setEditQuiz([index])}>
-					<EditRounded />
-				</IconButton>
-				<IconButton onClick={() => deleteQuiz(index)}>
-					<DeleteRounded />
-				</IconButton>
-			</ListGroupItem>
-		</ListGroup>
 	</Card>
 
 export default CreatedQuizCard
