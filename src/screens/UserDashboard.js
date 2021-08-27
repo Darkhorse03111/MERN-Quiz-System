@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import './UserDashBoard.css'
+import { Icon } from '@material-ui/core'
+import {
+	MusicNote, MusicOff
+} from '@material-ui/icons'
+import { ListGroup, Badge, Row, Col } from 'react-bootstrap'
 import CreatedQuizCard from '../components/CreatedQuizCard'
 import JoinedQuizCard from '../components/JoinedQuizCard'
 import LoadingScreen from './LoadingScreen'
@@ -114,59 +119,53 @@ const UserDashboard = ({ user }) => {
 
 	return (
 		<div className='dash-body'>
-			<div className='quizzes'>
-				<div>
-					<Carousel style={{ height: '100%' }}>
-						<Carousel.Item interval={4000}>
-							<img
-								className="d-block w-100"
-								style={{ width: `100%`, height: `auto` }}
-								src="/Quiz/dashboard/dashboard-1.jpg"
-								alt="First slide"
-							/>
-							<Carousel.Caption>
-								<h3>First Slide</h3>
-								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-							</Carousel.Caption>
-						</Carousel.Item>
-						<Carousel.Item interval={4000}>
-							<img
-								className="d-block"
-								style={{ width: `100%`, height: `auto` }}
-								src="/Quiz/dashboard/dashboard-2.jpg"
-								alt="Second slide"
-							/>
-							<Carousel.Caption>
-								<h3>Second slide label</h3>
-								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-							</Carousel.Caption>
-						</Carousel.Item>
-						<Carousel.Item interval={4000}>
-							<img
-								className="d-block"
-								style={{ width: `100%`, height: `auto` }}
-								src="/Quiz/dashboard/dashboard-3.jpg"
-								alt="Third slide"
-							/>
-							<Carousel.Caption>
-								<h3>Third slide label</h3>
-								<p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-							</Carousel.Caption>
-						</Carousel.Item>
-					</Carousel>
-					<div className='card-holder' style={{ justifyContent: 'center' }}>
-						{
-							allQuizzes.map((quiz, key) => (
-								<JoinedQuizCard
-									key={key}
-									title={quiz.title}
-									// score={quiz.responses[0].score}
-									questions={quiz.questions.length}
-									id={quiz._id}
-									joinQuiz={setPath}
-								/>
-							))
-						}
+			<div className='quizzes' style={{ width: '1250px' }}>
+				<img src="Quiz/banner.png"></img>
+				<div style={{ marginTop: '40px', display: 'flex', justifyContent: 'space-between' }}>
+					<div id='create-quiz-body' className='flex-container' style={{ marginTop: '100px', marginBottom: '50px', width: '940px', color: '#ffffff' }}>
+						<div className='attemptQuestionCard theme-classic flex-container' style={{ backgroundColor: '#294634', width: '100%' }}>
+							<div className='fixed' style={{ height: '60px', display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+								<div className='topText'>Quiz 1</div>
+								<Icon style={{ height: '60px' }}>
+									<MusicNote fontSize='large' />
+								</Icon>
+								<div className='topText'>Score:10</div>
+							</div>
+							<Row>
+								<Col className='vertical-center'>
+									{
+										!!allQuizzes && allQuizzes.length > 0 && <JoinedQuizCard
+											key={1}
+											title={allQuizzes[0].title}
+											// score={quiz.responses[0].score}
+											questions={allQuizzes[0].questions.length}
+											id={allQuizzes[0]._id}
+											joinQuiz={setPath}
+										/>
+									}
+								</Col>
+								<Col className='vertical-center'>
+									<div style={{ width: '300px', height: 'auto' }}>
+										<Row>
+											<img src='Quiz/Number/01.png'></img>
+										</Row>
+										<Row>
+											<button className='button wd-200'>
+												Join Quiz
+											</button>
+										</Row>
+									</div>
+								</Col>
+							</Row>
+						</div>
+					</div>
+					<div className='grow' style={{ flexGrow: '0', width: '280px', overflow: 'visible', height: `${window.innerHeight - 170}`, width: '300px' }}>
+						<ListGroup>
+							<ListGroup.Item className='vertical-center' variant='primary'><img src='Quiz/Avatar/1.png' />Al Haramain Madrash</ListGroup.Item>
+							<ListGroup.Item className='vertical-center' variant='secondary'><img src='Quiz/Avatar/2.png' />Al Haramain Madrash</ListGroup.Item>
+							<ListGroup.Item className='vertical-center' variant='secondary'><img src='Quiz/Avatar/3.png' />Al Haramain Madrash</ListGroup.Item>
+							<ListGroup.Item className='vertical-center' variant='secondary'><img src='Quiz/Avatar/4.png' />Al Haramain Madrash</ListGroup.Item>
+						</ListGroup>
 					</div>
 				</div>
 			</div>
