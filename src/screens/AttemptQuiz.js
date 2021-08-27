@@ -332,7 +332,7 @@ class AttemptQuiz extends React.Component {
 						</Col>
 						<div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between' }}>
 							<div id='create-quiz-body' className='flex-container' style={{ width: '840px', color: '#ffffff', marginTop: '0px' }}>
-								<div className='attemptQuestionCard theme-classic flex-container' style={{ backgroundColor: '#294634', width: '100%' }}>
+								<div className='attemptQuestionCard theme-classic flex-container' style={{ backgroundColor: '#294634', width: '100%', height: '700px' }}>
 									<div className='fixed' style={{ height: '60px', display: 'flex', justifyContent: 'space-between', width: '100%' }}>
 										<div className='topText'>Quiz {number + 1}/{questions.length}</div>
 										<Icon onClick={e => this.handleMusic()} style={{ height: '60px' }}>
@@ -410,7 +410,16 @@ class AttemptQuiz extends React.Component {
 											Wrong
 										</div> : '')
 									}
+									<div>
+										<img src='/Quiz/Avatar/1.png' style={{ marginLeft: '30px', marginRight: '25px', width: '80px', height: '80px', marginTop: '89px' }}></img>
+										<img src='/Quiz/Avatar/2.png' style={{ marginLeft: '25px', marginRight: '25px', width: '80px', height: '80px' }}></img>
+										<img src='/Quiz/Avatar/3.png' style={{ marginLeft: '30px', marginRight: '30px', width: '80px', height: '80px', marginTop: '160px' }}></img>
+									</div>
+									<div>
+										<img src='/Quiz/cup.png'></img>
+									</div>
 								</div>
+
 								<AttemptedModal result={result} totalScore={questions.length} showModal={showModal} />
 							</div>
 							<div className='grow' style={{ flexGrow: '0', overflow: 'visible', height: `${window.innerHeight - 170}`, width: '400px' }}>
