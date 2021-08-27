@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Modal, Icon, IconButton } from '@material-ui/core'
 import './AddQuestionModal.css'
 import { DeleteRounded, EditRounded, SaveRounded } from '@material-ui/icons'
+import { Row, Col } from 'react-bootstrap'
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -163,96 +164,103 @@ export default function AddQuestionModal({
 				disableEnforceFocus={true}
 			>
 				<div className={classes.paper}>
-					<div className='questionCard'>
-						<div id='title'>Question:</div>
-						<input
-							type='text'
-							autoFocus
-							value={titleField}
-							onChange={(e) => setTitleField(e.target.value)}
-							className='input-text question'
-							placeholder='Type Question Here'
-						/>
-						<select
-							id='select'
-							placeholder='Select'
-							onChange={handleTypeChange}
-						>
-							<option className='selectOp' value='radio'>
-								Single Answer
-							</option>
-							<option className='selectOp' value='check'>
-								Multiple Answers
-							</option>
-						</select>
-
-						<div className='option-div'>
-							<div className='options' id='one-op'>
-								{optionsArray.map((option, ind) => (
-									<div className='option' key={ind}>
-										<input
-											type={optionType === 'radio' ? 'radio' : 'checkbox'}
-											disabled={true}
-											className='radio-in'
-											name='option'
-											checked={option.isCorrect}
-										/>
-										{editOpIndex === ind ? (
-											<input
-												value={editedOption}
-												onChange={(e) => setEditedOption(e.target.value)}
-											/>
-										) : (
-											<div className='add-op'>{option.text}</div>
-										)}
-										{editOpIndex === ind ? (
-											<Icon className='save-icon' onClick={() => saveEdited()}>
-												<SaveRounded />
-											</Icon>
-										) : (
-											<Icon
-												className='edit-icon'
-												onClick={() => handleEdit(ind)}
-											>
-												<EditRounded />
-											</Icon>
-										)}
-										<Icon
-											className='delete-icon'
-											onClick={() => {
-												deleteHandler(ind)
-											}}
-										>
-											<DeleteRounded />
-										</Icon>
-									</div>
-								))}
-							</div>
-						</div>
-
-						<div className='add-op'>
-							<div>
-								<input
-									type={optionType === 'radio' ? 'radio' : 'checkbox'}
-									ref={checkBoxRef}
-									className='radio-in'
-									name='option'
-								/>
+					<Row>
+						<Col sm='9' md='9' lg='9' as='9'>
+							<div className='questionCard'>
+								<div id='title'>Question:</div>
 								<input
 									type='text'
-									ref={optionsRef}
-									className='input-text op-text'
-									placeholder={`Option ${optionsArray.length + 1}`}
+									autoFocus
+									value={titleField}
+									onChange={(e) => setTitleField(e.target.value)}
+									className='input-text question'
+									placeholder='Type Question Here'
 								/>
+								<select
+									id='select'
+									placeholder='Select'
+									onChange={handleTypeChange}
+								>
+									<option className='selectOp' value='radio'>
+										Single Answer
+									</option>
+									<option className='selectOp' value='check'>
+										Multiple Answers
+									</option>
+								</select>
+
+								<div className='option-div'>
+									<div className='options' id='one-op'>
+										{optionsArray.map((option, ind) => (
+											<div className='option' key={ind}>
+												<input
+													type={optionType === 'radio' ? 'radio' : 'checkbox'}
+													disabled={true}
+													className='radio-in'
+													name='option'
+													checked={option.isCorrect}
+												/>
+												{editOpIndex === ind ? (
+													<input
+														value={editedOption}
+														onChange={(e) => setEditedOption(e.target.value)}
+													/>
+												) : (
+													<div className='add-op'>{option.text}</div>
+												)}
+												{editOpIndex === ind ? (
+													<Icon className='save-icon' onClick={() => saveEdited()}>
+														<SaveRounded />
+													</Icon>
+												) : (
+													<Icon
+														className='edit-icon'
+														onClick={() => handleEdit(ind)}
+													>
+														<EditRounded />
+													</Icon>
+												)}
+												<Icon
+													className='delete-icon'
+													onClick={() => {
+														deleteHandler(ind)
+													}}
+												>
+													<DeleteRounded />
+												</Icon>
+											</div>
+										))}
+									</div>
+								</div>
+
+								<div className='add-op'>
+									<div>
+										<input
+											type={optionType === 'radio' ? 'radio' : 'checkbox'}
+											ref={checkBoxRef}
+											className='radio-in'
+											name='option'
+										/>
+										<input
+											type='text'
+											ref={optionsRef}
+											className='input-text op-text'
+											placeholder={`Option ${optionsArray.length + 1}`}
+										/>
+									</div>
+									<input
+										type='submit'
+										className='add-btn'
+										value='+ Add'
+										onClick={addOption}
+									/>
+								</div>
 							</div>
-							<input
-								type='submit'
-								className='add-btn'
-								value='+ Add'
-								onClick={addOption}
-							/>
-						</div>
-					</div>
+						</Col>
+						<Col sm='3' md='3' lg='3' as='3'>
+							Add Picture
+						</Col>
+					</Row>
 					<div className={classes.buttons}>
 						<button className='add-btn' onClick={handleClose}>
 							Close

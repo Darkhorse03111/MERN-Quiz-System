@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
-import { Row } from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap'
 import './CreateQuiz.css'
 import AddQuestionModal from '../components/AddQuestionModal'
 import QuestionsTable from '../components/QuestionsTable'
@@ -75,29 +75,32 @@ const CreateQuiz = ({
 			<div id='create-quiz-body'>
 				<div className='quiz-header'>
 					<Row>
-						<input
-							type='text'
-							className='input-text'
-							value={title}
-							onChange={(e) => setTitle(e.target.value)}
-							id='quiz-title'
-							placeholder='Untitled Quiz'
-							autoFocus
-							autocomplete='off'
-							style={{ width: '50%' }}
-						/>
-						<div>Subject</div>
-						<select style={{ width: '100px' }}>
-							<option>Qur'an</option>
-							<option>Arabic</option>
-							<option>Islamic Studies</option>
-						</select>
-						<Switch
-							checked={access}
-							onChange={(e) => setAccess(e.target.checked)}
-							color='secondary'
-							name='access'
-						/>
+						<Col>
+							<input
+								type='text'
+								className='input-text'
+								value={title}
+								onChange={(e) => setTitle(e.target.value)}
+								id='quiz-title'
+								placeholder='Untitled Quiz'
+								autoFocus
+								autocomplete='off'
+							/>
+						</Col>
+						<Col>
+							<div style={{ width: '100px' }}>Subject</div>
+							<select style={{ width: '100px' }}>
+								<option>Qur'an</option>
+								<option>Arabic</option>
+								<option>Islamic Studies</option>
+							</select>
+							<Switch
+								checked={access}
+								onChange={(e) => setAccess(e.target.checked)}
+								color='secondary'
+								name='access'
+							/>
+						</Col>
 					</Row>
 				</div>
 				<div className='controls'>
