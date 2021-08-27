@@ -120,9 +120,9 @@ const UserDashboard = ({ user }) => {
 	return (
 		<div className='dash-body'>
 			<div className='quizzes' style={{ width: '1250px' }}>
-				<img src="Quiz/banner.png"></img>
+				<img src="/Quiz/banner.png"></img>
 				<div style={{ marginTop: '40px', display: 'flex', justifyContent: 'space-between' }}>
-					<div id='create-quiz-body' className='flex-container' style={{ marginTop: '100px', marginBottom: '50px', width: '940px', color: '#ffffff' }}>
+					<div id='create-quiz-body' className='flex-container' style={{ width: '840px', color: '#ffffff', marginTop: '0px' }}>
 						<div className='attemptQuestionCard theme-classic flex-container' style={{ backgroundColor: '#294634', width: '100%' }}>
 							<div className='fixed' style={{ height: '60px', display: 'flex', justifyContent: 'space-between', width: '100%' }}>
 								<div className='topText'>Quiz 1</div>
@@ -159,12 +159,26 @@ const UserDashboard = ({ user }) => {
 							</Row>
 						</div>
 					</div>
-					<div className='grow' style={{ flexGrow: '0', width: '280px', overflow: 'visible', height: `${window.innerHeight - 170}`, width: '300px' }}>
-						<ListGroup>
-							<ListGroup.Item className='vertical-center' variant='primary'><img src='Quiz/Avatar/1.png' />Al Haramain Madrash</ListGroup.Item>
-							<ListGroup.Item className='vertical-center' variant='secondary'><img src='Quiz/Avatar/2.png' />Al Haramain Madrash</ListGroup.Item>
-							<ListGroup.Item className='vertical-center' variant='secondary'><img src='Quiz/Avatar/3.png' />Al Haramain Madrash</ListGroup.Item>
-							<ListGroup.Item className='vertical-center' variant='secondary'><img src='Quiz/Avatar/4.png' />Al Haramain Madrash</ListGroup.Item>
+					<div className='grow' style={{ flexGrow: '0', overflow: 'visible', height: `${window.innerHeight - 170}`, width: '400px' }}>
+						<ListGroup horizontal>
+							<ListGroup.Item variant='primary'><img src='/Quiz/Avatar/1.png' /></ListGroup.Item>
+							<ListGroup.Item variant='primary' style={{ width: '270px' }}>Al Haramain Madrash</ListGroup.Item>
+							<ListGroup.Item variant='primary' style={{ width: '53px' }}>11</ListGroup.Item>
+						</ListGroup>
+						<ListGroup horizontal>
+							<ListGroup.Item variant='primary'><img src='/Quiz/Avatar/1.png' /></ListGroup.Item>
+							<ListGroup.Item variant='primary' style={{ width: '270px' }}>adsfasdf</ListGroup.Item>
+							<ListGroup.Item variant='primary' style={{ width: '53px' }}>2</ListGroup.Item>
+						</ListGroup>
+						<ListGroup horizontal>
+							<ListGroup.Item variant='primary'><img src='/Quiz/Avatar/1.png' /></ListGroup.Item>
+							<ListGroup.Item variant='primary' style={{ width: '270px' }}>aaaa</ListGroup.Item>
+							<ListGroup.Item variant='primary' style={{ width: '53px' }}>3</ListGroup.Item>
+						</ListGroup>
+						<ListGroup horizontal>
+							<ListGroup.Item variant='primary'><img src='/Quiz/Avatar/1.png' /></ListGroup.Item>
+							<ListGroup.Item variant='primary' style={{ width: '270px' }}>a</ListGroup.Item>
+							<ListGroup.Item variant='primary' style={{ width: '53px' }}>11</ListGroup.Item>
 						</ListGroup>
 					</div>
 				</div>

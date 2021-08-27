@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, Redirect } from 'react-router-dom'
-import { ListGroup, Badge } from 'react-bootstrap'
+import { ListGroup, Badge, Col } from 'react-bootstrap'
 import * as io from 'socket.io-client';
 import {
 	MusicNote, MusicOff
@@ -34,12 +34,13 @@ class AttemptQuiz extends React.Component {
 			showMark: false,
 			music: true
 		}
-		this.url = "/Music.wav";
-		this.audio = new Audio(this.url);
-		this.audio.play()
-		this.audio.addEventListener('ended', function () {
-			this.audio.play()
-		}, false);
+		// this.url = "/Music.wav";
+		// this.audio = new Audio(this.url);
+		// this.audio.play()
+		// this.audio.addEventListener('ended', function () {
+		// 	this.audio = new Audio(this.url);
+		// 	this.audio.play()
+		// }, false);
 	}
 
 	async componentDidMount() {
@@ -86,7 +87,7 @@ class AttemptQuiz extends React.Component {
 	}
 	componentWillUnmount() {
 		socket.close()
-		this.audio.pause()
+		// this.audio.pause()
 	}
 	handleOptionSelect = (option, number) => {
 		const { attemptedQuestions, questions } = this.state
@@ -265,7 +266,7 @@ class AttemptQuiz extends React.Component {
 	}
 	handleMusic = () => {
 		const { music } = this.state
-		music ? this.audio.pause() : this.audio.play()
+		// music ? this.audio.pause() : this.audio.play()
 		this.setState({ music: !music })
 	}
 
@@ -322,102 +323,121 @@ class AttemptQuiz extends React.Component {
 			let question = questions[number], options = attemptedQuestions.length > number ? attemptedQuestions[number].selectedOptions : []
 			console.log('students:', students)
 			return (
-				<div id='main-body' className='flex-container grow'>
-					<div className='flex-horizontal-container grow'>
-						<div id='create-quiz-body' className='flex-container grow' style={{ flexGrow: '1', marginTop: '100px', marginBottom: '50px' }}>
-							<div className='attemptQuestionCard theme-classic flex-container grow' style={{ backgroundColor: '#294634' }}>
-								<div className='fixed' style={{ height: '60px', display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-									<div className='topText'>Quiz {number + 1}/{questions.length}</div>
-									<Icon onClick={e => this.handleMusic()} style={{ height: '60px' }}>
-										{music ? <MusicNote fontSize='large' /> : <MusicOff fontSize='large' />}
-									</Icon>
-									<div className='topText'>Score:{score}</div>
-								</div>
-								<div className='grow vertical-center puzzle-text'>
-									{question.title}
-								</div>
-								{
-									mark === 0 ? <div className='option-div options-grid grow' style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
-										{question.options.map((option, ind) => (
-											<div className={
-												`option is-mcq myoption-text is-selected option-pressed `
-											} style={{ width: '100%' }} key={ind}>
-												<div
-													className='option-inner vertical-center puzzle-text option-pressed is-selected theme-option-container'
-													style={{ width: '100%' }}
-													name={`option${number}`}
-													checked={options.findIndex(opt => opt === option.text) >= 0}
-													onClick={e =>
-														handleOptionSelect(option.text, number)
-													}>
-													{option.text}
-													{
-														question.optionType === 'check' && <span className={"select-icon-wrapper flex-view all-center is-selected" + (options.findIndex(opt => opt === option.text) >= 0 ? " pink-background option-selected" : '')}>
-															<span className="icon"></span>
-														</span>
-													}
-												</div>
-											</div>
-										))}
-									</div> : <div className='option-div options-grid grow' style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
-										{question.options.map((option, ind) => (
-											<div className={'option is-mcq myoption-text is-selected option-pressed ' + (option.isCorrect ? `right-color ` : '') + ((option.isCorrect === false && options.findIndex(opt => opt === option.text) >= 0) ? 'wrong-color ' : '')} style={{ width: '100%' }} key={ind}>
-												{
-													(option.isCorrect || options.findIndex(opt => opt === option.text) >= 0) && <div
+				<div className='dash-body'>
+					<div className='quizzes' style={{ width: '1250px' }}>
+						<img src="/Quiz/banner.png"></img>
+						<Col style={{ marginTop: '20px' }}>
+							Time Remaining
+							<img src='/Quiz/Number/01.png'></img>
+						</Col>
+						<div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between' }}>
+							<div id='create-quiz-body' className='flex-container' style={{ width: '840px', color: '#ffffff', marginTop: '0px' }}>
+								<div className='attemptQuestionCard theme-classic flex-container' style={{ backgroundColor: '#294634', width: '100%' }}>
+									<div className='fixed' style={{ height: '60px', display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+										<div className='topText'>Quiz {number + 1}/{questions.length}</div>
+										<Icon onClick={e => this.handleMusic()} style={{ height: '60px' }}>
+											{music ? <MusicNote fontSize='large' /> : <MusicOff fontSize='large' />}
+										</Icon>
+										<div className='topText'>Score:{score}</div>
+									</div>
+									<div className='grow vertical-center puzzle-text' style={{ color: '#ffffff' }}>
+										{question.title}
+									</div>
+									{
+										mark === 0 ? <div className='option-div options-grid grow' style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+											{question.options.map((option, ind) => (
+												<div className={
+													`option is-mcq myoption-text is-selected option-pressed `
+												} style={{ width: '100%', backgroundColor: '#ffffff' }} key={ind}>
+													<div
 														className='option-inner vertical-center puzzle-text option-pressed is-selected theme-option-container'
 														style={{ width: '100%' }}
 														name={`option${number}`}
 														checked={options.findIndex(opt => opt === option.text) >= 0}
 														onClick={e =>
 															handleOptionSelect(option.text, number)
-														}
-													>
+														}>
 														{option.text}
 														{
-															question.optionType === 'check' && <span className={"select-icon-wrapper flex-view all-center is-selected " + (options.findIndex(opt => opt === option.text) >= 0 ? "pink-background" : '')}>
-																<span className={"icon " + (options.findIndex(opt => opt === option.text) >= 0 ? "option-selected" : '')}></span>
+															question.optionType === 'check' && <span className={"select-icon-wrapper flex-view all-center is-selected" + (options.findIndex(opt => opt === option.text) >= 0 ? " pink-background option-selected" : '')}>
+																<span className="icon"></span>
 															</span>
 														}
 													</div>
-												}
-											</div>
-										))}
-									</div>
-								}
-								<div className='fixed' style={{ height: '70px' }}>
-									{
-										number === questions.length - 1 && question.optionType === 'check' && <button className='button wd-200' onClick={e => checkNext()}>
-											Submit
-										</button>
+												</div>
+											))}
+										</div> : <div className='option-div options-grid grow' style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+											{question.options.map((option, ind) => (
+												<div className={'option is-mcq myoption-text is-selected option-pressed ' + (option.isCorrect ? `right-color ` : '') + ((option.isCorrect === false && options.findIndex(opt => opt === option.text) >= 0) ? 'wrong-color ' : '')} style={{ width: '100%' }} key={ind}>
+													{
+														(option.isCorrect || options.findIndex(opt => opt === option.text) >= 0) && <div
+															className='option-inner vertical-center puzzle-text option-pressed is-selected theme-option-container'
+															style={{ width: '100%' }}
+															name={`option${number}`}
+															checked={options.findIndex(opt => opt === option.text) >= 0}
+															onClick={e =>
+																handleOptionSelect(option.text, number)
+															}
+														>
+															{option.text}
+															{
+																question.optionType === 'check' && <span className={"select-icon-wrapper flex-view all-center is-selected " + (options.findIndex(opt => opt === option.text) >= 0 ? "pink-background" : '')}>
+																	<span className={"icon " + (options.findIndex(opt => opt === option.text) >= 0 ? "option-selected" : '')}></span>
+																</span>
+															}
+														</div>
+													}
+												</div>
+											))}
+										</div>
 									}
+									<div className='fixed' style={{ height: '70px' }}>
+										{
+											number === questions.length - 1 && question.optionType === 'check' && <button className='button wd-200' onClick={e => checkNext()}>
+												Submit
+											</button>
+										}
+										{
+											question.optionType === 'check' && number < questions.length - 1 && <button className='button wd-200' onClick={e => checkNext()}>
+												Next
+											</button>
+										}
+									</div>
 									{
-										question.optionType === 'check' && number < questions.length - 1 && <button className='button wd-200' onClick={e => checkNext()}>
-											Next
-										</button>
+										mark === 1 ? <div className='fixed mycorrect-answer vertical-center puzzle-text'>
+											Correct
+										</div> : (mark == 2 ? <div className='fixed mywrong-answer vertical-center puzzle-text'>
+											Wrong
+										</div> : '')
 									}
 								</div>
-								{
-									mark === 1 ? <div className='fixed mycorrect-answer vertical-center puzzle-text'>
-										Correct
-									</div> : (mark == 2 ? <div className='fixed mywrong-answer vertical-center puzzle-text'>
-										Wrong
-									</div> : '')
-								}
+								<AttemptedModal result={result} totalScore={questions.length} showModal={showModal} />
 							</div>
-							<AttemptedModal result={result} totalScore={questions.length} showModal={showModal} />
-						</div>
-						<div className='grow' style={{ flexGrow: '0', width: '280px', marginTop: '110px', overflow: 'visible', height: `${window.innerHeight - 170}` }}>
-							<ListGroup>
-								{
-									students.map((std, index) => <ListGroup.Item style={{ display: 'flex', justifyContent: 'space-between' }} variant={std.id === socket.id ? 'primary' : 'secondary'}>{`${index + 1}.${(std.name.length < 15) ? std.name : (std.name.substr(0, 12) + '...')}`}<Badge pill bg="primary">
-										{std.mark}
-									</Badge></ListGroup.Item>
-									)
-								}
-							</ListGroup>
+							<div className='grow' style={{ flexGrow: '0', overflow: 'visible', height: `${window.innerHeight - 170}`, width: '400px' }}>
+								<ListGroup horizontal>
+									<ListGroup.Item variant='primary'><img src='/Quiz/Avatar/1.png' /></ListGroup.Item>
+									<ListGroup.Item variant='primary' style={{ width: '270px' }}>Al Haramain Madrash</ListGroup.Item>
+									<ListGroup.Item variant='primary' style={{ width: '53px' }}>11</ListGroup.Item>
+								</ListGroup>
+								<ListGroup horizontal>
+									<ListGroup.Item variant='primary'><img src='/Quiz/Avatar/1.png' /></ListGroup.Item>
+									<ListGroup.Item variant='primary' style={{ width: '270px' }}>adsfasdf</ListGroup.Item>
+									<ListGroup.Item variant='primary' style={{ width: '53px' }}>2</ListGroup.Item>
+								</ListGroup>
+								<ListGroup horizontal>
+									<ListGroup.Item variant='primary'><img src='/Quiz/Avatar/1.png' /></ListGroup.Item>
+									<ListGroup.Item variant='primary' style={{ width: '270px' }}>aaaa</ListGroup.Item>
+									<ListGroup.Item variant='primary' style={{ width: '53px' }}>3</ListGroup.Item>
+								</ListGroup>
+								<ListGroup horizontal>
+									<ListGroup.Item variant='primary'><img src='/Quiz/Avatar/1.png' /></ListGroup.Item>
+									<ListGroup.Item variant='primary' style={{ width: '270px' }}>a</ListGroup.Item>
+									<ListGroup.Item variant='primary' style={{ width: '53px' }}>11</ListGroup.Item>
+								</ListGroup>
+							</div>
 						</div>
 					</div>
-				</div >
+				</div>
 			)
 		}
 	}
