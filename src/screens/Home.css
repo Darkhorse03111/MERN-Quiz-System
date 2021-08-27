@@ -15,7 +15,7 @@
 }
 #logo-name {
 	color: #294634;
-	font-size: 7rem;
+	font-size: 40px;
 	/*text-shadow: 0px 0px px var(--light-shadow);*/
 	text-align: left;
 	font-weight: 200;
@@ -23,11 +23,11 @@
 		Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 #logo-name b {
-	font-size: 7rem;
+	font-size: 45px;
 	font-weight: 600;
 }
 #description {
-	font-size: 1.5rem;
+	font-size: 24px;
 	color: var(--secondary);
 	width: 550px;
 	font-weight: 350;
@@ -37,12 +37,12 @@
 }
 #login-card {
 	/* flex-grow: 2; */
-	margin: 50px;
+	margin: 20px;
 	display: flex;
 	flex-direction: column;
 	background-color: #294634;
+	width: 450px;
 	align-items: center;
-	width: 400px;
 	transition: 0.3s;
 	border-radius: 20px;
 	padding-bottom: 50px;
@@ -91,7 +91,7 @@
 		flex-flow: column;
 	}
 	#logo-name {
-		font-size: 3rem;
+		font-size: 30px;
 		margin: 10px;
 	}
 	#description {

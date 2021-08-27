@@ -63,7 +63,7 @@ const App = () => {
 			<div className='fixed'>
 				<AppBar user={user} setUser={setUser} setUsername={setUsername} />
 			</div>
-			<Row style={{ marginTop: '100px' }}>
+			<Row>
 				<Col xs={6}>
 					<ToastContainer position="top-end" className="p-3">
 						<Toast onClose={() => setShow(false)} show={show} delay={3000} autohide animation>
