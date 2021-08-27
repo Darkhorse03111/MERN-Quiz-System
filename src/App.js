@@ -67,11 +67,15 @@ const App = () => {
 				<Route path='/name'>
 					<UsernameModal setUsername={setUsername} />
 				</Route>
+				<Route path='/admin/dashboard'>
+					<AdminDashboard setUser={setUser} user={user} showToast={showToast} />
+				</Route>
 				<Route path='/admin'>
 					{
 						!firebase.auth().currentUser ? <Home setUser={setUser} user={user} /> : <AdminDashboard setUser={setUser} user={user} showToast={showToast} />
 					}
 				</Route>
+				
 				<Route path='/dashboard'>
 					{
 						!!firebase.auth().currentUser ? <AdminDashboard setUser={setUser} user={user} showToast={showToast} /> : <UserDashboard user={user} />

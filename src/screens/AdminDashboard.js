@@ -4,13 +4,12 @@ import { Row, Col, Toast, ToastContainer } from 'react-bootstrap'
 import './UserDashBoard.css'
 import CreatedQuizCard from '../components/CreatedQuizCard'
 import JoinedQuizCard from '../components/JoinedQuizCard'
-import LoadingScreen from './LoadingScreen'
+// import LoadingScreen from './LoadingScreen'
 import CreateQuiz from './CreateQuiz'
-import firebase from '../firebase/firebase'
 
 const AdminDashboard = ({ user, showToast }) => {
   const [createdQuizzes, setCreatedQuizzes] = useState([])
-  const [loading, setLoading] = useState(true)
+  // const [loading, setLoading] = useState(true)
   const [editQuiz, setEditQuiz] = useState([])
   const [allQuizzes, setAllQuizzes] = useState([])
   const [path, setPath] = useState('')
@@ -37,7 +36,7 @@ const AdminDashboard = ({ user, showToast }) => {
           setAllQuizzes(quizData.quizData)
         }
       }
-      setLoading(false)
+      // setLoading(false)
     }
     fetchQuizData()
   }, [user])
@@ -45,7 +44,7 @@ const AdminDashboard = ({ user, showToast }) => {
   const editQuizHandle = async (title, questions, isOpen) => {
     if (!title) setEditQuiz([])
     else {
-      setLoading(true)
+      // setLoading(true)
       console.dir({
         quizId: createdQuizzes[editQuiz]._id,
         uid: user.uid,
@@ -78,7 +77,7 @@ const AdminDashboard = ({ user, showToast }) => {
       temp.splice(index, 1)
       setAllQuizzes(temp)
       setEditQuiz([])
-      setLoading(false)
+      // setLoading(false)
 
       // setToastTitle('Edit Quiz')
       // setToastContent('Success')
@@ -88,7 +87,7 @@ const AdminDashboard = ({ user, showToast }) => {
   }
 
   const deleteQuiz = async index => {
-    setLoading(true)
+    // setLoading(true)
     const id = createdQuizzes[index]._id
     const results = await fetch(`/API/quizzes/${createdQuizzes[index]._id}`, {
       method: 'DELETE',
@@ -106,11 +105,11 @@ const AdminDashboard = ({ user, showToast }) => {
     temp.splice(ind, 1)
     setAllQuizzes(temp)
     setEditQuiz([])
-    setLoading(false)
+    // setLoading(false)
     showToast('Delete Quiz', 'Success')
   }
 
-  if (loading) return <LoadingScreen />
+  // if (loading) return <LoadingScreen />
 
   if (path) {
     return localStorage.getItem('username') == undefined ? <Redirect push to='join-quiz' /> : <Redirect push to={`/attempt-quiz/${path}`} />
@@ -147,13 +146,22 @@ const AdminDashboard = ({ user, showToast }) => {
         </Col>
       </Row>
       {
-        !!(firebase.auth().currentUser) && <div className='quizzes'>
+        <div className='quizzes'>
           <div className='heading'>
             <div className='line-left' />
             <h2>My Quiz </h2>
             <div className='line' />
           </div>
           <div className='card-holder' style={{ justifyContent: 'center' }}>
+          <CreatedQuizCard  
+                index='14443453267445645644'
+                setEditQuiz={setEditQuiz}
+                deleteQuiz={deleteQuiz}
+                title='The Battle in Europe'
+                code='14443453267445645644'
+                questions='10'
+                isOpen='true'
+              />
             {createdQuizzes.map((quiz, key) => (
               <CreatedQuizCard
                 key={key}
