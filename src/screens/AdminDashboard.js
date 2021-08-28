@@ -149,19 +149,19 @@ const AdminDashboard = ({ user, showToast }) => {
         <div className='quizzes'>
           <div className='heading'>
             <div className='line-left' />
-            <h2>My Quiz </h2>
+            <h2>Qur'an </h2>
             <div className='line' />
           </div>
           <div className='card-holder' style={{ justifyContent: 'center' }}>
-          <CreatedQuizCard  
-                index='14443453267445645644'
-                setEditQuiz={setEditQuiz}
-                deleteQuiz={deleteQuiz}
-                title='The Battle in Europe'
-                code='14443453267445645644'
-                questions='10'
-                isOpen='true'
-              />
+            <CreatedQuizCard
+              index='14443453267445645644'
+              setEditQuiz={setEditQuiz}
+              deleteQuiz={deleteQuiz}
+              title='The Battle in Europe'
+              code='14443453267445645644'
+              questions='10'
+              isOpen='true'
+            />
             {createdQuizzes.map((quiz, key) => (
               <CreatedQuizCard
                 key={key}
@@ -177,22 +177,59 @@ const AdminDashboard = ({ user, showToast }) => {
           </div>
           <div className='heading'>
             <div className='line-left' />
-            <h2>All Quiz </h2>
+            <h2>Arabic </h2>
             <div className='line' />
           </div>
           <div className='card-holder' style={{ justifyContent: 'center' }}>
-            {
-              allQuizzes.map((quiz, key) => (
-                <JoinedQuizCard
-                  key={key}
-                  title={quiz.title}
-                  // score={quiz.responses[0].score}
-                  questions={quiz.questions.length}
-                  id={quiz._id}
-                  joinQuiz={setPath}
-                />
-              ))
-            }
+            <CreatedQuizCard
+              index='14443453267445645644'
+              setEditQuiz={setEditQuiz}
+              deleteQuiz={deleteQuiz}
+              title='The Battle in Europe'
+              code='14443453267445645644'
+              questions='10'
+              isOpen='true'
+            />
+            {createdQuizzes.map((quiz, key) => (
+              <CreatedQuizCard
+                key={key}
+                index={key}
+                setEditQuiz={setEditQuiz}
+                deleteQuiz={deleteQuiz}
+                title={quiz.title}
+                code={quiz._id}
+                questions={quiz.questions.length}
+                isOpen={quiz.isOpen}
+              />
+            ))}
+          </div>
+          <div className='heading'>
+            <div className='line-left' />
+            <h2>Islamic Studies </h2>
+            <div className='line' />
+          </div>
+          <div className='card-holder' style={{ justifyContent: 'center' }}>
+            <CreatedQuizCard
+              index='14443453267445645644'
+              setEditQuiz={setEditQuiz}
+              deleteQuiz={deleteQuiz}
+              title='The Battle in Europe'
+              code='14443453267445645644'
+              questions='10'
+              isOpen='true'
+            />
+            {createdQuizzes.map((quiz, key) => (
+              <CreatedQuizCard
+                key={key}
+                index={key}
+                setEditQuiz={setEditQuiz}
+                deleteQuiz={deleteQuiz}
+                title={quiz.title}
+                code={quiz._id}
+                questions={quiz.questions.length}
+                isOpen={quiz.isOpen}
+              />
+            ))}
           </div>
         </div>
       }

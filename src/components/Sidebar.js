@@ -60,14 +60,12 @@ function Sidebar({ setUsername, setPath }) {
 						</Icon>
 					</li>
 					{SidedbarData.map((item, index) => {
-						return (index < 2 || !!firebase.auth().currentUser) && (
-							<li key={index} className='nav-text'>
-								<Link to={item.path}>
-									<Icon style={{ height: '40px' }}>{item.icon}</Icon>
-									<span className='nav-item-title'>{item.title}</span>
-								</Link>
-							</li>
-						)
+						return <li key={index} className='nav-text'>
+							<Link to={item.path}>
+								<Icon style={{ height: '40px' }}>{item.icon}</Icon>
+								<span className='nav-item-title'>{item.title}</span>
+							</Link>
+						</li>
 					})}
 					{/* Sign Out Button */}
 					{
