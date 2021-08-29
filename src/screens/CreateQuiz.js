@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
-import { Row, Col } from 'react-bootstrap'
+import { Row, Col, Form, InputGroup } from 'react-bootstrap'
 import './CreateQuiz.css'
 import AddQuestionModal from '../components/AddQuestionModal'
 import QuestionsTable from '../components/QuestionsTable'
@@ -77,6 +77,7 @@ const CreateQuiz = ({
 					<Row>
 						<Col>
 							<input
+								style={{width:'600px',height:'35px', fontSize:'25px'}}
 								type='text'
 								className='input-text'
 								value={title}
@@ -84,55 +85,177 @@ const CreateQuiz = ({
 								id='quiz-title'
 								placeholder='Untitled Quiz'
 								autoFocus
-								autocomplete='off'
+								autoComplete='off'
 							/>
 						</Col>
-						<Col>
-							<div style={{ width: '100px' }}>Subject</div>
-							<select style={{ width: '100px' }}>
+						<Col md='auto'>
+						<button
+							// disabled={!(title.length && questionArray.length)}
+							className='button'
+							onClick={() => {
+								if (quizTitle) editQuizHandle(title, questionArray, access)
+								else createQuiz()
+							}}
+							style={{height:'35px', fontSize:'20px', paddingTop:'3px', paddingBottom:'5px'}}
+						>
+							+Question
+						</button>
+						</Col>
+						<Col md='auto'>
+						<div className='button' style={{borderRadius:'20px', paddingTop:'3px',paddingBottom:'0px', height:'35px', fontSize:'20px'}}>Subject</div>
+							<select style={{width:'100px'}}>
 								<option>Qur'an</option>
 								<option>Arabic</option>
 								<option>Islamic Studies</option>
 							</select>
+						</Col>
+						<Col md='auto' style={{paddingTop:'5px'}}>
 							<Switch
 								checked={access}
 								onChange={(e) => setAccess(e.target.checked)}
-								color='secondary'
 								name='access'
+								default='#00ff00'
+								primary='#ff0000'
+								secondary='#0000ff'
 							/>
+							Save
+						</Col>							
+						<Col md='auto'>
+						<button
+							// disabled={!(title.length && questionArray.length)}
+							className='button'
+							onClick={() => {
+								if (quizTitle) editQuizHandle(title, questionArray, access)
+								else createQuiz()
+							}}
+							style={{height:'35px', fontSize:'20px', paddingTop:'3px', paddingBottom:'5px'}}
+						>
+							Edit
+						</button>
+						</Col>
+					</Row>
+					<Row style={{marginTop:'30px'}}>
+						<Col>
+							<div style={{height:'50px',background:'#A17F50', borderRadius:'5px', color:'#ffffff', color: '#ffffff',textAlign: 'left', fontSize: '20px',paddingTop: '10px', paddingLeft: '30px'}}>
+								QUESTION 1
+							</div>
+							<Row style={{paddingTop:'20px', paddingBottom:'20px'}}>
+								<Col>
+								<div style={{height:'100%',position: 'relative'}}>
+									<p style={{margin:'0', position:'absolute', top:'50%',left:'20%',transform:'translate(-20%,-50%)'}}>
+									Question Lorem ipsum dolor sit amet, consectetuer
+									adipiscing elit, sed diam nonummy nibh euismod
+									tincidunt ut laoreet dolore magna
+									</p>
+								</div>
+								</Col>
+								<Col md='auto'>
+									<button style={{width:'200px', height:'200px', fontSize:'80px', backgroundColor:'#3b563f',color:'#C7B299', borderRadius:'10px'}}>+</button>
+								</Col>
+							</Row>
+							<div>
+								<button
+									// disabled={!(title.length && questionArray.length)}
+									className='button'
+									onClick={() => {
+										if (quizTitle) editQuizHandle(title, questionArray, access)
+										else createQuiz()
+									}}
+									style={{height:'35px', fontSize:'20px', paddingTop:'3px', paddingBottom:'5px'}}
+								>
+									+VIDEO CLIP
+								</button>
+								<button
+									// disabled={!(title.length && questionArray.length)}
+									className='button'
+									onClick={() => {
+										if (quizTitle) editQuizHandle(title, questionArray, access)
+										else createQuiz()
+									}}
+									style={{height:'35px', fontSize:'20px', paddingTop:'3px', paddingBottom:'5px'}}
+								>
+									+SOUND
+								</button>
+								<button
+									// disabled={!(title.length && questionArray.length)}
+									className='button'
+									onClick={() => {
+										if (quizTitle) editQuizHandle(title, questionArray, access)
+										else createQuiz()
+									}}
+									style={{height:'35px', fontSize:'20px', paddingTop:'3px', paddingBottom:'5px'}}
+								>
+									+PICTURE
+								</button>
+							</div>
+						</Col>
+						<Col>
+							<div style={{height:'50px',background:'#A17F50', borderRadius:'5px', color:'#ffffff', color: '#ffffff',textAlign: 'left', fontSize: '20px',paddingTop: '10px', paddingLeft: '30px'}}>
+								ANSWERS
+							</div>
+							<Row style={{marginTop:'50px'}}>
+								<Col style={{paddingLeft:'30px'}}>
+									<div>
+									<Row style={{float:'left', marginLeft:'30px'}}>
+										<div>
+										<input type="checkbox" id="vehicle1" name="vehicle1" value="Bike"/>
+										<label for="vehicle1" style={{marginLeft:'10px'}}>Answer 2</label>
+										</div>
+									</Row>
+									<br/>
+									</div>
+									<div>
+									<Row style={{float:'left', marginLeft:'30px'}}>
+										<div>
+										<input type="checkbox" id="vehicle1" name="vehicle1" value="Bike"/>
+										<label for="vehicle1" style={{marginLeft:'10px'}}>Answer 2</label>
+										</div>
+									</Row>
+									<br/>
+									</div>
+									<div>
+									<Row style={{float:'left', marginLeft:'30px'}}>
+										<div>
+										<input type="checkbox" id="vehicle1" name="vehicle1" value="Bike"/>
+										<label for="vehicle1" style={{marginLeft:'10px'}}>Answer 2</label>
+										</div>
+									</Row>
+									<br/>
+									</div>
+								</Col>
+								<Col style={{paddingRight:'30px'}}>
+									<div>
+									<Row style={{float:'left', marginLeft:'30px'}}>
+										<div>
+										<input type="checkbox" id="vehicle1" name="vehicle1" value="Bike"/>
+										<label for="vehicle1" style={{marginLeft:'10px'}}>Answer 2</label>
+										</div>
+									</Row>
+									<br/>
+									</div>
+									<div>
+									<Row style={{float:'left', marginLeft:'30px'}}>
+										<div>
+										<input type="checkbox" id="vehicle1" name="vehicle1" value="Bike"/>
+										<label for="vehicle1" style={{marginLeft:'10px'}}>Answer 2</label>
+										</div>
+									</Row>
+									<br/>
+									</div>
+									<div>
+									<Row style={{float:'left', marginLeft:'30px'}}>
+										<div>
+										<input type="checkbox" id="vehicle1" name="vehicle1" value="Bike"/>
+										<label for="vehicle1" style={{marginLeft:'10px'}}>Answer 2</label>
+										</div>
+									</Row>
+									<br/>
+									</div>
+								</Col>
+							</Row>
 						</Col>
 					</Row>
 				</div>
-				<div className='controls'>
-					<AddQuestionModal addQuestionHandle={addQuestionHandle} />
-					<div className='switch'>
-						<h4>{access ? 'Public' : 'Private'}</h4>
-					</div>
-				</div>
-			</div>
-			<div className='questionTable'>
-				<QuestionsTable
-					questionArray={questionArray}
-					setQuestionArray={setQuestionArray}
-				/>
-			</div>
-			<div>
-				{quizTitle && (
-					<button className='add-btn' onClick={() => editQuizHandle()}>
-						Close
-					</button>
-				)}
-				<button
-					// disabled={!(title.length && questionArray.length)}
-					className='button wd-200'
-					onClick={() => {
-						if (quizTitle) editQuizHandle(title, questionArray, access)
-						else createQuiz()
-					}}
-				>
-					{quizTitle ? 'Save ' : 'Create '}
-					Quiz
-				</button>
 			</div>
 		</div>
 	)
