@@ -9,8 +9,8 @@ export default class UsernameModal extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      username:'',
-      password:''
+      username: '',
+      password: ''
     }
   }
   login = async username => {
@@ -29,8 +29,8 @@ export default class UsernameModal extends React.Component {
   }
 
   render() {
-    const {username, password} = this.state
-    const {open} = this.props
+    const { username, password } = this.state
+    const { open } = this.props
     const classes = {
       modal: {
         display: 'flex',
@@ -63,9 +63,9 @@ export default class UsernameModal extends React.Component {
       disableEnforceFocus={true}
     >
       <Row>
-        <Col lg='auto' md='auto' sm='auto' style={{ backgroundColor: '#294634', width: '150px', paddingLeft: '15px', paddingRight: '15px', borderRadius: '10px' }}>
+        <Col lg='auto' md='auto' sm='auto' style={{ backgroundColor: '#294634', width: '300px', paddingLeft: '15px', paddingRight: '15px', borderRadius: '10px' }}>
           <img
-            style={{ width: '50px', marginLeft: '35px', marginRight: '35px', marginTop: '20px', marginBottom: '20px' }}
+            style={{ width: '100px', marginLeft: '85px', marginRight: '85px', marginTop: '60px', marginBottom: '60px' }}
             src="/Quiz/logo/admin_login_logo.png"
             className="rounded"
             alt=""
@@ -75,9 +75,9 @@ export default class UsernameModal extends React.Component {
               placeholder="Username"
               aria-label="Username"
               aria-describedby="basic-addon1"
-              style={{ height: '20px' }}
+              style={{ height: '40px' }}
               value={username}
-              onChange = {e => this.setState({username:e.target.value})}
+              onChange={e => this.setState({ username: e.target.value })}
             />
           </InputGroup>
           <InputGroup className="mb-3">
@@ -86,24 +86,24 @@ export default class UsernameModal extends React.Component {
               aria-label="Password"
               type="password"
               aria-describedby="basic-addon1"
-              style={{ height: '20px' }}
+              style={{ height: '40px' }}
               value={password}
-              onChange = {e => this.setState({password:e.target.value})}
+              onChange={e => this.setState({ password: e.target.value })}
             />
           </InputGroup>
-          <button className="btn" style={{ backgroundColor: '#A17F50', color: '#fff', width: '100%', marginTop: '15px', marginBottom: '25px', height: '20px', borderRadius: '10px', paddingTop: '0px', fontSize: '12px' }} onClick={e => this.login(username)}>ENTER</button>
+          <button className="btn" style={{ backgroundColor: '#A17F50', color: '#fff', width: '100%', marginTop: '15px', marginBottom: '25px', height: '40px', borderRadius: '10px', paddingTop: '5px', fontSize: '12px' }} onClick={e => this.login(username)}>ENTER</button>
         </Col>
-        <Col lg='auto' md='auto' sm='auto' style={{ width: '210px', backgroundColor: '#fff' }}>
+        <Col lg='auto' md='auto' sm='auto' style={{ width: '420px', backgroundColor: '#fff' }}>
           <div style={{ textAlign: 'center', color: '#294634', marginTop: '20px', marginBottom: '20px' }}>CHOOSE AVATAR</div>
-          <div style={{padingLeft:'10px'}}>
-          {
-            img.map(im => <img
-              src={`/Quiz/Avatar/${im}.png`}
-              style={{marginLeft:'5px', marginRight:'5px'}}
-              className="rounded"
-              alt=""
-            />)
-          }
+          <div style={{ padingLeft: '10px' }}>
+            {
+              img.map(im => <img
+                src={`/Quiz/Avatar/${im}.png`}
+                style={{ margin: '20px 20px 20px 20px', width: '90px', height: '90px' }}
+                className="rounded"
+                alt=""
+              />)
+            }
           </div>
         </Col>
       </Row>

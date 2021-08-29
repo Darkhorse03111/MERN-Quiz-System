@@ -71,13 +71,13 @@ const CreateQuiz = ({
 	if (loading === 'start') return <LoadingScreen />
 
 	return (
-		<div id='main-body'>
+		<div id='main-body' style={{ backgroundColor: '#FFFFFF' }}>
 			<div id='create-quiz-body'>
-				<div className='quiz-header'>
+				<div className='quiz-header' style={{ backgroundColor: '#F1F1F1', boxShadow: 'none', width: '1138px' }}>
 					<Row>
 						<Col>
 							<input
-								style={{width:'600px',height:'35px', fontSize:'25px'}}
+								style={{ width: '450px', height: '35px', fontSize: '25px', border: 'none' }}
 								type='text'
 								className='input-text'
 								value={title}
@@ -89,27 +89,26 @@ const CreateQuiz = ({
 							/>
 						</Col>
 						<Col md='auto'>
-						<button
-							// disabled={!(title.length && questionArray.length)}
-							className='button'
-							onClick={() => {
-								if (quizTitle) editQuizHandle(title, questionArray, access)
-								else createQuiz()
-							}}
-							style={{height:'35px', fontSize:'20px', paddingTop:'3px', paddingBottom:'5px'}}
-						>
-							+Question
-						</button>
+							<button
+								// disabled={!(title.length && questionArray.length)}
+								className='button'
+								onClick={() => {
+									if (quizTitle) editQuizHandle(title, questionArray, access)
+									else createQuiz()
+								}}
+								style={{ height: '35px', fontSize: '15px', paddingTop: '3px', paddingBottom: '5px' }}
+							>
+								+Question
+							</button>
 						</Col>
 						<Col md='auto'>
-						<div className='button' style={{borderRadius:'20px', paddingTop:'3px',paddingBottom:'0px', height:'35px', fontSize:'20px'}}>Subject</div>
-							<select style={{width:'100px'}}>
+							<select name="cars" className="custom-select" style={{ width: '200px', marginTop: '10px' }}>
 								<option>Qur'an</option>
 								<option>Arabic</option>
 								<option>Islamic Studies</option>
 							</select>
 						</Col>
-						<Col md='auto' style={{paddingTop:'5px'}}>
+						<Col md='auto' style={{ paddingTop: '10px' }}>
 							<Switch
 								checked={access}
 								onChange={(e) => setAccess(e.target.checked)}
@@ -119,41 +118,43 @@ const CreateQuiz = ({
 								secondary='#0000ff'
 							/>
 							Save
-						</Col>							
+						</Col>
 						<Col md='auto'>
-						<button
-							// disabled={!(title.length && questionArray.length)}
-							className='button'
-							onClick={() => {
-								if (quizTitle) editQuizHandle(title, questionArray, access)
-								else createQuiz()
-							}}
-							style={{height:'35px', fontSize:'20px', paddingTop:'3px', paddingBottom:'5px'}}
-						>
-							Edit
-						</button>
+							<button
+								// disabled={!(title.length && questionArray.length)}
+								className='button'
+								onClick={() => {
+									if (quizTitle) editQuizHandle(title, questionArray, access)
+									else createQuiz()
+								}}
+								style={{ height: '35px', fontSize: '15px', paddingTop: '3px', paddingBottom: '5px' }}
+							>
+								Edit
+							</button>
 						</Col>
 					</Row>
-					<Row style={{marginTop:'30px'}}>
+				</div>
+				<div style={{ width: '1138px' }}>
+					<Row style={{ marginTop: '30px', backgroundColor: '#FFFFFF', paddingTop: '30px' }}>
 						<Col>
-							<div style={{height:'50px',background:'#A17F50', borderRadius:'5px', color:'#ffffff', color: '#ffffff',textAlign: 'left', fontSize: '20px',paddingTop: '10px', paddingLeft: '30px'}}>
+							<div style={{ height: '50px', background: '#A17F50', borderRadius: '5px', color: '#ffffff', color: '#ffffff', textAlign: 'left', fontSize: '20px', paddingTop: '10px', paddingLeft: '30px' }}>
 								QUESTION 1
 							</div>
-							<Row style={{paddingTop:'20px', paddingBottom:'20px'}}>
+							<Row style={{ paddingTop: '20px', paddingBottom: '20px', marginLeft: '2px', marginRight: '2px', backgroundColor: '#F1F1F1' }}>
 								<Col>
-								<div style={{height:'100%',position: 'relative'}}>
-									<p style={{margin:'0', position:'absolute', top:'50%',left:'20%',transform:'translate(-20%,-50%)'}}>
-									Question Lorem ipsum dolor sit amet, consectetuer
-									adipiscing elit, sed diam nonummy nibh euismod
-									tincidunt ut laoreet dolore magna
-									</p>
-								</div>
+									<div style={{ height: '100%', position: 'relative' }}>
+										<p style={{ margin: '0', position: 'absolute', top: '50%', left: '20%', transform: 'translate(-20%,-50%)' }}>
+											Question Lorem ipsum dolor sit amet, consectetuer
+											adipiscing elit, sed diam nonummy nibh euismod
+											tincidunt ut laoreet dolore magna
+										</p>
+									</div>
 								</Col>
 								<Col md='auto'>
-									<button style={{width:'200px', height:'200px', fontSize:'80px', backgroundColor:'#3b563f',color:'#C7B299', borderRadius:'10px'}}>+</button>
+									<button style={{ width: '200px', height: '200px', fontSize: '80px', backgroundColor: '#3b563f', color: '#C7B299', borderRadius: '10px' }}>+</button>
 								</Col>
 							</Row>
-							<div>
+							<div style={{ backgroundColor: '#CCCCCC' }}>
 								<button
 									// disabled={!(title.length && questionArray.length)}
 									className='button'
@@ -161,7 +162,7 @@ const CreateQuiz = ({
 										if (quizTitle) editQuizHandle(title, questionArray, access)
 										else createQuiz()
 									}}
-									style={{height:'35px', fontSize:'20px', paddingTop:'3px', paddingBottom:'5px'}}
+									style={{ height: '35px', fontSize: '12px', paddingTop: '3px', paddingBottom: '5px' }}
 								>
 									+VIDEO CLIP
 								</button>
@@ -172,7 +173,7 @@ const CreateQuiz = ({
 										if (quizTitle) editQuizHandle(title, questionArray, access)
 										else createQuiz()
 									}}
-									style={{height:'35px', fontSize:'20px', paddingTop:'3px', paddingBottom:'5px'}}
+									style={{ height: '35px', fontSize: '12px', paddingTop: '3px', paddingBottom: '5px' }}
 								>
 									+SOUND
 								</button>
@@ -183,73 +184,103 @@ const CreateQuiz = ({
 										if (quizTitle) editQuizHandle(title, questionArray, access)
 										else createQuiz()
 									}}
-									style={{height:'35px', fontSize:'20px', paddingTop:'3px', paddingBottom:'5px'}}
+									style={{ height: '35px', fontSize: '12px', paddingTop: '3px', paddingBottom: '5px' }}
 								>
 									+PICTURE
 								</button>
 							</div>
 						</Col>
 						<Col>
-							<div style={{height:'50px',background:'#A17F50', borderRadius:'5px', color:'#ffffff', color: '#ffffff',textAlign: 'left', fontSize: '20px',paddingTop: '10px', paddingLeft: '30px'}}>
+							<div style={{ height: '50px', background: '#A17F50', borderRadius: '5px', color: '#ffffff', color: '#ffffff', textAlign: 'left', fontSize: '20px', paddingTop: '10px', paddingLeft: '30px' }}>
 								ANSWERS
 							</div>
-							<Row style={{marginTop:'50px'}}>
-								<Col style={{paddingLeft:'30px'}}>
-									<div>
-									<Row style={{float:'left', marginLeft:'30px'}}>
+							<Row style={{ marginTop: '50px' }}>
+								<Col style={{ paddingLeft: '30px' }}>
+									<div style={{ marginTop: '10px' }}>
 										<div>
-										<input type="checkbox" id="vehicle1" name="vehicle1" value="Bike"/>
-										<label for="vehicle1" style={{marginLeft:'10px'}}>Answer 2</label>
+											<Row style={{ float: 'left', marginLeft: '30px' }}>
+												<div>
+													<input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />
+													<label htmlFor="vehicle1" style={{ marginLeft: '10px' }}>Answer 2</label>
+												</div>
+											</Row>
+											<br />
 										</div>
-									</Row>
-									<br/>
+										<div style={{ marginTop: '10px' }}>
+											This is first answer1243
+										</div>
 									</div>
-									<div>
-									<Row style={{float:'left', marginLeft:'30px'}}>
+									<div style={{ marginTop: '10px' }}>
 										<div>
-										<input type="checkbox" id="vehicle1" name="vehicle1" value="Bike"/>
-										<label for="vehicle1" style={{marginLeft:'10px'}}>Answer 2</label>
+											<Row style={{ float: 'left', marginLeft: '30px' }}>
+												<div>
+													<input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />
+													<label htmlFor="vehicle1" style={{ marginLeft: '10px' }}>Answer 2</label>
+												</div>
+											</Row>
+											<br />
 										</div>
-									</Row>
-									<br/>
+										<div style={{ marginTop: '10px' }}>
+											This is first answer1243
+										</div>
 									</div>
-									<div>
-									<Row style={{float:'left', marginLeft:'30px'}}>
+									<div style={{ marginTop: '10px' }}>
 										<div>
-										<input type="checkbox" id="vehicle1" name="vehicle1" value="Bike"/>
-										<label for="vehicle1" style={{marginLeft:'10px'}}>Answer 2</label>
+											<Row style={{ float: 'left', marginLeft: '30px' }}>
+												<div>
+													<input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />
+													<label htmlFor="vehicle1" style={{ marginLeft: '10px' }}>Answer 2</label>
+												</div>
+											</Row>
+											<br />
 										</div>
-									</Row>
-									<br/>
+										<div style={{ marginTop: '10px' }}>
+											This is first answer1243
+										</div>
 									</div>
 								</Col>
-								<Col style={{paddingRight:'30px'}}>
-									<div>
-									<Row style={{float:'left', marginLeft:'30px'}}>
+								<Col style={{ paddingRight: '30px' }}>
+									<div style={{ marginTop: '10px' }}>
 										<div>
-										<input type="checkbox" id="vehicle1" name="vehicle1" value="Bike"/>
-										<label for="vehicle1" style={{marginLeft:'10px'}}>Answer 2</label>
+											<Row style={{ float: 'left', marginLeft: '30px' }}>
+												<div>
+													<input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />
+													<label htmlFor="vehicle1" style={{ marginLeft: '10px' }}>Answer 2</label>
+												</div>
+											</Row>
+											<br />
 										</div>
-									</Row>
-									<br/>
+										<div style={{ marginTop: '10px' }}>
+											This is first answer1243
+										</div>
 									</div>
-									<div>
-									<Row style={{float:'left', marginLeft:'30px'}}>
+									<div style={{ marginTop: '10px' }}>
 										<div>
-										<input type="checkbox" id="vehicle1" name="vehicle1" value="Bike"/>
-										<label for="vehicle1" style={{marginLeft:'10px'}}>Answer 2</label>
+											<Row style={{ float: 'left', marginLeft: '30px' }}>
+												<div>
+													<input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />
+													<label htmlFor="vehicle1" style={{ marginLeft: '10px' }}>Answer 2</label>
+												</div>
+											</Row>
+											<br />
 										</div>
-									</Row>
-									<br/>
+										<div style={{ marginTop: '10px' }}>
+											This is first answer1243
+										</div>
 									</div>
-									<div>
-									<Row style={{float:'left', marginLeft:'30px'}}>
+									<div style={{ marginTop: '10px' }}>
 										<div>
-										<input type="checkbox" id="vehicle1" name="vehicle1" value="Bike"/>
-										<label for="vehicle1" style={{marginLeft:'10px'}}>Answer 2</label>
+											<Row style={{ float: 'left', marginLeft: '30px' }}>
+												<div>
+													<input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />
+													<label htmlFor="vehicle1" style={{ marginLeft: '10px' }}>Answer 2</label>
+												</div>
+											</Row>
+											<br />
 										</div>
-									</Row>
-									<br/>
+										<div style={{ marginTop: '10px' }}>
+											This is first answer1243
+										</div>
 									</div>
 								</Col>
 							</Row>

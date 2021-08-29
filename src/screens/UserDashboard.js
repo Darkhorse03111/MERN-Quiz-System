@@ -120,7 +120,46 @@ const UserDashboard = ({ user }) => {
 	return (
 		<div className='dash-body'>
 			<div className='quizzes' style={{ width: '1250px' }}>
-				<img src="/Quiz/banner.png"></img>
+				<div>
+					<Carousel style={{ height: '100%' }}>
+						<Carousel.Item interval={4000}>
+							<img
+								className="d-block"
+								style={{ width: `1240px`, height: `336px` }}
+								src="/Quiz/banner.png"
+								alt="Second slide"
+							/>
+							<Carousel.Caption>
+								{/* <h3>Second slide label</h3>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p> */}
+							</Carousel.Caption>
+						</Carousel.Item>
+						<Carousel.Item interval={4000}>
+							<img
+								className="d-block"
+								style={{ width: `1240px`, height: `336px` }}
+								src="/Quiz/banner.png"
+								alt="Second slide"
+							/>
+							<Carousel.Caption>
+								{/* <h3>Second slide label</h3>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p> */}
+							</Carousel.Caption>
+						</Carousel.Item>
+						<Carousel.Item interval={4000}>
+							<img
+								className="d-block"
+								style={{ width: `1240px`, height: `336px` }}
+								src="/Quiz/banner.png"
+								alt="Third slide"
+							/>
+							<Carousel.Caption>
+								{/* <h3>Third slide label</h3>
+								<p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p> */}
+							</Carousel.Caption>
+						</Carousel.Item>
+					</Carousel>
+				</div>
 				<div style={{ marginTop: '40px', display: 'flex', justifyContent: 'space-between' }}>
 					<div id='create-quiz-body' className='flex-container' style={{ width: '650px', color: '#ffffff', marginTop: '0px' }}>
 						<div className='attemptQuestionCard theme-classic flex-container' style={{ backgroundColor: '#294634', marginLeft: '250px', width: '100%' }}>
