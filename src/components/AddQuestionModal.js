@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { Modal, Icon, IconButton } from '@material-ui/core'
+import { Icon, IconButton } from '@material-ui/core'
+import { Modal } from 'react-bootstrap'
 import './AddQuestionModal.css'
 import { DeleteRounded, EditRounded, SaveRounded } from '@material-ui/icons'
 import { Row, Col } from 'react-bootstrap'
@@ -38,7 +39,7 @@ export default function AddQuestionModal({
 	editQuestionHandle
 }) {
 	const classes = useStyles()
-	const [open, setOpen] = React.useState(false)
+	const [open, setOpen] = React.useState(true)
 	const [optionType, setOptionType] = useState('radio')
 	const [optionsArray, setOptionsArray] = useState([])
 	const [editedOption, setEditedOption] = useState(null)
@@ -147,20 +148,11 @@ export default function AddQuestionModal({
 
 	return (
 		<div className={classes.root}>
-			{type === 'add' ? (
-				<button className='button' onClick={handleOpen}>
-					Add Question
-				</button>
-			) : (
-				<IconButton onClick={handleOpen}>
-					<EditRounded />
-				</IconButton>
-			)}
 			<Modal
 				aria-labelledby='transition-modal-title'
 				aria-describedby='transition-modal-description'
 				className={classes.modal}
-				open={open}
+				show={open}
 				disableEnforceFocus={true}
 			>
 				<div className={classes.paper}>

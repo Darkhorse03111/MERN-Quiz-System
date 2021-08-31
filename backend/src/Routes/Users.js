@@ -6,16 +6,11 @@ let students = require('../data/students')
 
 // Create User in DB
 Router.post('/create', (req, res) => {
-	const { uid, name, email } = req.body
-	if (!uid) return res.status(500).json({ error: 'Incomplete Parameters' })
-
-	DB.createUser(uid, name, email, res)
+	DB.createUser(req.body, res)
 })
 
 Router.post('/login', (req, res) => {
-	const { name } = req.body
-	const id = Date.now();
-	return res.status(200).json({ name, id })
+	DB.login(req.body, res)
 })
 
 // Get user Data

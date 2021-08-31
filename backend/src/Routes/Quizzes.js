@@ -121,6 +121,33 @@ Router.post('/responses', (req, res) => {
 	DB.getResponses(reqBody, res)
 })
 
+Router.get('/:id', (req, res) => {
+	const { id } = req.params
+	DB.withDB(async (db) => {
+		try {
+			const createdCursor = db
+				.collection('quizzes')
+				.find({
+					uid: id
+				})
+				.project({
+					isOpen: 1,
+					title: 1,
+					questions: 1,
+					responses: {
+						$size: '$responses',
+					},
+				})
+			const quizData = await createdCursor.toArray();
+			res.status(200).json({
+				quizData: quizData[0]
+			})
+		} catch (error) {
+			res.status(500).json({ error })
+		}
+	})
+})
+
 Router.get('/', (req, res) => {
 	DB.withDB(async (db) => {
 		try {
@@ -133,6 +160,7 @@ Router.get('/', (req, res) => {
 					isOpen: 1,
 					title: 1,
 					questions: 1,
+					uid: 1,
 					responses: {
 						$size: '$responses',
 					},

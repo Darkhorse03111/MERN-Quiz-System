@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 import './Home.css'
 import { InputGroup, FormControl } from 'react-bootstrap'
-const Home = ({ setUser }) => {
+const Home = ({ setUser, showToast }) => {
 	const [path, setPath] = useState('')
+	const [username, setUsername] = useState('')
+	const [password, setPassword] = useState('')
 	var uiConfig = {
 		signInflow: 'popup',
 		signInOptions: [
@@ -17,12 +19,30 @@ const Home = ({ setUser }) => {
 		return () => (isMounted = false)
 	}, [setUser])
 
+	const login = async () => {
+		const result = await fetch('/API/users/login', {
+			method: 'POST',
+			body: JSON.stringify({
+				username,
+				password
+			}),
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		})
+		const res = await result.json()
+		showToast('Login', res.message)
+		if (res.message === 'Success') {
+			setPath('/admin/dashboard')
+		}
+	}
+
 	if (!!path) {
 		return <Redirect push to={path} />
 	}
 
 	return (
-		<div className='vertical-center pt-5' style={{ backgroundColor: '#294634', height:'100%'}}>
+		<div className='vertical-center pt-5' style={{ backgroundColor: '#294634', height: '100%' }}>
 			<div id='Home'>
 				<div id='logo'>
 					<div id='logo-name'>
@@ -38,29 +58,38 @@ const Home = ({ setUser }) => {
 				<div id='login-card'>
 					<label className='login-label'>
 						<img
-							style={{width:'100px'}}
+							style={{ width: '100px' }}
 							src="/Quiz/logo/admin_login_logo.png"
 							className="rounded"
 							alt=""
 						/>
 					</label>
 					<div>
-					<InputGroup className="mb-3">
-						<FormControl
-						placeholder="Username"
-						aria-label="Username"
-						aria-describedby="basic-addon1"
-						/>
-					</InputGroup>
-					<InputGroup className="mb-3">
-						<FormControl
-						placeholder="Password"
-						aria-label="Password"
-						type="password"
-						aria-describedby="basic-addon1"
-						/>
-					</InputGroup>
-						<button className="btn" style={{backgroundColor: '#A17F50', color:'#fff'}}>LOGIN</button>
+						<InputGroup className="mb-3">
+							<FormControl
+								placeholder="Username"
+								aria-label="Username"
+								aria-describedby="basic-addon1"
+								value={username}
+								onChange={e => setUsername(e.target.value)}
+							/>
+						</InputGroup>
+						<InputGroup className="mb-3">
+							<FormControl
+								placeholder="Password"
+								aria-label="Password"
+								type="password"
+								aria-describedby="basic-addon1"
+								value={password}
+								onChange={e => setPassword(e.target.value)}
+							/>
+						</InputGroup>
+						<InputGroup className="mb-3">
+							<button className="btn" style={{ backgroundColor: '#A17F50', color: '#fff', width: '100%' }} onClick={e => login()}>LOGIN</button>
+						</InputGroup>
+						<InputGroup className="mb-3">
+							<Link to='/register' style={{ width: '100%' }}><button className="btn" style={{ backgroundColor: '#A17F50', color: '#fff', width: '100%' }}>REGISTER</button></Link>
+						</InputGroup>
 					</div>
 				</div>
 			</div>

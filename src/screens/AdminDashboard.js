@@ -24,18 +24,18 @@ const AdminDashboard = ({ user, showToast }) => {
     // }
     const fetchQuizData = async () => {
       let results, quizData
-      if (!!user && !!user.uid) {
-        results = await fetch(`/API/users/${user.uid}`)
-        quizData = await results.json()
-        if (quizData.createdQuiz) setCreatedQuizzes(quizData.createdQuiz)
-        console.log('created quiz:', quizData.createdQuiz)
-        results = await fetch(`/API/quizzes`)
-        quizData = await results.json()
-        console.log('all quiz:', quizData)
-        if (quizData.quizData) {
-          setAllQuizzes(quizData.quizData)
-        }
+      // if (!!user && !!user.uid) {
+      //   results = await fetch(`/API/users/${user.uid}`)
+      //   quizData = await results.json()
+      //   if (quizData.createdQuiz) setCreatedQuizzes(quizData.createdQuiz)
+      //   console.log('created quiz:', quizData.createdQuiz)
+      results = await fetch(`/API/quizzes`)
+      quizData = await results.json()
+      console.log('all quiz:', quizData)
+      if (quizData.quizData) {
+        setAllQuizzes(quizData.quizData)
       }
+      // }
       // setLoading(false)
     }
     fetchQuizData()
@@ -153,23 +153,14 @@ const AdminDashboard = ({ user, showToast }) => {
             <div className='line' />
           </div>
           <div className='card-holder' style={{ justifyContent: 'center' }}>
-            <CreatedQuizCard
-              index='14443453267445645644'
-              setEditQuiz={setEditQuiz}
-              deleteQuiz={deleteQuiz}
-              title='The Battle in Europe'
-              code='14443453267445645644'
-              questions='10'
-              isOpen='true'
-            />
-            {createdQuizzes.map((quiz, key) => (
+            {allQuizzes.map((quiz, key) => (
               <CreatedQuizCard
                 key={key}
                 index={key}
                 setEditQuiz={setEditQuiz}
                 deleteQuiz={deleteQuiz}
                 title={quiz.title}
-                code={quiz._id}
+                code={quiz.uid}
                 questions={quiz.questions.length}
                 isOpen={quiz.isOpen}
               />
@@ -181,23 +172,14 @@ const AdminDashboard = ({ user, showToast }) => {
             <div className='line' />
           </div>
           <div className='card-holder' style={{ justifyContent: 'center' }}>
-            <CreatedQuizCard
-              index='14443453267445645644'
-              setEditQuiz={setEditQuiz}
-              deleteQuiz={deleteQuiz}
-              title='The Battle in Europe'
-              code='14443453267445645644'
-              questions='10'
-              isOpen='true'
-            />
-            {createdQuizzes.map((quiz, key) => (
+            {allQuizzes.map((quiz, key) => (
               <CreatedQuizCard
                 key={key}
                 index={key}
                 setEditQuiz={setEditQuiz}
                 deleteQuiz={deleteQuiz}
                 title={quiz.title}
-                code={quiz._id}
+                code={quiz.uid}
                 questions={quiz.questions.length}
                 isOpen={quiz.isOpen}
               />
@@ -209,23 +191,14 @@ const AdminDashboard = ({ user, showToast }) => {
             <div className='line' />
           </div>
           <div className='card-holder' style={{ justifyContent: 'center' }}>
-            <CreatedQuizCard
-              index='14443453267445645644'
-              setEditQuiz={setEditQuiz}
-              deleteQuiz={deleteQuiz}
-              title='The Battle in Europe'
-              code='14443453267445645644'
-              questions='10'
-              isOpen='true'
-            />
-            {createdQuizzes.map((quiz, key) => (
+            {allQuizzes.map((quiz, key) => (
               <CreatedQuizCard
                 key={key}
                 index={key}
                 setEditQuiz={setEditQuiz}
                 deleteQuiz={deleteQuiz}
                 title={quiz.title}
-                code={quiz._id}
+                code={quiz.uid}
                 questions={quiz.questions.length}
                 isOpen={quiz.isOpen}
               />

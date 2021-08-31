@@ -21,6 +21,7 @@ import Responses from './screens/Responses'
 import AttemptBlindQuiz from './screens/AttemptBlindQuiz'
 import UsernameModal from './components/UsernameModal'
 import AdminDashboard from './screens/AdminDashboard'
+import Register from './screens/Register'
 
 const App = () => {
 	const [user, setUser] = useState({})
@@ -64,6 +65,15 @@ const App = () => {
 			<div className='fixed'>
 				<AppBar user={user} setUser={setUser} setUsername={setUsername} />
 			</div>
+			<ToastContainer position="top-end" className="p-3" style={{ marginTop: '80px', zIndex: '100' }}>
+				<Toast onClose={() => setShow(false)} show={show} delay={5000} autohide>
+					<Toast.Header>
+						<img src="holder.js/20x20?text=%20" className="rounded me-2" alt="" />
+						<strong className="me-auto">{toastTitle}</strong>
+					</Toast.Header>
+					<Toast.Body>{toastContent}</Toast.Body>
+				</Toast>
+			</ToastContainer>
 			<Switch>
 				<Route path='/name'>
 					<UsernameModal setUsername={setUsername} />
@@ -71,25 +81,29 @@ const App = () => {
 				<Route path='/admin/dashboard/editQuiz'>
 					<EditQuiz setUser={setUser} user={user} />
 				</Route>
-			
+
 				<Route path='/admin/dashboard'>
 					<AdminDashboard setUser={setUser} user={user} showToast={showToast} />
 				</Route>
 
 				<Route path='/admin'>
 					{
-						!firebase.auth().currentUser ? <Home setUser={setUser} user={user} /> : <AdminDashboard setUser={setUser} user={user} showToast={showToast} />
+						!firebase.auth().currentUser ? <Home setUser={setUser} user={user} showToast={showToast} /> : <AdminDashboard setUser={setUser} user={user} showToast={showToast} />
 					}
 				</Route>
-				
+
+				<Route
+					path='/register'
+				>
+					<Register showToast={showToast} />
+				</Route>
+
 				<Route path='/dashboard'>
 					{
 						!!firebase.auth().currentUser ? <AdminDashboard setUser={setUser} user={user} showToast={showToast} /> : <UserDashboard user={user} />
 					}
 				</Route>
-				<Route path='/create-quiz'>
-					<CreateQuiz user={user} showToast={showToast} />
-				</Route>
+				<Route path='/create-quiz/:id' render={routeProps => <CreateQuiz user={user} showToast={showToast} id={routeProps.match.params.id} />} />
 				<Route
 					path='/created-successfully/:quizCode'
 					component={CreatedSuccessfully}

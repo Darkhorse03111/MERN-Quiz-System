@@ -2,8 +2,8 @@ const { MongoClient } = require('mongodb')
 const Evaluate = require('../Algorithms/EvaluateQuiz')
 const ObjectId = require('mongodb').ObjectId
 const API_KEY = require('../db-config').database
+const jwt = require('jsonwebtoken')
 
-console.log('api key ' + API_KEY)
 let db
 // const DBStart = async () => {
 // 	console.log('DB server connecting...')
@@ -42,20 +42,32 @@ const withDB = async (operations, res) => {
 	}
 }
 
-const createUser = async (uid, name, email, res) => {
+const createUser = async (user, res) => {
 	await withDB(async (db) => {
-		const user = await db.collection('users').findOne({ uid: uid })
-		if (!user) {
+		const usr = await db.collection('users').findOne({ username: user.username })
+		if (!usr) {
 			const result = await db.collection('users').insertOne({
-				uid,
-				name,
-				email,
-				createdQuiz: [],
-				attemptedQuiz: []
+				...user
 			})
-			res.status(200).json({ message: 'User Created successfully.' })
+			res.status(200).json({ message: 'Success' })
 		} else {
 			res.status(200).json({ message: 'User Record Exist' })
+		}
+	})
+}
+
+const login = async (user, res) => {
+	await withDB(async (db) => {
+		const usr = await db.collection('users').findOne({ username: user.username })
+		if (usr) {
+			if (user.password === usr.password) {
+				res.status(200).json({ message: 'Success' })
+			}
+			else {
+				res.status(401).json({ message: 'Wrong Password' })
+			}
+		} else {
+			res.status(401).json({ message: 'No Such User' })
 		}
 	})
 }
@@ -172,6 +184,7 @@ const getResponses = (obj, res) => {
 
 module.exports.withDB = withDB
 module.exports.createUser = createUser
+module.exports.login = login
 module.exports.createQuiz = createQuiz
 module.exports.submitQuiz = submitQuiz
 module.exports.getResponses = getResponses
