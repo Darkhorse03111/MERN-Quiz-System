@@ -13,20 +13,16 @@ let clients = []
 const PORT = process.env.PORT || 3000
 
 app.use(express.json())
-
 app.use('/API/users', userRoute)
 app.use('/API/quizzes', quizzesRoute)
 
 app.use(express.static(path.resolve('build')))
 
-app.use('/*', (req, res) => {
-	// res.sendFile(path.join(__dirname.substr(0, __dirname.length - 12), 'build', 'index.html'))
-	res.sendFile(path.resolve('build/index.html'))
-})
 io.on('connect', client => {
 	client.on('login', body => {
 		clients.push(client)
-		students.push({ name: body.username, id: client.id, quizCode: body.quizCode, mark: '0' })
+		console.log('connecting quiz test:', body)
+		students.push({ name: body.username, id: client.id, quizCode: body.quizCode, picture: body.picture, mark: '0' })
 		let res = students.filter(std => std.quizCode === body.quizCode).sort((a, b) => parseInt(b.mark) - parseInt(a.mark))
 		clients.map(clnt => clnt.emit('mark', res))
 	})
@@ -52,6 +48,11 @@ io.on('connect', client => {
 		clients.splice(index, 1)
 	});
 });
+
+app.use('/*', (req, res) => {
+	// res.sendFile(path.join(__dirname.substr(0, __dirname.length - 12), 'build', 'index.html'))
+	res.sendFile(path.resolve('build/index.html'))
+})
 
 server.listen(PORT, () => {
 	console.log("Connected to port:" + PORT);

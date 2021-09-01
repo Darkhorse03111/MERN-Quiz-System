@@ -62,7 +62,8 @@ class AttemptQuiz extends React.Component {
 		else {
 			socket = io.connect(socketUrl)
 			const username = localStorage.getItem('username')
-			socket.emit('login', { username, quizCode })
+			const picture = localStorage.getItem('picture')
+			socket.emit('login', { username, quizCode, picture })
 			socket.on('mark', students => {
 				this.setState({
 					students
@@ -274,6 +275,7 @@ class AttemptQuiz extends React.Component {
 		const { number, questions, attemptedQuestions, quizTitle, loading, result, path, showModal, score, time, mark, students, showMark, music } = this.state
 		const { handleOptionSelect, submitQuiz, increaseNumber, hideModal, checkNext } = this
 		const { quizCode } = this.props.match.params
+		console.log('students:', students)
 		if (loading) return <LoadingScreen />
 		// For Quiz not Found
 		if (quizTitle === 'ERR:QUIZ_NOT_FOUND')
@@ -428,26 +430,13 @@ class AttemptQuiz extends React.Component {
 								<AttemptedModal result={result} totalScore={questions.length} showModal={showModal} />
 							</div>
 							<div className='grow' style={{ flexGrow: '0', overflow: 'visible', height: `${window.innerHeight - 170}`, width: '350px' }}>
-								<ListGroup horizontal>
-									<ListGroup.Item variant='primary' className='markItem' style={{ backgroundColor: 'rgb(230,230,230)', color: 'rgb(41,70,52)' }}><img src='/Quiz/Avatar/1.png' /></ListGroup.Item>
-									<ListGroup.Item variant='primary' className='markItem' style={{ width: '270px' }}><div style={{ marginTop: '10px' }}>Al Haramain Madrash</div></ListGroup.Item>
-									<ListGroup.Item variant='primary' className='markItem' style={{ width: '53px' }}><div style={{ marginTop: '10px' }}>11</div></ListGroup.Item>
-								</ListGroup>
-								<ListGroup horizontal>
-									<ListGroup.Item variant='primary' className='markItem' style={{ backgroundColor: 'rgb(230,230,230)', color: 'rgb(41,70,52)' }}><img src='/Quiz/Avatar/1.png' /></ListGroup.Item>
-									<ListGroup.Item variant='primary' className='markItem' style={{ width: '270px' }}><div style={{ marginTop: '10px' }}>Al Haramain Madrash</div></ListGroup.Item>
-									<ListGroup.Item variant='primary' className='markItem' style={{ width: '53px' }}><div style={{ marginTop: '10px' }}>11</div></ListGroup.Item>
-								</ListGroup>
-								<ListGroup horizontal>
-									<ListGroup.Item variant='primary' className='markItem' style={{ backgroundColor: 'rgb(230,230,230)', color: 'rgb(41,70,52)' }}><img src='/Quiz/Avatar/1.png' /></ListGroup.Item>
-									<ListGroup.Item variant='primary' className='markItem' style={{ width: '270px' }}><div style={{ marginTop: '10px' }}>Al Haramain Madrash</div></ListGroup.Item>
-									<ListGroup.Item variant='primary' className='markItem' style={{ width: '53px' }}><div style={{ marginTop: '10px' }}>11</div></ListGroup.Item>
-								</ListGroup>
-								<ListGroup horizontal>
-									<ListGroup.Item variant='primary' className='markItem' style={{ backgroundColor: 'rgb(230,230,230)', color: 'rgb(41,70,52)' }}><img src='/Quiz/Avatar/1.png' /></ListGroup.Item>
-									<ListGroup.Item variant='primary' className='markItem' style={{ width: '270px' }}><div style={{ marginTop: '10px' }}>Al Haramain Madrash</div></ListGroup.Item>
-									<ListGroup.Item variant='primary' className='markItem' style={{ width: '53px' }}><div style={{ marginTop: '10px' }}>11</div></ListGroup.Item>
-								</ListGroup>
+								{
+									students.map(std => <ListGroup horizontal>
+										<ListGroup.Item variant='primary' className='markItem' style={{ backgroundColor: 'rgb(230,230,230)', color: 'rgb(41,70,52)' }}><img src={`/Quiz/Avatar/${std.picture}.png`} /></ListGroup.Item>
+										<ListGroup.Item variant='primary' className='markItem' style={{ width: '270px' }}><div style={{ marginTop: '10px' }}>{std.name}</div></ListGroup.Item>
+										<ListGroup.Item variant='primary' className='markItem' style={{ width: '53px' }}><div style={{ marginTop: '10px' }}>{std.mark}</div></ListGroup.Item>
+									</ListGroup>)
+								}
 							</div>
 						</div>
 					</div>

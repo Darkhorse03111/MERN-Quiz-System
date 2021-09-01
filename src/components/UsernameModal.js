@@ -10,7 +10,8 @@ export default class UsernameModal extends React.Component {
     super(props)
     this.state = {
       username: '',
-      code: ''
+      code: '',
+      picture: 0
     }
   }
   enter = () => {
@@ -26,13 +27,14 @@ export default class UsernameModal extends React.Component {
     // localStorage.setItem('id', body.id)
     // this.props.setUsername(username)
     // setPath('/join-quiz')
-    const { username, code } = this.state
+    const { username, code, picture } = this.state
     localStorage.setItem('username', username)
+    localStorage.setItem('picture', picture)
     this.props.history.push(`/attempt-quiz/${code}`)
   }
 
   render() {
-    const { username, code } = this.state
+    const { username, code, picture } = this.state
     const { open } = this.props
     const classes = {
       modal: {
@@ -99,12 +101,13 @@ export default class UsernameModal extends React.Component {
           <div style={{ textAlign: 'center', color: '#294634', marginTop: '20px', marginBottom: '20px' }}>CHOOSE AVATAR</div>
           <div style={{ padingLeft: '10px' }}>
             {
-              img.map(im => <img
+              img.map((im, index) => <img
                 src={`/Quiz/Avatar/${im}.png`}
-                style={{ margin: '20px 20px 20px 20px', width: '90px', height: '90px' }}
+                style={{ margin: '20px 20px 20px 20px', width: '90px', height: '90px', border: picture === index + 1 ? 'blue 1px solid' : 'none' }}
                 className="rounded"
                 alt=""
                 key={im}
+                onClick={e => this.setState({ picture: index + 1 })}
               />)
             }
           </div>
