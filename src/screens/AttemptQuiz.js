@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
-import { ListGroup, Badge, Row, Col, Carousel } from 'react-bootstrap'
+import { ListGroup, Row, Col, Carousel } from 'react-bootstrap'
 import * as io from 'socket.io-client';
 import {
 	MusicNote, MusicOff
 } from '@material-ui/icons'
-import LoadingScreen from './LoadingScreen'
-import './AttemptQuiz.css'
 import { Icon } from '@material-ui/core'
+import LoadingScreen from './LoadingScreen'
+import JoinedQuizCard from '../components/JoinedQuizCard';
+import './AttemptQuiz.css'
+
 
 let socket
 const socketUrl = "/"
@@ -31,7 +33,9 @@ class AttemptQuiz extends React.Component {
 			mark: 0,
 			students: [],
 			showMark: false,
-			music: true
+			music: true,
+			waiting: 5,
+			timeout: 10
 		}
 		this.url = "/Music.wav";
 		this.audio = new Audio(this.url);
@@ -83,13 +87,32 @@ class AttemptQuiz extends React.Component {
 				attemptedQuestions: temp,
 				quizCode
 			})
+			this.timerId = setInterval(this.timerFunc, 1000)
 		}
 	}
 	componentWillUnmount() {
 		if (!!socket) {
-		socket.close()
+			socket.close()
 		}
-		// this.audio.pause()
+		this.audio.pause()
+	}
+	clock = () => {
+		let { timeout } = this.state
+		if (timeout > 0) {
+			return this.setState({ timeout: timeout - 1 })
+		}
+		this.checkNext()
+	}
+	timerFunc = () => {
+		let { waiting } = this.state
+		if (waiting > 0) {
+			--waiting;
+			this.setState({ waiting })
+			if (waiting === 0) {
+				clearInterval(this.timerId)
+				this.timerId = setInterval(this.clock, 1000)
+			}
+		}
 	}
 	handleOptionSelect = (option, number) => {
 		const { attemptedQuestions, questions } = this.state
@@ -114,6 +137,7 @@ class AttemptQuiz extends React.Component {
 		if (attemptedQuestions[number].optionType === 'radio') {
 			let currentScore = this.evaluateQuiz(questions, temp)
 			socket.emit('mark', { id: localStorage.getItem('id'), currentScore })
+			clearInterval(this.timerId)
 			this.setState({
 				attemptedQuestions: temp,
 				time: number < questions.length - 1,
@@ -121,7 +145,7 @@ class AttemptQuiz extends React.Component {
 				showMark: true,
 				score: currentScore
 			})
-			setTimeout(() => this.increaseNumber(), 1500)
+			setTimeout(() => this.increaseNumber(), 3000)
 		} else if (attemptedQuestions[number].optionType === 'check') {
 			this.setState({
 				attemptedQuestions: [...temp]
@@ -149,19 +173,20 @@ class AttemptQuiz extends React.Component {
 		return (qScore < 1 ? 0 : 1)
 	}
 
-	checkNext = () => {
+	checkNext = (flag = true) => {
+		console.log('checking next')
+		clearInterval(this.timerId)
 		const { attemptedQuestions, questions, number } = this.state
 		let score = this.getMark(attemptedQuestions, number)
-		if (attemptedQuestions[number].optionType === 'check') {
-			let currentScore = this.evaluateQuiz(questions, attemptedQuestions)
-			socket.emit('mark', { id: localStorage.getItem('id'), currentScore })
-			this.setState({
-				mark: score === 1 ? 1 : 2,
-				showMark: true,
-				score: currentScore
-			})
-			setTimeout(() => this.increaseNumber(), 1500)
-		}
+		let currentScore = this.evaluateQuiz(questions, attemptedQuestions)
+		socket.emit('mark', { id: localStorage.getItem('id'), currentScore })
+		this.setState({
+			mark: score === 1 ? 1 : 2,
+			showMark: true,
+			score: currentScore,
+			timeout: 10
+		})
+		setTimeout(this.increaseNumber, 3000)
 	}
 
 	increaseNumber = () => {
@@ -170,8 +195,10 @@ class AttemptQuiz extends React.Component {
 			this.setState({
 				number: number + 1,
 				showMark: false,
-				mark: 0
+				mark: 0,
+				timeout: 10
 			})
+			this.timerId = setInterval(this.clock, 1000)
 		}
 		else {
 			this.setState({
@@ -272,7 +299,7 @@ class AttemptQuiz extends React.Component {
 	}
 
 	render = () => {
-		const { number, questions, attemptedQuestions, quizTitle, loading, result, path, showModal, score, time, mark, students, showMark, music } = this.state
+		const { number, questions, attemptedQuestions, quizTitle, loading, result, path, showModal, score, time, mark, students, showMark, music, waiting, timeout } = this.state
 		const { handleOptionSelect, submitQuiz, increaseNumber, hideModal, checkNext } = this
 		const { quizCode } = this.props.match.params
 		if (loading) return <LoadingScreen />
@@ -365,111 +392,150 @@ class AttemptQuiz extends React.Component {
 								</Carousel.Item>
 							</Carousel>
 						</div>
+						<Row style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', marginTop: '20px' }}>
+							<p style={{ width: '200px', color: '#294634', marginTop: '35px' }}>Time Remaining</p>
+							<img src={`/Quiz/Number/${(timeout < 10 ? '0' : '')}${timeout}.png`} style={{ width: '150px' }}></img>
+						</Row>
 						<div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between', height: '800px' }}>
 							<div id='create-quiz-body' className='flex-container' style={{ width: '830px', color: '#ffffff', marginTop: '0px' }}>
-								<div className='attemptQuestionCard theme-classic' style={{ backgroundColor: '#294634', marginLeft: '10px', width: '100%', height: '1000px', marginBottom: '100px' }}>
-									<div className='fixed' style={{ height: '60px', display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-										<Row style={{ marginLeft: 'auto', marginRight: 'auto' }}>
-											<Col><div className='topText' style={{ width: '200px' }}>Quiz {`${number + 1}`}</div></Col>
-											<Col><Icon style={{ height: '60px' }} onClick={e => this.handleMusic()}>
-												{ music ? <MusicNote fontSize='large' /> : <MusicOff fontSize='large' />}
-											</Icon>
+								{
+									waiting > 0 ? <div className='attemptQuestionCard theme-classic flex-container' style={{ backgroundColor: '#294634', marginLeft: '10px', width: '100%' }}>
+										<div className='fixed' style={{ height: '60px', display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+											<Row style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+												<Col><div className='topText' style={{ width: '200px' }}>Quiz 1</div></Col>
+												<Col><Icon style={{ height: '60px' }}>
+													<MusicNote fontSize='large' />
+												</Icon>
+												</Col>
+												<Col>
+													<div className='topText' style={{ width: '200px' }}>Score:10</div>
+												</Col>
+											</Row>
+										</div>
+										<Row>
+											<Col className='vertical-center'>
+												{
+													!!quizTitle && <JoinedQuizCard
+														title={quizTitle}
+														// score={quiz.responses[0].score}
+														questions={questions.length}
+														id={quizCode}
+													/>
+												}
 											</Col>
-											<Col>
-												<div className='topText' style={{ width: '200px' }}>Score:{`${score}`}</div>
+											<Col className='vertical-center'>
+												<div style={{ width: '300px', height: 'auto' }}>
+													<Row>
+														<img src={`/Quiz/Number/0${waiting}.png`}></img>
+													</Row>
+												</div>
 											</Col>
 										</Row>
-									</div>
-									{
-										!showModal && <div className='grow vertical-center puzzle-text' style={{ color: '#ffffff', marginTop: '120px' }}>
-											{question.title}
-										</div>
-									}
-									{
-										mark === 0 ? !showModal && <div className='option-div options-grid grow' style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
-											{question.options.map((option, ind) => (
-												<div className={
-													`option is-mcq myoption-text is-selected option-pressed `
-												} style={{ width: '100%', height: '140px', backgroundColor: '#ffffff' }} key={ind}>
-													<div
-														className='option-inner vertical-center puzzle-text option-pressed is-selected theme-option-container'
-														style={{ width: '100%' }}
-														name={`option${number}`}
-														checked={options.findIndex(opt => opt === option.text) >= 0}
-														onClick={e =>
-															handleOptionSelect(option.text, number)
-														}>
-														{option.text}
-														{
-															question.optionType === 'check' && <span className={"select-icon-wrapper flex-view all-center is-selected" + (options.findIndex(opt => opt === option.text) >= 0 ? " pink-background option-selected" : '')}>
-																<span className="icon"></span>
-															</span>
-														}
-													</div>
+									</div> :
+										<div className='attemptQuestionCard theme-classic' style={{ backgroundColor: '#294634', marginLeft: '10px', width: '100%', height: '1000px', marginBottom: '100px' }}>
+											<div className='fixed' style={{ height: '60px', display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+												<Row style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+													<Col><div className='topText' style={{ width: '200px' }}>Quiz {`${number + 1}`}</div></Col>
+													<Col><Icon style={{ height: '60px' }} onClick={e => this.handleMusic()}>
+														{music ? <MusicNote fontSize='large' /> : <MusicOff fontSize='large' />}
+													</Icon>
+													</Col>
+													<Col>
+														<div className='topText' style={{ width: '200px' }}>Score:{`${score}`}</div>
+													</Col>
+												</Row>
+											</div>
+											{
+												!showModal && <div className='grow vertical-center puzzle-text' style={{ color: '#ffffff', marginTop: '120px' }}>
+													{question.title}
 												</div>
-											))}
-										</div> : !showModal && <div className='option-div options-grid grow' style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
-											{question.options.map((option, ind) => (
-												<div className={'option is-mcq myoption-text is-selected option-pressed ' + (option.isCorrect ? `right-color ` : '') + ((option.isCorrect === false && options.findIndex(opt => opt === option.text) >= 0) ? 'wrong-color ' : '')} style={{ width: '100%', height: '140px' }} key={ind}>
-													{
-														(option.isCorrect || options.findIndex(opt => opt === option.text) >= 0) && <div
-															className='option-inner vertical-center puzzle-text option-pressed is-selected theme-option-container'
-															style={{ width: '100%' }}
-															name={`option${number}`}
-															checked={options.findIndex(opt => opt === option.text) >= 0}
-															onClick={e =>
-																handleOptionSelect(option.text, number)
-															}
-														>
-															{option.text}
+											}
+											{
+												mark === 0 ? !showModal && <div className='option-div options-grid grow' style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+													{question.options.map((option, ind) => (
+														<div className={
+															`option is-mcq myoption-text is-selected option-pressed `
+														} style={{ width: '100%', height: '140px', backgroundColor: '#ffffff' }} key={ind}>
+															<div
+																className='option-inner vertical-center puzzle-text option-pressed is-selected theme-option-container'
+																style={{ width: '100%' }}
+																name={`option${number}`}
+																checked={options.findIndex(opt => opt === option.text) >= 0}
+																onClick={e =>
+																	handleOptionSelect(option.text, number)
+																}>
+																{option.text}
+																{
+																	question.optionType === 'check' && <span className={"select-icon-wrapper flex-view all-center is-selected" + (options.findIndex(opt => opt === option.text) >= 0 ? " pink-background option-selected" : '')}>
+																		<span className="icon"></span>
+																	</span>
+																}
+															</div>
+														</div>
+													))}
+												</div> : !showModal && <div className='option-div options-grid grow' style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+													{question.options.map((option, ind) => (
+														<div className={'option is-mcq myoption-text is-selected option-pressed ' + (option.isCorrect ? `right-color ` : '') + ((option.isCorrect === false && options.findIndex(opt => opt === option.text) >= 0) ? 'wrong-color ' : '')} style={{ width: '100%', height: '140px' }} key={ind}>
 															{
-																question.optionType === 'check' && <span className={"select-icon-wrapper flex-view all-center is-selected " + (options.findIndex(opt => opt === option.text) >= 0 ? "pink-background" : '')}>
-																	<span className={"icon " + (options.findIndex(opt => opt === option.text) >= 0 ? "option-selected" : '')}></span>
-																</span>
+																(option.isCorrect || options.findIndex(opt => opt === option.text) >= 0) && <div
+																	className='option-inner vertical-center puzzle-text option-pressed is-selected theme-option-container'
+																	style={{ width: '100%' }}
+																	name={`option${number}`}
+																	checked={options.findIndex(opt => opt === option.text) >= 0}
+																	onClick={e =>
+																		handleOptionSelect(option.text, number)
+																	}
+																>
+																	{option.text}
+																	{
+																		question.optionType === 'check' && <span className={"select-icon-wrapper flex-view all-center is-selected " + (options.findIndex(opt => opt === option.text) >= 0 ? "pink-background" : '')}>
+																			<span className={"icon " + (options.findIndex(opt => opt === option.text) >= 0 ? "option-selected" : '')}></span>
+																		</span>
+																	}
+																</div>
 															}
 														</div>
+													))}
+												</div>
+											}
+											{
+												!showModal && <div className='fixed' style={{ height: '70px' }}>
+													{
+														number === questions.length - 1 && question.optionType === 'check' && <button className='button wd-200' onClick={e => checkNext(true)}>
+															Submit
+														</button>
+													}
+													{
+														question.optionType === 'check' && number < questions.length - 1 && <button className='button wd-200' onClick={e => checkNext(true)}>
+															Next
+														</button>
 													}
 												</div>
-											))}
-										</div>
-									}
-									{
-										!showModal && <div className='fixed' style={{ height: '70px' }}>
-											{
-												number === questions.length - 1 && question.optionType === 'check' && <button className='button wd-200' onClick={e => checkNext()}>
-													Submit
-												</button>
 											}
 											{
-												question.optionType === 'check' && number < questions.length - 1 && <button className='button wd-200' onClick={e => checkNext()}>
-													Next
-												</button>
+												mark === 1 ? !showModal && <div className='fixed mycorrect-answer vertical-center puzzle-text' style={{ marginTop: '20px' }}>
+													Correct
+												</div> : (mark == 2 ? !showModal && <div className='fixed mywrong-answer vertical-center puzzle-text' style={{ marginTop: '20px' }}>
+													Wrong
+												</div> : <div style={{ height: '100px' }}>  </div>)
+											}
+											{
+												showModal && <div style={{ position: 'relative', height: '150px', marginTop: '45px' }}>
+													{students.length > 0 && <img src={`/Quiz/Avatar/${students[0].picture}.png`} style={{ position: 'absolute', left: '360px', top: '20px', width: '80px', height: '80px' }}></img>}
+													{students.length > 1 && <img src={`/Quiz/Avatar/${students[1].picture}.png`} style={{ position: 'absolute', left: '235px', top: '60px', width: '80px', height: '80px' }}></img>}
+													{students.length > 2 && <img src={`/Quiz/Avatar/${students[2].picture}.png`} style={{ position: 'absolute', left: '500px', top: '60px', width: '80px', height: '80px' }}></img>}
+													{students.length > 0 && <div style={{ position: 'absolute', left: '360px', top: '110px', width: '80px', textAlign: 'center' }}>{students[0].name}</div>}
+													{students.length > 1 && <div style={{ position: 'absolute', left: '235px', top: '150px', width: '80px', textAlign: 'center' }}>{students[1].name}</div>}
+													{students.length > 2 && <div style={{ position: 'absolute', left: '500px', top: '190px', width: '80px', textAlign: 'center' }}>{students[2].name}</div>}
+												</div>
+											}
+											{
+												showModal && <div>
+													<img src='/Quiz/cup.png'></img>
+												</div>
 											}
 										</div>
-									}
-									{
-										mark === 1 ? !showModal && <div className='fixed mycorrect-answer vertical-center puzzle-text' style={{ marginTop: '20px' }}>
-											Correct
-										</div> : (mark == 2 ? !showModal && <div className='fixed mywrong-answer vertical-center puzzle-text' style={{ marginTop: '20px' }}>
-											Wrong
-										</div> : <div style={{ height: '100px' }}>  </div>)
-									}
-									{
-										showModal && <div style={{ position: 'relative', height: '150px', marginTop: '45px' }}>
-											{students.length > 0 && <img src={`/Quiz/Avatar/${students[0].picture}.png`} style={{ position: 'absolute', left: '360px', top: '20px', width: '80px', height: '80px' }}></img>}
-											{students.length > 1 && <img src={`/Quiz/Avatar/${students[1].picture}.png`} style={{ position: 'absolute', left: '235px', top: '60px', width: '80px', height: '80px' }}></img>}
-											{students.length > 2 && <img src={`/Quiz/Avatar/${students[2].picture}.png`} style={{ position: 'absolute', left: '500px', top: '60px', width: '80px', height: '80px' }}></img>}
-											{students.length > 0 && <div style={{ position: 'absolute', left: '360px', top: '110px', width: '80px', textAlign: 'center' }}>{students[0].name}</div>}
-											{students.length > 1 && <div style={{ position: 'absolute', left: '235px', top: '150px', width: '80px', textAlign: 'center' }}>{students[1].name}</div>}
-											{students.length > 2 && <div style={{ position: 'absolute', left: '500px', top: '190px', width: '80px', textAlign: 'center' }}>{students[2].name}</div>}
-										</div>
-									}
-									{
-										showModal && <div>
-											<img src='/Quiz/cup.png'></img>
-										</div>
-									}
-								</div>
+								}
 							</div>
 							<div className='grow' style={{ flexGrow: '0', overflow: 'visible', height: `${window.innerHeight - 170}`, width: '350px' }}>
 								{

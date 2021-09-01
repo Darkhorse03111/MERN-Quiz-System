@@ -65,7 +65,6 @@ function Sidebar({ setUsername, setPath }) {
 							</Link>
 						</li>
 					})}
-					{/* Sign Out Button */}
 					{
 						(!!user || !!username) && <li className='nav-text sign-out' style={{ display: 'flex', justifyContent: 'left' }}>
 							<button
@@ -85,14 +84,3 @@ function Sidebar({ setUsername, setPath }) {
 }
 
 export default Sidebar
-/*
-if (!!(firebase.auth().currentUser) || index === 1)
-							return (
-								<li key={index} className='nav-text'>
-									<Link to={item.path}>
-										<Icon>{item.icon}</Icon>
-										<span className='nav-item-title'>{item.title}</span>
-									</Link>
-								</li>
-							)
-*/
