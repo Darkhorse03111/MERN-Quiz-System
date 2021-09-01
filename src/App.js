@@ -1,7 +1,6 @@
 import { Switch, Route } from 'react-router-dom'
 import React, { useState, useEffect } from 'react'
 import { Row, Col, Toast, ToastContainer } from 'react-bootstrap'
-import firebase from './firebase/firebase'
 
 // Stylesheet
 import './App.css'

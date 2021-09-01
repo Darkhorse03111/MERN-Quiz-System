@@ -3,7 +3,11 @@ const express = require('express')
 const path = require('path')
 const app = express()
 const server = require('http').Server(app)
-const io = module.exports.io = require('socket.io')(server)
+const io = module.exports.io = require('socket.io')(server, {
+	cors: {
+		origin: '*',
+	}
+})
 
 const userRoute = require('./Routes/Users')
 const quizzesRoute = require('./Routes/Quizzes')

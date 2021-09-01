@@ -13,6 +13,7 @@ import { Icon } from '@material-ui/core'
 let socket
 const env = process.env.NODE_ENV;
 const socketUrl = "/"
+// const socketUrl = "ws://192.168.104.16:3001"
 
 class AttemptQuiz extends React.Component {
 	constructor(props) {
@@ -34,13 +35,13 @@ class AttemptQuiz extends React.Component {
 			showMark: false,
 			music: true
 		}
-		// this.url = "/Music.wav";
-		// this.audio = new Audio(this.url);
-		// this.audio.play()
-		// this.audio.addEventListener('ended', function () {
-		// 	this.audio = new Audio(this.url);
-		// 	this.audio.play()
-		// }, false);
+		this.url = "/Music.wav";
+		this.audio = new Audio(this.url);
+		this.audio.play()
+		this.audio.addEventListener('ended', function () {
+			this.audio = new Audio(this.url);
+			this.audio.play()
+		}, false);
 	}
 
 	async componentDidMount() {
@@ -323,18 +324,13 @@ class AttemptQuiz extends React.Component {
 			)
 		else {
 			let question = questions[number], options = attemptedQuestions.length > number ? attemptedQuestions[number].selectedOptions : []
-			console.log('students:', students)
 			return (
 				<div className='dash-body'>
-					<div className='quizzes' style={{ width: '1250px' }}>
+					<div className='quizzes' style={{ width: '1250px', paddingBottom: '50px' }}>
 						<img src="/Quiz/banner.png"></img>
-						<Col style={{ marginTop: '20px' }}>
-							Time Remaining
-							<img src='/Quiz/Number/01.png' style={{ width: '60px', height: '40px' }}></img>
-						</Col>
-						<div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between', height: '1000px' }}>
-							<div id='create-quiz-body' className='flex-container' style={{ width: '650px', color: '#ffffff', marginTop: '0px' }}>
-								<div className='attemptQuestionCard theme-classic' style={{ backgroundColor: '#294634', marginLeft: '250px', width: '100%', height: '1000px' }}>
+						<div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between', height: '800px' }}>
+							<div id='create-quiz-body' className='flex-container' style={{ width: '830px', color: '#ffffff', marginTop: '0px' }}>
+								<div className='attemptQuestionCard theme-classic' style={{ backgroundColor: '#294634', marginLeft: '10px', width: '100%', height: '1000px', marginBottom: '100px' }}>
 									<div className='fixed' style={{ height: '60px', display: 'flex', justifyContent: 'space-between', width: '100%' }}>
 										<Row style={{ marginLeft: 'auto', marginRight: 'auto' }}>
 											<Col><div className='topText' style={{ width: '200px' }}>Quiz 1</div></Col>
@@ -347,11 +343,13 @@ class AttemptQuiz extends React.Component {
 											</Col>
 										</Row>
 									</div>
-									<div className='grow vertical-center puzzle-text' style={{ color: '#ffffff', marginTop: '120px' }}>
-										{question.title}
-									</div>
 									{
-										mark === 0 ? <div className='option-div options-grid grow' style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+										!showModal && <div className='grow vertical-center puzzle-text' style={{ color: '#ffffff', marginTop: '120px' }}>
+											{question.title}
+										</div>
+									}
+									{
+										mark === 0 ? !showModal && <div className='option-div options-grid grow' style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
 											{question.options.map((option, ind) => (
 												<div className={
 													`option is-mcq myoption-text is-selected option-pressed `
@@ -373,7 +371,7 @@ class AttemptQuiz extends React.Component {
 													</div>
 												</div>
 											))}
-										</div> : <div className='option-div options-grid grow' style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+										</div> : !showModal && <div className='option-div options-grid grow' style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
 											{question.options.map((option, ind) => (
 												<div className={'option is-mcq myoption-text is-selected option-pressed ' + (option.isCorrect ? `right-color ` : '') + ((option.isCorrect === false && options.findIndex(opt => opt === option.text) >= 0) ? 'wrong-color ' : '')} style={{ width: '100%', height: '140px' }} key={ind}>
 													{
@@ -398,36 +396,43 @@ class AttemptQuiz extends React.Component {
 											))}
 										</div>
 									}
-									<div className='fixed' style={{ height: '70px' }}>
-										{
-											number === questions.length - 1 && question.optionType === 'check' && <button className='button wd-200' onClick={e => checkNext()}>
-												Submit
-											</button>
-										}
-										{
-											question.optionType === 'check' && number < questions.length - 1 && <button className='button wd-200' onClick={e => checkNext()}>
-												Next
-											</button>
-										}
-									</div>
 									{
-										mark === 1 ? <div className='fixed mycorrect-answer vertical-center puzzle-text' style={{ marginTop: '20px' }}>
-											Correct
-										</div> : (mark == 2 ? <div className='fixed mywrong-answer vertical-center puzzle-text' style={{ marginTop: '20px' }}>
-											Wrong
-										</div> : '')
+										!showModal && <div className='fixed' style={{ height: '70px' }}>
+											{
+												number === questions.length - 1 && question.optionType === 'check' && <button className='button wd-200' onClick={e => checkNext()}>
+													Submit
+												</button>
+											}
+											{
+												question.optionType === 'check' && number < questions.length - 1 && <button className='button wd-200' onClick={e => checkNext()}>
+													Next
+												</button>
+											}
+										</div>
 									}
-									<div>
-										<img src='/Quiz/Avatar/1.png' style={{ marginLeft: '30px', marginRight: '25px', width: '80px', height: '80px', marginTop: '89px' }}></img>
-										<img src='/Quiz/Avatar/2.png' style={{ marginLeft: '25px', marginRight: '25px', width: '80px', height: '80px' }}></img>
-										<img src='/Quiz/Avatar/3.png' style={{ marginLeft: '30px', marginRight: '30px', width: '80px', height: '80px', marginTop: '160px' }}></img>
-									</div>
-									<div>
-										<img src='/Quiz/cup.png'></img>
-									</div>
+									{
+										mark === 1 ? !showModal && <div className='fixed mycorrect-answer vertical-center puzzle-text' style={{ marginTop: '20px' }}>
+											Correct
+										</div> : (mark == 2 ? !showModal && <div className='fixed mywrong-answer vertical-center puzzle-text' style={{ marginTop: '20px' }}>
+											Wrong
+										</div> : <div style={{ height: '100px' }}>  </div>)
+									}
+									{
+										showModal && <div style={{ position: 'relative', height: '150px', marginTop: '45px' }}>
+											{students.length > 0 && <img src={`/Quiz/Avatar/${students[0].picture}.png`} style={{ position: 'absolute', left: '360px', top: '20px', width: '80px', height: '80px' }}></img>}
+											{students.length > 1 && <img src={`/Quiz/Avatar/${students[1].picture}.png`} style={{ position: 'absolute', left: '235px', top: '60px', width: '80px', height: '80px' }}></img>}
+											{students.length > 2 && <img src={`/Quiz/Avatar/${students[2].picture}.png`} style={{ position: 'absolute', left: '500px', top: '60px', width: '80px', height: '80px' }}></img>}
+											{students.length > 0 && <div style={{ position: 'absolute', left: '360px', top: '110px', width: '80px', textAlign: 'center' }}>{students[0].name}</div>}
+											{students.length > 1 && <div style={{ position: 'absolute', left: '235px', top: '150px', width: '80px', textAlign: 'center' }}>{students[1].name}</div>}
+											{students.length > 2 && <div style={{ position: 'absolute', left: '500px', top: '190px', width: '80px', textAlign: 'center' }}>{students[2].name}</div>}
+										</div>
+									}
+									{
+										showModal && <div>
+											<img src='/Quiz/cup.png'></img>
+										</div>
+									}
 								</div>
-
-								<AttemptedModal result={result} totalScore={questions.length} showModal={showModal} />
 							</div>
 							<div className='grow' style={{ flexGrow: '0', overflow: 'visible', height: `${window.innerHeight - 170}`, width: '350px' }}>
 								{

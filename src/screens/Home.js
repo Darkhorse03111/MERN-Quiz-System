@@ -35,7 +35,6 @@ const Home = ({ setUser, showToast, history }) => {
 		if (res.message === 'Success') {
 			localStorage.setItem('user', username)
 			console.log('setting path admin dashboard')
-			// setPath('/admin/dashboard')
 			history.push('/admin/dashboard')
 		}
 	}

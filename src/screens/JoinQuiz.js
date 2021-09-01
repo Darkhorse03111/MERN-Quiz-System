@@ -14,7 +14,7 @@ const JoinQuiz = () => {
 	if (localStorage.getItem('username') == undefined) {
 		return <Redirect to='/name' />
 	}
-	if (valid !== 'false') return <Redirect push to={`/${valid}/${code}/0`} />
+	if (valid !== 'false') return <Redirect push to={`/${valid}/${code}`} />
 	// if (valid === 'join-blind')
 	// 	return <Redirect push to={`attempt-blind-quiz/${code}`} />
 

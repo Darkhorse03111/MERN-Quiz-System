@@ -28,6 +28,15 @@ export default class UsernameModal extends React.Component {
     // this.props.setUsername(username)
     // setPath('/join-quiz')
     const { username, code, picture } = this.state
+    if (!username) {
+      return alert('Input Username')
+    }
+    if (!code) {
+      return alert('Input Quiz Code')
+    }
+    if (!picture) {
+      return alert('Select Picture')
+    }
     localStorage.setItem('username', username)
     localStorage.setItem('picture', picture)
     this.props.history.push(`/attempt-quiz/${code}`)
