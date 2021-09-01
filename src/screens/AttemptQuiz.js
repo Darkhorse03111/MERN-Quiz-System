@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { Link, Redirect } from 'react-router-dom'
-import { ListGroup, Badge, Row, Col } from 'react-bootstrap'
+import { ListGroup, Badge, Row, Col, Carousel } from 'react-bootstrap'
 import * as io from 'socket.io-client';
 import {
 	MusicNote, MusicOff
 } from '@material-ui/icons'
 import LoadingScreen from './LoadingScreen'
-import AttemptedModal from './AttemptedModal'
 import './AttemptQuiz.css'
 import { Icon } from '@material-ui/core'
 
 let socket
-const env = process.env.NODE_ENV;
 const socketUrl = "/"
 // const socketUrl = "ws://192.168.104.16:3001"
 
@@ -88,7 +86,9 @@ class AttemptQuiz extends React.Component {
 		}
 	}
 	componentWillUnmount() {
+		if (!!socket) {
 		socket.close()
+		}
 		// this.audio.pause()
 	}
 	handleOptionSelect = (option, number) => {
@@ -232,7 +232,6 @@ class AttemptQuiz extends React.Component {
 				mark
 			})
 		} catch (e) {
-			console.log('Error Submitting quiz', e)
 		}
 	}
 	evaluateQuiz = (quizQuestions, attemptedQuestions) => {
@@ -268,7 +267,7 @@ class AttemptQuiz extends React.Component {
 	}
 	handleMusic = () => {
 		const { music } = this.state
-		// music ? this.audio.pause() : this.audio.play()
+		music ? this.audio.pause() : this.audio.play()
 		this.setState({ music: !music })
 	}
 
@@ -276,7 +275,6 @@ class AttemptQuiz extends React.Component {
 		const { number, questions, attemptedQuestions, quizTitle, loading, result, path, showModal, score, time, mark, students, showMark, music } = this.state
 		const { handleOptionSelect, submitQuiz, increaseNumber, hideModal, checkNext } = this
 		const { quizCode } = this.props.match.params
-		console.log('students:', students)
 		if (loading) return <LoadingScreen />
 		// For Quiz not Found
 		if (quizTitle === 'ERR:QUIZ_NOT_FOUND')
@@ -287,7 +285,7 @@ class AttemptQuiz extends React.Component {
 						<b>Quiz</b>
 					</div>
 					<h3>
-						Go back to <Link to='/join-quiz'>Join Quiz </Link>Page.
+						Go back to <Link to='/name'>Join Quiz </Link>Page.
 					</h3>
 				</div>
 			)
@@ -327,19 +325,58 @@ class AttemptQuiz extends React.Component {
 			return (
 				<div className='dash-body'>
 					<div className='quizzes' style={{ width: '1250px', paddingBottom: '50px' }}>
-						<img src="/Quiz/banner.png"></img>
+						<div>
+							<Carousel style={{ height: '100%' }}>
+								<Carousel.Item interval={4000}>
+									<img
+										className="d-block"
+										style={{ width: `1240px`, height: `336px` }}
+										src="/Quiz/banner.png"
+										alt="Second slide"
+									/>
+									<Carousel.Caption>
+										{/* <h3>Second slide label</h3>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p> */}
+									</Carousel.Caption>
+								</Carousel.Item>
+								<Carousel.Item interval={4000}>
+									<img
+										className="d-block"
+										style={{ width: `1240px`, height: `336px` }}
+										src="/Quiz/banner.png"
+										alt="Second slide"
+									/>
+									<Carousel.Caption>
+										{/* <h3>Second slide label</h3>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p> */}
+									</Carousel.Caption>
+								</Carousel.Item>
+								<Carousel.Item interval={4000}>
+									<img
+										className="d-block"
+										style={{ width: `1240px`, height: `336px` }}
+										src="/Quiz/banner.png"
+										alt="Third slide"
+									/>
+									<Carousel.Caption>
+										{/* <h3>Third slide label</h3>
+								<p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p> */}
+									</Carousel.Caption>
+								</Carousel.Item>
+							</Carousel>
+						</div>
 						<div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between', height: '800px' }}>
 							<div id='create-quiz-body' className='flex-container' style={{ width: '830px', color: '#ffffff', marginTop: '0px' }}>
 								<div className='attemptQuestionCard theme-classic' style={{ backgroundColor: '#294634', marginLeft: '10px', width: '100%', height: '1000px', marginBottom: '100px' }}>
 									<div className='fixed' style={{ height: '60px', display: 'flex', justifyContent: 'space-between', width: '100%' }}>
 										<Row style={{ marginLeft: 'auto', marginRight: 'auto' }}>
-											<Col><div className='topText' style={{ width: '200px' }}>Quiz 1</div></Col>
-											<Col><Icon style={{ height: '60px' }}>
-												<MusicNote fontSize='large' />
+											<Col><div className='topText' style={{ width: '200px' }}>Quiz {`${number + 1}`}</div></Col>
+											<Col><Icon style={{ height: '60px' }} onClick={e => this.handleMusic()}>
+												{ music ? <MusicNote fontSize='large' /> : <MusicOff fontSize='large' />}
 											</Icon>
 											</Col>
 											<Col>
-												<div className='topText' style={{ width: '200px' }}>Score:10</div>
+												<div className='topText' style={{ width: '200px' }}>Score:{`${score}`}</div>
 											</Col>
 										</Row>
 									</div>

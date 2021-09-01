@@ -59,7 +59,7 @@ function Sidebar({ setUsername, setPath }) {
 					</li>
 					{SidedbarData.map((item, index) => {
 						return (index === 0 || (index === 1 && !user) || (index === 2 && user === 'admin')) && <li key={index} className='nav-text'>
-							<Link to={item.path}>
+							<Link to={item.path} style={{ color: '#ffffff' }}>
 								<Icon style={{ height: '40px' }}>{item.icon}</Icon>
 								<span className='nav-item-title'>{item.title}</span>
 							</Link>
@@ -69,7 +69,8 @@ function Sidebar({ setUsername, setPath }) {
 					{
 						(!!user || !!username) && <li className='nav-text sign-out' style={{ display: 'flex', justifyContent: 'left' }}>
 							<button
-								onClick={() => setSignOut(true)}>
+								onClick={() => setSignOut(true)}
+								style={{color:'#ffffff'}}>
 								<Icon style={{ height: '40px' }}	>
 									<ExitToApp />
 								</Icon>

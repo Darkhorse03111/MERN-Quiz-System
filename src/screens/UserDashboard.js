@@ -106,6 +106,8 @@ const UserDashboard = ({ user }) => {
 		return localStorage.getItem('username') == undefined ? <Redirect push to='join-quiz' /> : <Redirect push to={`/attempt-quiz/${path}`} />
 	}
 
+	localStorage.removeItem('username')
+
 	if (editQuiz.length)
 		return (
 			<CreateQuiz
@@ -161,8 +163,8 @@ const UserDashboard = ({ user }) => {
 					</Carousel>
 				</div>
 				<div style={{ marginTop: '40px', display: 'flex', justifyContent: 'space-between' }}>
-					<div id='create-quiz-body' className='flex-container' style={{ width: '650px', color: '#ffffff', marginTop: '0px' }}>
-						<div className='attemptQuestionCard theme-classic flex-container' style={{ backgroundColor: '#294634', marginLeft: '250px', width: '100%' }}>
+					<div id='create-quiz-body' className='flex-container' style={{ width: '830px', color: '#ffffff', marginTop: '0px' }}>
+						<div className='attemptQuestionCard theme-classic flex-container' style={{ backgroundColor: '#294634', marginLeft: '10px', width: '100%' }}>
 							<div className='fixed' style={{ height: '60px', display: 'flex', justifyContent: 'space-between', width: '100%' }}>
 								<Row style={{ marginLeft: 'auto', marginRight: 'auto' }}>
 									<Col><div className='topText' style={{ width: '200px' }}>Quiz 1</div></Col>

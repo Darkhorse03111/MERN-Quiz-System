@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import { Modal } from '@material-ui/core'
 import { Row, Col, InputGroup, FormControl } from 'react-bootstrap'
@@ -28,14 +28,15 @@ export default class UsernameModal extends React.Component {
     // this.props.setUsername(username)
     // setPath('/join-quiz')
     const { username, code, picture } = this.state
+    const { showToast } = this.props
     if (!username) {
-      return alert('Input Username')
+      return showToast('Quiz Login', 'No Username')
     }
     if (!code) {
-      return alert('Input Quiz Code')
+      return showToast('Quiz Login', 'No Quiz Code')
     }
     if (!picture) {
-      return alert('Select Picture')
+      return showToast('Quiz Login', 'No Picture')
     }
     localStorage.setItem('username', username)
     localStorage.setItem('picture', picture)
@@ -50,6 +51,7 @@ export default class UsernameModal extends React.Component {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        marginTop: '25px'
       },
       paper: {
         // backgroundColor: theme.palette.background.paper,
@@ -68,13 +70,13 @@ export default class UsernameModal extends React.Component {
     for (let i = 2; i < 11; ++i) {
       img.push(i)
     }
-    return <Modal
+    return <div style={{width:'800px',height:'500px', marginTop:`${(window.innerHeight-570)/2}px`,backgroundColor:'#A17F50', marginLeft:`${(window.innerWidth-800)/2}px`}} >
+    <div
       aria-labelledby='transition-modal-title'
       aria-describedby='transition-modal-description'
       style={classes.modal}
       // style={{ width: '360px', margin: 'auto' }}
       open={true}
-      disableEnforceFocus={true}
     >
       <Row>
         <Col lg='auto' md='auto' sm='auto' style={{ backgroundColor: '#294634', width: '300px', paddingLeft: '15px', paddingRight: '15px', borderRadius: '10px' }}>
@@ -112,16 +114,17 @@ export default class UsernameModal extends React.Component {
             {
               img.map((im, index) => <img
                 src={`/Quiz/Avatar/${im}.png`}
-                style={{ margin: '20px 20px 20px 20px', width: '90px', height: '90px', border: picture === index + 1 ? 'blue 1px solid' : 'none' }}
+                style={{ margin: '20px 20px 20px 20px', width: '90px', height: '90px', border: picture === index + 2 ? 'blue 1px solid' : 'none' }}
                 className="rounded"
                 alt=""
                 key={im}
-                onClick={e => this.setState({ picture: index + 1 })}
+                onClick={e => this.setState({ picture: index + 2 })}
               />)
             }
           </div>
         </Col>
       </Row>
-    </Modal>
+    </div>
+    </div>
   }
 }

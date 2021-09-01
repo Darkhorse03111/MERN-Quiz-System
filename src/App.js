@@ -50,7 +50,7 @@ const App = () => {
 				</Toast>
 			</ToastContainer>
 			<Switch>
-				<Route path='/name' render={routeProps => <UsernameModal setUsername={setUsername} {...routeProps} />}></Route>
+				<Route path='/name' render={routeProps => <UsernameModal setUsername={setUsername} showToast={showToast} {...routeProps} />}></Route>
 				<Route path='/admin/dashboard/editQuiz'>
 					<EditQuiz setUser={setUser} user={user} />
 				</Route>
