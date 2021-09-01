@@ -10,26 +10,29 @@ export default class UsernameModal extends React.Component {
     super(props)
     this.state = {
       username: '',
-      password: ''
+      code: ''
     }
   }
-  login = async username => {
-    const res = await fetch('/API/users/login', {
-      method: 'POST',
-      body: JSON.stringify({ name: username }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    const body = await res.json()
-    localStorage.setItem('username', username)
-    localStorage.setItem('id', body.id)
-    this.props.setUsername(username)
+  enter = () => {
+    // const res = await fetch('/API/users/login', {
+    //   method: 'POST',
+    //   body: JSON.stringify({ name: username }),
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // })
+    // const body = await res.json()
+    // localStorage.setItem('username', username)
+    // localStorage.setItem('id', body.id)
+    // this.props.setUsername(username)
     // setPath('/join-quiz')
+    const { username, code } = this.state
+    localStorage.setItem('username', username)
+    this.props.history.push(`/attempt-quiz/${code}`)
   }
 
   render() {
-    const { username, password } = this.state
+    const { username, code } = this.state
     const { open } = this.props
     const classes = {
       modal: {
@@ -72,7 +75,7 @@ export default class UsernameModal extends React.Component {
           />
           <InputGroup className="mb-3">
             <FormControl
-              placeholder="Username"
+              placeholder="Student Name"
               aria-label="Username"
               aria-describedby="basic-addon1"
               style={{ height: '40px' }}
@@ -82,16 +85,15 @@ export default class UsernameModal extends React.Component {
           </InputGroup>
           <InputGroup className="mb-3">
             <FormControl
-              placeholder="Password"
+              placeholder="Quiz Code"
               aria-label="Password"
-              type="password"
               aria-describedby="basic-addon1"
               style={{ height: '40px' }}
-              value={password}
-              onChange={e => this.setState({ password: e.target.value })}
+              value={code}
+              onChange={e => this.setState({ code: e.target.value })}
             />
           </InputGroup>
-          <button className="btn" style={{ backgroundColor: '#A17F50', color: '#fff', width: '100%', marginTop: '15px', marginBottom: '25px', height: '40px', borderRadius: '10px', paddingTop: '5px', fontSize: '12px' }} onClick={e => this.login(username)}>ENTER</button>
+          <button className="btn" style={{ backgroundColor: '#A17F50', color: '#fff', width: '100%', marginTop: '15px', marginBottom: '25px', height: '40px', borderRadius: '10px', paddingTop: '5px', fontSize: '12px' }} onClick={e => this.enter()}>ENTER</button>
         </Col>
         <Col lg='auto' md='auto' sm='auto' style={{ width: '420px', backgroundColor: '#fff' }}>
           <div style={{ textAlign: 'center', color: '#294634', marginTop: '20px', marginBottom: '20px' }}>CHOOSE AVATAR</div>
@@ -102,6 +104,7 @@ export default class UsernameModal extends React.Component {
                 style={{ margin: '20px 20px 20px 20px', width: '90px', height: '90px' }}
                 className="rounded"
                 alt=""
+                key={im}
               />)
             }
           </div>

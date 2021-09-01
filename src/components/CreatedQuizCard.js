@@ -19,6 +19,7 @@ const CreatedQuizCard = ({
 	showToast
 }) => {
 	const [path, setPath] = useState('')
+	const user = localStorage.getItem('user')
 	if (path) {
 		return <Redirect to={path}></Redirect>
 	}
@@ -45,16 +46,20 @@ const CreatedQuizCard = ({
 					</IconButton>
 				</CopyToClipboard>
 			</Col>
-			<Col>
-				<IconButton style={{ padding: 0, color: '#a17f50' }} onClick={() => setPath(`/create-quiz/${code}`)}>
-					<EditRounded />
-				</IconButton>
-			</Col>
-			<Col>
-				<IconButton style={{ padding: 0, color: '#a17f50' }} onClick={() => deleteQuiz(code)}>
-					<DeleteRounded />
-				</IconButton>
-			</Col>
+			{
+				user === 'admin' && <Col>
+					<IconButton style={{ padding: 0, color: '#a17f50' }} onClick={() => setPath(`/create-quiz/${code}`)}>
+						<EditRounded />
+					</IconButton>
+				</Col>
+			}
+			{
+				user === 'admin' && <Col>
+					<IconButton style={{ padding: 0, color: '#a17f50' }} onClick={() => deleteQuiz(code)}>
+						<DeleteRounded />
+					</IconButton>
+				</Col>
+			}
 		</Row>
 	</Card>
 }

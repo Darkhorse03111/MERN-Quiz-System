@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { Icon } from '@material-ui/core'
 import './Sidebar.css'
-import firebase from '../firebase/firebase'
 
 import {
 	CreateNewFolder,
@@ -37,6 +36,8 @@ function Sidebar({ setUsername, setPath }) {
 	]
 	const [sidebar, setSidebar] = useState(false)
 	const showSidebar = () => setSidebar(!sidebar)
+	const user = localStorage.getItem('user')
+	const username = localStorage.getItem('username')
 	if (signOut) {
 		localStorage.removeItem('username')
 		localStorage.removeItem('user')
@@ -57,7 +58,7 @@ function Sidebar({ setUsername, setPath }) {
 						</Icon>
 					</li>
 					{SidedbarData.map((item, index) => {
-						return <li key={index} className='nav-text'>
+						return (index === 0 || (index === 1 && !user) || (index === 2 && user === 'admin')) && <li key={index} className='nav-text'>
 							<Link to={item.path}>
 								<Icon style={{ height: '40px' }}>{item.icon}</Icon>
 								<span className='nav-item-title'>{item.title}</span>
@@ -66,7 +67,7 @@ function Sidebar({ setUsername, setPath }) {
 					})}
 					{/* Sign Out Button */}
 					{
-						(!!firebase.auth().currentUser || !!localStorage.getItem('username')) && <li className='nav-text sign-out' style={{ display: 'flex', justifyContent: 'left' }}>
+						(!!user || !!username) && <li className='nav-text sign-out' style={{ display: 'flex', justifyContent: 'left' }}>
 							<button
 								onClick={() => setSignOut(true)}>
 								<Icon style={{ height: '40px' }}	>
