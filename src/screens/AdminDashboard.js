@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import { Row, Col, Toast, ToastContainer } from 'react-bootstrap'
+import confirm from "reactstrap-confirm"
 import './UserDashBoard.css'
 import CreatedQuizCard from '../components/CreatedQuizCard'
 import JoinedQuizCard from '../components/JoinedQuizCard'
 // import LoadingScreen from './LoadingScreen'
 import CreateQuiz from './CreateQuiz'
 
-const AdminDashboard = ({ user, showToast }) => {
+const AdminDashboard = ({ showToast, history }) => {
   const [createdQuizzes, setCreatedQuizzes] = useState([])
   // const [loading, setLoading] = useState(true)
   const [editQuiz, setEditQuiz] = useState([])
   const [allQuizzes, setAllQuizzes] = useState([])
   const [path, setPath] = useState('')
-  const [show, setShow] = useState(false)
-  const [toastTitle, setToastTitle] = useState('')
-  const [toastContent, setToastContent] = useState('')
+  const user = localStorage.getItem('user')
   // Fetch Data from the API
   useEffect(() => {
     // if (!user.uid) {
@@ -29,7 +28,12 @@ const AdminDashboard = ({ user, showToast }) => {
       //   quizData = await results.json()
       //   if (quizData.createdQuiz) setCreatedQuizzes(quizData.createdQuiz)
       //   console.log('created quiz:', quizData.createdQuiz)
-      results = await fetch(`/API/quizzes`)
+      results = await fetch('/API/quizzes/all', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
       quizData = await results.json()
       console.log('all quiz:', quizData)
       if (quizData.quizData) {
@@ -56,7 +60,6 @@ const AdminDashboard = ({ user, showToast }) => {
         method: 'POST',
         body: JSON.stringify({
           quizId: createdQuizzes[editQuiz]._id,
-          uid: user.uid,
           title,
           questions,
           isOpen,
@@ -86,27 +89,55 @@ const AdminDashboard = ({ user, showToast }) => {
     }
   }
 
-  const deleteQuiz = async index => {
-    // setLoading(true)
-    const id = createdQuizzes[index]._id
-    const results = await fetch(`/API/quizzes/${createdQuizzes[index]._id}`, {
-      method: 'DELETE',
+  const publishQuiz = async id => {
+    let index = allQuizzes.findIndex(quiz => quiz._id === id)
+    const result = await fetch('/API/quizzes/edit', {
+      method: 'POST',
+      body: JSON.stringify({
+        ...allQuizzes[index],
+        quizId: allQuizzes[index]._id,
+        isOpen: true
+      }),
       headers: {
         'Content-Type': 'application/json',
       },
     })
-    const submitData = await results.json()
-    console.dir(submitData)
-    let temp = [...createdQuizzes]
-    temp.splice(index, 1)
-    setCreatedQuizzes(temp)
-    temp = [...allQuizzes]
-    const ind = temp.findIndex(quiz => quiz._id === id);
-    temp.splice(ind, 1)
-    setAllQuizzes(temp)
-    setEditQuiz([])
-    // setLoading(false)
-    showToast('Delete Quiz', 'Success')
+    const res = await result.json()
+    if (res.message === 'Success') {
+      allQuizzes[index].isOpen = true
+      showToast('Publish Quiz', 'Success')
+    }
+  }
+
+  const deleteQuiz = async id => {
+    let result = await confirm({
+      title: (
+        <>
+          Deleting Quiz
+        </>
+      ),
+      message: "Do you really want to delete this quiz?",
+      confirmText: "OK",
+      confirmColor: "primary",
+      cancelColor: "link text-danger"
+    })
+    if (result) {
+      const result = await fetch(`/API/quizzes/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      const res = await result.json()
+      if (res.id) {
+        let temp = allQuizzes.filter(quiz => quiz._id !== id)
+        setAllQuizzes(temp)
+        showToast('Deleting Quiz', 'Success')
+      }
+      else {
+        showToast('Deleting Quiz', 'Fail')
+      }
+    }
   }
 
   // if (loading) return <LoadingScreen />
@@ -128,60 +159,47 @@ const AdminDashboard = ({ user, showToast }) => {
 
   return (
     <div className='dash-body' style={{ marginTop: '100px' }}>
-      <Row>
-        <Col xs={6}>
-          <ToastContainer position="top-end" className="p-3">
-            <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide animation>
-              <Toast.Header>
-                <img
-                  src="holder.js/20x20?text=%20"
-                  className="rounded me-2"
-                  alt=""
-                />
-                <strong className="me-auto">{toastTitle}</strong>
-              </Toast.Header>
-              <Toast.Body>{toastContent}</Toast.Body>
-            </Toast>
-          </ToastContainer>
-        </Col>
-      </Row>
       {
         <div className='quizzes'>
           <div className='heading'>
             <div className='line-left' />
-            <h2>Qur'an </h2>
+            <h2>Qur'an</h2>
             <div className='line' />
           </div>
           <div className='card-holder' style={{ justifyContent: 'center' }}>
             {allQuizzes.map((quiz, key) => (
-              <CreatedQuizCard
+              quiz.type === "Qur'an" && <CreatedQuizCard
                 key={key}
                 index={key}
                 setEditQuiz={setEditQuiz}
                 deleteQuiz={deleteQuiz}
                 title={quiz.title}
-                code={quiz.uid}
+                code={quiz._id}
                 questions={quiz.questions.length}
                 isOpen={quiz.isOpen}
+                publishQuiz={publishQuiz}
+                showToast={showToast}
               />
             ))}
           </div>
           <div className='heading'>
             <div className='line-left' />
-            <h2>Arabic </h2>
+            <h2>Arabic</h2>
             <div className='line' />
           </div>
           <div className='card-holder' style={{ justifyContent: 'center' }}>
             {allQuizzes.map((quiz, key) => (
-              <CreatedQuizCard
+              quiz.type === "Arabic" && <CreatedQuizCard
                 key={key}
                 index={key}
                 setEditQuiz={setEditQuiz}
                 deleteQuiz={deleteQuiz}
                 title={quiz.title}
-                code={quiz.uid}
+                code={quiz._id}
                 questions={quiz.questions.length}
                 isOpen={quiz.isOpen}
+                publishQuiz={publishQuiz}
+                showToast={showToast}
               />
             ))}
           </div>
@@ -192,15 +210,17 @@ const AdminDashboard = ({ user, showToast }) => {
           </div>
           <div className='card-holder' style={{ justifyContent: 'center' }}>
             {allQuizzes.map((quiz, key) => (
-              <CreatedQuizCard
+              quiz.type === "Islamic Studies" && <CreatedQuizCard
                 key={key}
                 index={key}
                 setEditQuiz={setEditQuiz}
                 deleteQuiz={deleteQuiz}
                 title={quiz.title}
-                code={quiz.uid}
+                code={quiz._id}
                 questions={quiz.questions.length}
                 isOpen={quiz.isOpen}
+                publishQuiz={publishQuiz}
+                showToast={showToast}
               />
             ))}
           </div>

@@ -30,7 +30,7 @@ function Sidebar({ setUsername, setPath }) {
 		},
 		{
 			title: 'Create Quiz',
-			path: '/create-quiz',
+			path: '/create-quiz/',
 			icon: <CreateNewFolder />,
 			CName: 'nav-text',
 		},
@@ -38,13 +38,10 @@ function Sidebar({ setUsername, setPath }) {
 	const [sidebar, setSidebar] = useState(false)
 	const showSidebar = () => setSidebar(!sidebar)
 	if (signOut) {
-		if (!!firebase.auth().currentUser) {
-			firebase.auth().signOut()
-		}
 		localStorage.removeItem('username')
-		localStorage.removeItem('id')
+		localStorage.removeItem('user')
 		setUsername('')
-		return <Redirect to='/' />
+		return <Redirect to='/dashboard' />
 	}
 
 	return (

@@ -5,13 +5,13 @@ import { AccountCircle } from '@material-ui/icons'
 import './AppBar.css'
 import Sidebar from './Sidebar'
 import firebase from '../firebase/firebase'
-const AppBar = ({ user, setUser, setUsername }) => {
-	const username = localStorage.getItem('username')
+const AppBar = ({ setUsername }) => {
+	const user = localStorage.getItem('user')
 	return (
 		<div className='appBar'>
 			<div className='slider'>
 				<Sidebar setUsername={setUsername} />
-				<Link to='/' className='home'>
+				<Link to='/dashboard' className='home'>
 					<b>Quiz</b>
 				</Link>
 			</div>
@@ -21,13 +21,13 @@ const AppBar = ({ user, setUser, setUsername }) => {
 						<b>Admin</b>
 					</Link>
 					}
-					{!!username && <div style={{ marginRight: '10px', paddingTop: '10px' }}>
+					{!!user && <div style={{ marginRight: '10px', paddingTop: '10px' }}>
 						<Icon>
 							<AccountCircle />
 						</Icon>
 					</div>}
 					<div className='vertical-center'>
-						<div>{username}</div>
+						<div>{user}</div>
 					</div>
 				</div>
 			</div>

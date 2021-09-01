@@ -27,11 +27,11 @@ const UserDashboard = ({ user }) => {
 		// }
 		const fetchQuizData = async () => {
 			let results, quizData
-			if (user.uid) {
-				results = await fetch(`/API/users/${user.uid}`)
-				quizData = await results.json()
-				if (quizData.createdQuiz) setCreatedQuizzes(quizData.createdQuiz)
-			}
+			// if (user.uid) {
+			// 	results = await fetch(`/API/users/${user.uid}`)
+			// 	quizData = await results.json()
+			// 	if (quizData.createdQuiz) setCreatedQuizzes(quizData.createdQuiz)
+			// }
 			results = await fetch(`/API/quizzes`, {
 				method: 'GET',
 				headers: {

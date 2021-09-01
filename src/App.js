@@ -24,36 +24,12 @@ import AdminDashboard from './screens/AdminDashboard'
 import Register from './screens/Register'
 
 const App = () => {
-	const [user, setUser] = useState({})
+	const [user, setUser] = useState(localStorage.getItem('user'))
 	const [username, setUsername] = useState(localStorage.getItem('username'))
 	const [show, setShow] = useState(false)
 	const [toastTitle, setToastTitle] = useState('')
 	const [toastContent, setToastContent] = useState('')
 	useEffect(() => {
-		const createUserInDB = async () => {
-			if (user.uid)
-				if (
-					firebase.auth().currentUser.metadata.lastSignInTime ===
-					firebase.auth().currentUser.metadata.creationTime
-				) {
-					try {
-						await fetch('/API/users/create', {
-							method: 'POST',
-							body: JSON.stringify({
-								uid: user.uid,
-								name: user.name,
-								email: user.email,
-							}),
-							headers: {
-								'Content-Type': 'application/json',
-							},
-						})
-					} catch (error) {
-						console.log('User Creation Error: ', error)
-					}
-				}
-		}
-		createUserInDB()
 	}, [user])
 	const showToast = (title, content) => {
 		setShow(true)
@@ -63,7 +39,7 @@ const App = () => {
 	return (
 		<div className='App flex-container grow'>
 			<div className='fixed'>
-				<AppBar user={user} setUser={setUser} setUsername={setUsername} />
+				<AppBar setUsername={setUsername} />
 			</div>
 			<ToastContainer position="top-end" className="p-3" style={{ marginTop: '80px', zIndex: '100' }}>
 				<Toast onClose={() => setShow(false)} show={show} delay={5000} autohide>
@@ -82,14 +58,10 @@ const App = () => {
 					<EditQuiz setUser={setUser} user={user} />
 				</Route>
 
-				<Route path='/admin/dashboard'>
-					<AdminDashboard setUser={setUser} user={user} showToast={showToast} />
+				<Route path='/admin/dashboard' render={routeProps => <AdminDashboard setUser={setUser} showToast={showToast} {...routeProps} />}>
 				</Route>
 
-				<Route path='/admin'>
-					{
-						!firebase.auth().currentUser ? <Home setUser={setUser} user={user} showToast={showToast} /> : <AdminDashboard setUser={setUser} user={user} showToast={showToast} />
-					}
+				<Route path='/admin' render={routeProps => !user ? <Home setUser={setUser} user={user} showToast={showToast} {...routeProps} /> : <AdminDashboard setUser={setUser} showToast={showToast} {...routeProps} />}>
 				</Route>
 
 				<Route
@@ -98,12 +70,10 @@ const App = () => {
 					<Register showToast={showToast} />
 				</Route>
 
-				<Route path='/dashboard'>
-					{
-						!!firebase.auth().currentUser ? <AdminDashboard setUser={setUser} user={user} showToast={showToast} /> : <UserDashboard user={user} />
-					}
+				<Route path='/dashboard' render={routeProps => !!user ? <AdminDashboard setUser={setUser} showToast={showToast} {...routeProps} /> : <UserDashboard user={user} />}>
 				</Route>
-				<Route path='/create-quiz/:id' render={routeProps => <CreateQuiz user={user} showToast={showToast} id={routeProps.match.params.id} />} />
+				<Route path='/create-quiz/:id' render={routeProps => <CreateQuiz showToast={showToast} id={routeProps.match.params.id} {...routeProps} />} />
+				<Route path='/create-quiz' render={routeProps => <CreateQuiz showToast={showToast} {...routeProps} />} />
 				<Route
 					path='/created-successfully/:quizCode'
 					component={CreatedSuccessfully}
@@ -117,11 +87,7 @@ const App = () => {
 					component={AttemptBlindQuiz}
 				/>
 				<Route path='/responses/:quizCode' component={Responses} />
-				<Route path='/'>
-					{
-						!!firebase.auth().currentUser ? <AdminDashboard setUser={setUser} user={user} showToast={showToast} /> : <UserDashboard user={user} />
-					}
-				</Route>
+				<Route path='/' render={routeProps => !!user ? <AdminDashboard setUser={setUser} showToast={showToast} {...routeProps} /> : <UserDashboard setUser={setUser} user={user} showToast={showToast} {...routeProps} />} />
 				<Route component={NotFoundPage} />
 			</Switch>
 		</div>

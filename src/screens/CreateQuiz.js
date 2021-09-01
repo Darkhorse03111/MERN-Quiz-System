@@ -1,5 +1,5 @@
 import React from 'react'
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 import { Row, Col, Form, InputGroup } from 'react-bootstrap'
 import './CreateQuiz.css'
 import AddQuestionModal from '../components/AddQuestionModal'
@@ -18,7 +18,9 @@ export default class CreateQuiz extends React.Component {
 			quizId: props.id,
 			questions: [],
 			editing: false,
-			curIndex: -1
+			curIndex: -1,
+			type: "Qur'an",
+			isOpen: false
 		}
 	}
 	async componentDidMount() {
@@ -33,7 +35,54 @@ export default class CreateQuiz extends React.Component {
 				},
 			})
 			const result = await res.json()
-			this.setState({ title: result.quizData.title, questions: result.quizData.questions })
+			this.setState({ title: result.quizData.title, questions: result.quizData.questions, type: result.quizData.type || "Qur'an", isOpen: result.quizData.isOpen })
+		}
+	}
+	addQuestionHandle = (title, optionType, options) => {
+		const { curIndex, questions } = this.state
+		if (curIndex < 0) {
+			questions.push({ title, optionType, options })
+		}
+		else {
+			questions[curIndex] = { title, optionType, options }
+		}
+		this.setState({ questions })
+	}
+	onSave = async () => {
+		const { title, quizId, questions, type, isOpen } = this.state
+		if (quizId) {
+			const res = await fetch('/API/quizzes/edit', {
+				method: 'POST',
+				body: JSON.stringify({ title, questions, type, quizId, isOpen }),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+			const result = await res.json()
+			if (result.message === 'Success') {
+				this.props.showToast('Adding Quiz', 'Success')
+				this.props.history.push('/admin/dashboard')
+			}
+			else {
+				this.props.showToast('Adding Quiz', 'Fail')
+			}
+		}
+		else {
+			const res = await fetch('/API/quizzes/create', {
+				method: 'POST',
+				body: JSON.stringify({ title, questions, type, isOpen }),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+			const result = await res.json()
+			if (result.message === 'Success') {
+				this.props.showToast('Adding Quiz', 'Success')
+				this.props.history.push('/admin/dashboard')
+			}
+			else {
+				this.props.showToast('Adding Quiz', 'Fail')
+			}
 		}
 	}
 	render() {
@@ -51,7 +100,7 @@ export default class CreateQuiz extends React.Component {
 									type='text'
 									className='input-text'
 									value={title}
-									onChange={(e) => this.setState({ title: e.target.valueAsDate })}
+									onChange={(e) => this.setState({ title: e.target.value })}
 									id='quiz-title'
 									placeholder='Untitled Quiz'
 									autoFocus
@@ -63,39 +112,53 @@ export default class CreateQuiz extends React.Component {
 									// disabled={!(title.length && questionArray.length)}
 									className='button'
 									style={{ height: '35px', fontSize: '15px', paddingTop: '3px', paddingBottom: '5px' }}
+									onClick={() => this.setState({ editing: true, curIndex: -1 })}
 								>
 									+Question
 								</button>
 							</Col>
 							<Col md='auto'>
-								<select name="cars" className="custom-select" style={{ width: '200px', marginTop: '10px' }}>
+								<select name="cars" className="custom-select" style={{ width: '150px', marginTop: '10px' }} onChange={e => this.setState({ type: e.target.value })}>
 									<option>Qur'an</option>
 									<option>Arabic</option>
 									<option>Islamic Studies</option>
 								</select>
-							</Col>
-							<Col md='auto' style={{ paddingTop: '10px' }}>
-								<Switch
-									checked={access}
-									onChange={(e) => this.setState({ access: e.target.value })}
-									name='access'
-									default='#00ff00'
-									primary='#ff0000'
-									secondary='#0000ff'
-								/>
-								Save
 							</Col>
 							<Col md='auto'>
 								<button
 									// disabled={!(title.length && questionArray.length)}
 									className='button'
 									style={{ height: '35px', fontSize: '15px', paddingTop: '3px', paddingBottom: '5px' }}
+									onClick={this.onSave}
 								>
-									Edit
+									SAVE
 								</button>
+							</Col>
+							<Col md='auto'>
+								<Link to='/admin/dashboard'><button
+									// disabled={!(title.length && questionArray.length)}
+									className='button'
+									style={{ height: '35px', fontSize: '15px', paddingTop: '3px', paddingBottom: '5px' }}
+								>
+									CANCEL
+								</button></Link>
 							</Col>
 						</Row>
 					</div>
+					{
+						editing && <div className='controls'>
+							<AddQuestionModal
+								type={curIndex >= 0 ? 'edit' : 'add'}
+								title={curIndex >= 0 ? questions[curIndex].title : ''}
+								opType={curIndex >= 0 ? questions[curIndex].optionType : 'radio'}
+								opArray={curIndex >= 0 ? questions[curIndex].options : []}
+								index={curIndex}
+								addQuestionHandle={this.addQuestionHandle}
+								editQuestionHandle={this.editQuestionHandle}
+								handleClose={() => this.setState({ editing: false })}
+							/>
+						</div>
+					}
 					<div style={{ width: '1138px' }}>
 						{
 							questions.map((question, index) =>
@@ -199,9 +262,6 @@ export default class CreateQuiz extends React.Component {
 						}
 					</div>
 				</div>
-				{
-					editing && <AddQuestionModal type='edit' title={questions[curIndex].title} opType='radio' opArray={questions[curIndex].options} />
-				}
 			</div>
 		)
 	}

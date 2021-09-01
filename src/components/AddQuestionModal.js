@@ -36,7 +36,8 @@ export default function AddQuestionModal({
 	opArray,
 	index = -1,
 	addQuestionHandle,
-	editQuestionHandle
+	editQuestionHandle,
+	handleClose
 }) {
 	const classes = useStyles()
 	const [open, setOpen] = React.useState(true)
@@ -63,9 +64,9 @@ export default function AddQuestionModal({
 		setOpen(true)
 	}
 
-	const handleClose = () => {
-		setOpen(false)
-	}
+	// const handleClose = () => {
+	// 	setOpen(false)
+	// }
 	const addQuestionCallBack = () => {
 		const tempArr = [...optionsArray]
 		if (optionsRef.current.value.length !== 0) {
@@ -153,11 +154,18 @@ export default function AddQuestionModal({
 				aria-describedby='transition-modal-description'
 				className={classes.modal}
 				show={open}
-				disableEnforceFocus={true}
+				disableenforcefocus={true.toString()}
+				dialogClassName="modal-90w"
+				size='xl'
 			>
+				<Modal.Header closeButton>
+					<Modal.Title id="example-custom-modal-styling-title">
+						Custom Modal Styling
+					</Modal.Title>
+				</Modal.Header>
 				<div className={classes.paper}>
 					<Row>
-						<Col sm='9' md='9' lg='9' as='9'>
+						<Col lg={9}>
 							<div className='questionCard'>
 								<div id='title'>Question:</div>
 								<input
@@ -249,7 +257,7 @@ export default function AddQuestionModal({
 								</div>
 							</div>
 						</Col>
-						<Col sm='3' md='3' lg='3' as='3'>
+						<Col lg={3}>
 							Add Picture
 						</Col>
 					</Row>

@@ -87,25 +87,26 @@ Router.delete('/:id', (req, res) => {
 })
 
 Router.post('/edit', (req, res) => {
-	const { quizId, uid, title, questions, isOpen } = req.body
+	const { quizId, title, questions, isOpen, type } = req.body
 
 	DB.withDB(async (db) => {
 		try {
 			await db.collection('quizzes').updateOne(
 				{
-					$and: [{ uid }, { _id: ObjectId(quizId) }],
+					$and: [{ _id: ObjectId(quizId) }],
 				},
 				{
 					$set: {
 						title,
 						questions,
 						isOpen,
+						type
 					},
 				},
 				(err, result) => {
 					if (err) throw err
 					res.status(200).json({
-						message: 'Quiz Updated Successfully.',
+						message: 'Success',
 					})
 				}
 			)
@@ -121,15 +122,37 @@ Router.post('/responses', (req, res) => {
 	DB.getResponses(reqBody, res)
 })
 
+Router.get('/all', (req, res) => {
+	DB.withDB(async (db) => {
+		try {
+			const createdCursor = db
+				.collection('quizzes')
+				.find({
+				})
+				.project({
+					_id: 1,
+					isOpen: 1,
+					title: 1,
+					questions: 1,
+					type: 1
+				})
+			const quizData = await createdCursor.toArray();
+			res.status(200).json({
+				quizData
+			})
+		} catch (error) {
+			res.status(500).json({ error })
+		}
+	})
+})
+
 Router.get('/:id', (req, res) => {
 	const { id } = req.params
 	DB.withDB(async (db) => {
 		try {
 			const createdCursor = db
 				.collection('quizzes')
-				.find({
-					uid: id
-				})
+				.find({ _id: new ObjectId(id) })
 				.project({
 					isOpen: 1,
 					title: 1,
@@ -157,13 +180,10 @@ Router.get('/', (req, res) => {
 					isOpen: true
 				})
 				.project({
+					_id: 1,
 					isOpen: 1,
 					title: 1,
-					questions: 1,
-					uid: 1,
-					responses: {
-						$size: '$responses',
-					},
+					questions: 1
 				})
 			const quizData = await createdCursor.toArray();
 			res.status(200).json({

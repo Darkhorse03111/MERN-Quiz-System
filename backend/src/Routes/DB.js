@@ -78,15 +78,9 @@ createQuiz = async (quiz, res) => {
 			quiz['responses'] = []
 			const result = await db.collection('quizzes').insertOne(quiz)
 			res.status(200).json({
-				message: 'Quiz created successfully',
+				message: 'Success',
 				quizId: result.insertedId
 			})
-			console.log('quiz ID', result.insertedId)
-			const query = { uid: quiz.uid }
-			const addQuiz = {
-				$push: { createdQuiz: result.insertedId }
-			}
-			await db.collection('users').updateOne(query, addQuiz)
 			console.log('Quiz Added to Creator Document: ', result.insertedId)
 		})
 	} catch (error) {

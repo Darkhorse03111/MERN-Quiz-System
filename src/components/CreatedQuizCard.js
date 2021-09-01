@@ -3,8 +3,9 @@ import { Redirect } from 'react-router-dom'
 import { IconButton } from '@material-ui/core'
 import { EditRounded, DeleteRounded } from '@material-ui/icons'
 import FileCopyIcon from '@material-ui/icons/FileCopy';
-import "./QuizCard.css"
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { Card, ListGroup, ListGroupItem, Button, Row, Col } from 'react-bootstrap'
+import "./QuizCard.css"
 
 const CreatedQuizCard = ({
 	title,
@@ -13,7 +14,9 @@ const CreatedQuizCard = ({
 	isOpen,
 	index,
 	setEditQuiz,
-	deleteQuiz
+	deleteQuiz,
+	publishQuiz,
+	showToast
 }) => {
 	const [path, setPath] = useState('')
 	if (path) {
@@ -25,13 +28,22 @@ const CreatedQuizCard = ({
 		<p style={{ borderBottom: '1px solid #ffffff', marginLeft: '12px', marginRight: '12px', marginBottom: '0px', paddingTop: '3px', paddingBottom: '3px', color: '#ffffff', fontSize: '12px' }}>Lesson Quiz</p>
 		<p style={{ borderBottom: '1px solid #ffffff', marginLeft: '12px', marginRight: '12px', paddingTop: '3px', paddingBottom: '3px', color: '#ffffff', fontSize: '12px' }}>Teacher Shavez Muhammad</p>
 		<Row style={{ marginBottom: '10px', paddingLeft: '15px', paddingRight: '15px' }}>
+			{
+				!isOpen && <Col>
+					<button className="button" style={{ height: '24px', padding: '2px', margin: '0px', fontSize: '10px' }} onClick={e => publishQuiz(code)}>Publish</button>
+				</Col>
+			}
 			<Col>
-				<button className="button" style={{ height: '24px', padding: '2px', margin: '0px', fontSize: '10px' }}>Publish</button>
-			</Col>
-			<Col>
-				<IconButton style={{ padding: 0, color: '#a17f50' }} onClick={() => deleteQuiz(index)}>
-					<FileCopyIcon />
-				</IconButton>
+				<CopyToClipboard
+					text={code}
+					onCopy={() => {
+						// showToast('Copying Quiz Code', 'Success')
+					}}
+				>
+					<IconButton style={{ padding: 0, color: '#a17f50' }} onClick={() => showToast('Copying Quiz Code', 'Success')}>
+						<FileCopyIcon />
+					</IconButton>
+				</CopyToClipboard>
 			</Col>
 			<Col>
 				<IconButton style={{ padding: 0, color: '#a17f50' }} onClick={() => setPath(`/create-quiz/${code}`)}>
@@ -39,7 +51,7 @@ const CreatedQuizCard = ({
 				</IconButton>
 			</Col>
 			<Col>
-				<IconButton style={{ padding: 0, color: '#a17f50' }} onClick={() => deleteQuiz(index)}>
+				<IconButton style={{ padding: 0, color: '#a17f50' }} onClick={() => deleteQuiz(code)}>
 					<DeleteRounded />
 				</IconButton>
 			</Col>
