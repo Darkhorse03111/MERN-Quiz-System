@@ -10,8 +10,6 @@ import LoadingScreen from './LoadingScreen'
 export default class CreateQuiz extends React.Component {
 	constructor(props) {
 		super(props)
-		// console.log('current props:', this.props.match.params.id)
-		console.log('current id:', props.id)
 		this.state = {
 			title: '',
 			access: false,
@@ -25,9 +23,7 @@ export default class CreateQuiz extends React.Component {
 	}
 	async componentDidMount() {
 		const { quizId } = this.state
-		console.log('quizId:', quizId)
 		if (quizId) {
-			console.log('getting quiz data')
 			const res = await fetch(`/API/quizzes/${quizId}`, {
 				method: 'GET',
 				headers: {
@@ -35,7 +31,7 @@ export default class CreateQuiz extends React.Component {
 				},
 			})
 			const result = await res.json()
-			this.setState({ title: result.quizData.title, questions: result.quizData.questions, type: result.quizData.type || "Qur'an", isOpen: result.quizData.isOpen })
+			this.setState({ title: result.quizData.title, questions: result.quizData.questions, type: result.quizData.type, isOpen: result.quizData.isOpen })
 		}
 	}
 	addQuestionHandle = (title, optionType, options) => {
@@ -60,11 +56,11 @@ export default class CreateQuiz extends React.Component {
 			})
 			const result = await res.json()
 			if (result.message === 'Success') {
-				this.props.showToast('Adding Quiz', 'Success')
+				this.props.showToast('Editing Quiz', 'Success')
 				this.props.history.push('/admin/dashboard')
 			}
 			else {
-				this.props.showToast('Adding Quiz', 'Fail')
+				this.props.showToast('Editing Quiz', 'Fail', 'error')
 			}
 		}
 		else {
@@ -81,14 +77,26 @@ export default class CreateQuiz extends React.Component {
 				this.props.history.push('/admin/dashboard')
 			}
 			else {
-				this.props.showToast('Adding Quiz', 'Fail')
+				this.props.showToast('Adding Quiz', 'Fail', 'error')
 			}
 		}
 	}
+	onChangeFile = async (file, index, field) => {
+		let formdata = new FormData()
+		formdata.append('file', file)
+		const res = await fetch('/API/upload', {
+			method: 'POST',
+			body: formdata
+		})
+		const result = await res.json()
+		let { questions } = this.state
+		questions[index][field] = result.filePath
+		this.setState({ questions: [...questions] })
+		this.props.showToast('File Upload', 'Success')
+	}
 	render() {
-		const { access, title, questions, curIndex, editing } = this.state
-		console.log('current index:', curIndex)
-		console.log('questions:', questions)
+		const { access, title, questions, curIndex, editing, type } = this.state
+		console.log('current type:', type)
 		return (
 			<div id='main-body' style={{ backgroundColor: '#FFFFFF' }}>
 				<div id='create-quiz-body'>
@@ -118,10 +126,10 @@ export default class CreateQuiz extends React.Component {
 								</button>
 							</Col>
 							<Col md='auto'>
-								<select name="cars" className="custom-select" style={{ width: '150px', marginTop: '10px' }} onChange={e => this.setState({ type: e.target.value })}>
-									<option>Qur'an</option>
-									<option>Arabic</option>
-									<option>Islamic Studies</option>
+								<select name="cars" className="custom-select" style={{ width: '150px', marginTop: '10px' }} value={type} onChange={e => this.setState({ type: e.target.value })}>
+									<option value="Qur'an">Qur'an</option>
+									<option value='Arabic'>Arabic</option>
+									<option value='Islamic Studies'>Islamic Studies</option>
 								</select>
 							</Col>
 							<Col md='auto'>
@@ -146,7 +154,7 @@ export default class CreateQuiz extends React.Component {
 						</Row>
 					</div>
 					{
-						editing && <div className='controls'>
+						<div className='controls'>
 							<AddQuestionModal
 								type={curIndex >= 0 ? 'edit' : 'add'}
 								title={curIndex >= 0 ? questions[curIndex].title : ''}
@@ -155,6 +163,7 @@ export default class CreateQuiz extends React.Component {
 								index={curIndex}
 								addQuestionHandle={this.addQuestionHandle}
 								editQuestionHandle={this.editQuestionHandle}
+								open={editing}
 								handleClose={() => this.setState({ editing: false })}
 							/>
 						</div>
@@ -167,92 +176,63 @@ export default class CreateQuiz extends React.Component {
 										<div style={{ height: '50px', background: '#A17F50', borderRadius: '5px', color: '#ffffff', textAlign: 'left', fontSize: '20px', paddingTop: '10px', paddingLeft: '30px' }}>
 											QUESTION {index + 1}
 										</div>
-										<Row style={{ paddingTop: '20px', paddingBottom: '20px', marginLeft: '2px', marginRight: '2px', backgroundColor: '#F1F1F1' }}>
-											<Col>
+										<Row style={{ paddingTop: '20px', paddingBottom: '20px', marginLeft: '2px', marginRight: '2px', height: '180px', backgroundColor: '#F1F1F1' }}>
+											<Col xs={4} md={4} lg={4} xl={4} style={{ display: 'flex', justifyContent: 'center' }}>
+												{
+													!!question.image && <img src={question.image} style={{ width: '100%' }}></img>
+												}
+											</Col>
+											<Col xs={8} md={8} lg={8} xl={8}>
 												<div style={{ height: '100%', position: 'relative' }}>
 													<p style={{ margin: '0', position: 'absolute', top: '50%', left: '20%', transform: 'translate(-20%,-50%)' }} rows='5' cols='40'>
 														{question.title}
 													</p>
 												</div>
 											</Col>
-											<Col md='auto'>
-												<button style={{ width: '200px', height: '200px', fontSize: '80px', backgroundColor: '#3b563f', color: '#C7B299', borderRadius: '10px' }}>+</button>
-											</Col>
 										</Row>
 										<div style={{ backgroundColor: '#CCCCCC' }}>
-											<button
-												// disabled={!(title.length && questionArray.length)}
-												className='button'
-												style={{ height: '35px', fontSize: '12px', paddingTop: '3px', paddingBottom: '5px' }}
-											>
-												+VIDEO CLIP
-											</button>
-											<button
-												// disabled={!(title.length && questionArray.length)}
-												className='button'
-												style={{ height: '35px', fontSize: '12px', paddingTop: '3px', paddingBottom: '5px' }}
-											>
-												+SOUND
-											</button>
-											<button
-												// disabled={!(title.length && questionArray.length)}
-												className='button'
-												style={{ height: '35px', fontSize: '12px', paddingTop: '3px', paddingBottom: '5px' }}
-											>
-												+PICTURE
-											</button>
-											<button
-												// disabled={!(title.length && questionArray.length)}
-												className='button'
-												onClick={() => {
-													console.log(`editing ${index}`)
-													this.setState({ editing: true, curIndex: index })
-												}}
-												style={{ height: '35px', fontSize: '12px', paddingTop: '3px', paddingBottom: '5px' }}
-											>
-												EDIT
-											</button>
+											<Row style={{ justifyContent: 'space-around' }}>
+												<div style={{ position: 'relative', width: '90px' }}>
+													<div className='fileInput' style={{ height: '35px', paddingTop: '5px' }}>+Image</div>
+													<Form.Control type="file" onChange={e => this.onChangeFile(e.target.files[0], index, 'image')} style={{ position: 'absolute', width: '90px', height: '35px', left: '12px', top: '0', opacity: '0' }} />
+												</div>
+												<div style={{ position: 'relative', width: '90px' }}>
+													<div className='fileInput' style={{ height: '35px', paddingTop: '5px' }}>+Audio</div>
+													<Form.Control type="file" onChange={e => this.onChangeFile(e.target.files[0], index, 'audio')} style={{ position: 'absolute', width: '90px', height: '35px', left: '12px', top: '0', opacity: '0' }} />
+												</div>
+												<button
+													className='button'
+													onClick={() => this.setState({ editing: true, curIndex: index })}
+													style={{ height: '35px', fontSize: '12px', paddingTop: '3px', paddingBottom: '5px', width: '90px', fontSize: '15px', marginTop: '10px' }}
+												>
+													EDIT
+												</button>
+											</Row>
 										</div>
 									</Col>
 									<Col>
 										<div style={{ height: '50px', background: '#A17F50', borderRadius: '5px', color: '#ffffff', textAlign: 'left', fontSize: '20px', paddingTop: '10px', paddingLeft: '30px' }}>
 											ANSWERS
 										</div>
-										<Row style={{ backgroundColor: '#F1F1F1' }}>
-											<Col style={{ paddingLeft: '30px' }}>
+										<Row style={{ backgroundColor: '#F1F1F1', height: '235px', marginLeft: '2px', marginRight: '2px' }}>
+											<Col style={{ paddingLeft: '30px', overflow: 'y', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start' }}>
 												{
-													question.options.map((opt, idx) => idx % 2 === 0 && <div style={{ marginTop: '10px' }} key={idx}>
-														<div onClick={e => console.log(opt.isCorrect)}>
-															<Row style={{ float: 'left', marginLeft: '30px' }}>
-																<form>
-																	<input type={question.optionType === 'radio' ? 'radio' : 'checkbox'} id="vehicle1" name="vehicle1" value="Bike" readOnly checked={opt.isCorrect} />
-																	<label htmlFor="vehicle1" style={{ marginLeft: '10px' }}>{opt.text}</label>
-																</form>
-															</Row>
-															<br />
-														</div>
-														<div style={{ marginTop: '10px' }}>
-															This is first answer1243
-														</div>
-													</div>)
+													question.options.map((opt, idx) => idx % 2 == 0 && <Row style={{ marginTop: '10px' }}>
+														<form>
+															<input type={question.optionType === 'radio' ? 'radio' : 'checkbox'} id="vehicle1" name="vehicle1" value="Bike" readOnly checked={opt.isCorrect} />
+															<label htmlFor="vehicle1" style={{ marginLeft: '10px' }}>{opt.text}</label>
+														</form>
+													</Row>)
 												}
 											</Col>
-											<Col style={{ paddingLeft: '30px' }}>
+											<Col style={{ paddingLeft: '30px', overflow: 'y', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start' }}>
 												{
-													question.options.map((opt, idx) => idx % 2 === 1 && <div style={{ marginTop: '10px' }} key={idx}>
-														<div onClick={e => console.log(opt.isCorrect)}>
-															<Row style={{ float: 'left', marginLeft: '30px' }}>
-																<form>
-																	<input type={question.optionType === 'radio' ? 'radio' : 'checkbox'} id="vehicle1" name="vehicle1" value="Bike" readOnly checked={opt.isCorrect} />
-																	<label htmlFor="vehicle1" style={{ marginLeft: '10px' }}>{opt.text}</label>
-																</form>
-															</Row>
-															<br />
-														</div>
-														<div style={{ marginTop: '10px' }}>
-															This is first answer1243
-														</div>
-													</div>)
+													question.options.map((opt, idx) => idx % 2 == 1 && <Row style={{ marginTop: '10px' }}>
+														<form>
+															<input type={question.optionType === 'radio' ? 'radio' : 'checkbox'} id="vehicle1" name="vehicle1" value="Bike" readOnly checked={opt.isCorrect} />
+															<label htmlFor="vehicle1" style={{ marginLeft: '10px' }}>{opt.text}</label>
+														</form>
+													</Row>)
 												}
 											</Col>
 										</Row>

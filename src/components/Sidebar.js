@@ -10,14 +10,16 @@ import {
 	MeetingRoom,
 	MenuOpenRounded,
 	MenuRounded,
+	AssignmentInd
 } from '@material-ui/icons'
 
-function Sidebar({ setUsername, setPath }) {
+function Sidebar({ setUsername, setUser, setPath, user, logout }) {
 	const [signOut, setSignOut] = useState(false)
+	// const user = localStorage.getItem('user')
 	const SidedbarData = [
 		{
 			title: 'Dashboard',
-			path: '/dashboard',
+			path: !!user ? '/admin/dashboard' : '/dashboard',
 			icon: <Dashboard />,
 			CName: 'nav-text',
 		},
@@ -33,18 +35,23 @@ function Sidebar({ setUsername, setPath }) {
 			icon: <CreateNewFolder />,
 			CName: 'nav-text',
 		},
+		{
+			title: 'Login',
+			path: '/admin',
+			icon: <AssignmentInd />,
+			CName: 'nav-text',
+		},
 	]
 	const [sidebar, setSidebar] = useState(false)
 	const showSidebar = () => setSidebar(!sidebar)
-	const user = localStorage.getItem('user')
-	const username = localStorage.getItem('username')
-	if (signOut) {
-		localStorage.removeItem('username')
-		localStorage.removeItem('user')
-		setUsername('')
-		return <Redirect to='/dashboard' />
-	}
 
+	const username = localStorage.getItem('username')
+
+	if (signOut) {
+		logout()
+		setSignOut(false)
+	}
+	console.log("sidebar:", user)
 	return (
 		<div>
 			<Icon className='menu-bars' onClick={e => showSidebar()}>
@@ -58,7 +65,7 @@ function Sidebar({ setUsername, setPath }) {
 						</Icon>
 					</li>
 					{SidedbarData.map((item, index) => {
-						return (index === 0 || (index === 1 && !user) || (index === 2 && user === 'admin')) && <li key={index} className='nav-text'>
+						return (index === 0 || (index === 1 && !user) || (index === 2 && user === 'admin') || (index === 3 && !user)) && <li key={index} className='nav-text'>
 							<Link to={item.path} style={{ color: '#ffffff' }}>
 								<Icon style={{ height: '40px' }}>{item.icon}</Icon>
 								<span className='nav-item-title'>{item.title}</span>
@@ -67,14 +74,15 @@ function Sidebar({ setUsername, setPath }) {
 					})}
 					{
 						(!!user || !!username) && <li className='nav-text sign-out' style={{ display: 'flex', justifyContent: 'left' }}>
-							<button
+							<Link
+								to='/dashboard'
 								onClick={() => setSignOut(true)}
-								style={{color:'#ffffff'}}>
+								style={{ color: '#ffffff' }}>
 								<Icon style={{ height: '40px' }}	>
 									<ExitToApp />
 								</Icon>
 								<span className='nav-item-title'>{'SignOut'}</span>
-							</button>
+							</Link>
 						</li>
 					}
 				</ul>

@@ -20,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
 		boxShadow: theme.shadows[5],
 		padding: theme.spacing(2, 4, 3),
 		outline: 0,
-		width: '90%',
 		borderRadius: '10px',
 	},
 	buttons: {
@@ -36,11 +35,11 @@ export default function AddQuestionModal({
 	opArray,
 	index = -1,
 	addQuestionHandle,
+	open,
 	editQuestionHandle,
 	handleClose
 }) {
 	const classes = useStyles()
-	const [open, setOpen] = React.useState(true)
 	const [optionType, setOptionType] = useState('radio')
 	const [optionsArray, setOptionsArray] = useState([])
 	const [editedOption, setEditedOption] = useState(null)
@@ -60,9 +59,6 @@ export default function AddQuestionModal({
 			setOptionType('radio')
 		}
 	}, [open, title, opType, opArray])
-	const handleOpen = () => {
-		setOpen(true)
-	}
 
 	// const handleClose = () => {
 	// 	setOpen(false)
@@ -98,7 +94,7 @@ export default function AddQuestionModal({
 		if (index !== -1) addQuestionHandle(titleField, optionType, tempArr, index)
 		else addQuestionHandle(titleField, optionType, tempArr)
 
-		setOpen(false)
+		handleClose()
 	}
 
 	const addOption = () => {
@@ -157,109 +153,107 @@ export default function AddQuestionModal({
 				disableenforcefocus={true.toString()}
 				dialogClassName="modal-90w"
 				size='xl'
+				onHide={() => {
+					handleClose()
+				}}
 			>
 				<Modal.Header closeButton>
 					<Modal.Title id="example-custom-modal-styling-title">
-						Custom Modal Styling
+						Add Question
 					</Modal.Title>
 				</Modal.Header>
 				<div className={classes.paper}>
 					<Row>
-						<Col lg={9}>
-							<div className='questionCard'>
-								<div id='title'>Question:</div>
-								<input
-									type='text'
-									autoFocus
-									value={titleField}
-									onChange={(e) => setTitleField(e.target.value)}
-									className='input-text question'
-									placeholder='Type Question Here'
-								/>
-								<select
-									id='select'
-									placeholder='Select'
-									onChange={handleTypeChange}
-								>
-									<option className='selectOp' value='radio'>
-										Single Answer
-									</option>
-									<option className='selectOp' value='check'>
-										Multiple Answers
-									</option>
-								</select>
+						<div className='questionCard'>
+							<div id='title'>Question:</div>
+							<input
+								type='text'
+								autoFocus
+								value={titleField}
+								onChange={(e) => setTitleField(e.target.value)}
+								className='input-text question'
+								placeholder='Type Question Here'
+							/>
+							<select
+								id='select'
+								placeholder='Select'
+								onChange={handleTypeChange}
+							>
+								<option className='selectOp' value='radio'>
+									Single Answer
+								</option>
+								<option className='selectOp' value='check'>
+									Multiple Answers
+								</option>
+							</select>
 
-								<div className='option-div'>
-									<div className='options' id='one-op'>
-										{optionsArray.map((option, ind) => (
-											<div className='option' key={ind}>
+							<div className='option-div'>
+								<div className='options' id='one-op'>
+									{optionsArray.map((option, ind) => (
+										<div className='option' key={ind}>
+											<input
+												type={optionType === 'radio' ? 'radio' : 'checkbox'}
+												disabled={true}
+												className='radio-in'
+												name='option'
+												checked={option.isCorrect}
+											/>
+											{editOpIndex === ind ? (
 												<input
-													type={optionType === 'radio' ? 'radio' : 'checkbox'}
-													disabled={true}
-													className='radio-in'
-													name='option'
-													checked={option.isCorrect}
+													value={editedOption}
+													onChange={(e) => setEditedOption(e.target.value)}
 												/>
-												{editOpIndex === ind ? (
-													<input
-														value={editedOption}
-														onChange={(e) => setEditedOption(e.target.value)}
-													/>
-												) : (
-													<div className='add-op'>{option.text}</div>
-												)}
-												{editOpIndex === ind ? (
-													<Icon className='save-icon' onClick={() => saveEdited()}>
-														<SaveRounded />
-													</Icon>
-												) : (
-													<Icon
-														className='edit-icon'
-														onClick={() => handleEdit(ind)}
-													>
-														<EditRounded />
-													</Icon>
-												)}
-												<Icon
-													className='delete-icon'
-													onClick={() => {
-														deleteHandler(ind)
-													}}
-												>
-													<DeleteRounded />
+											) : (
+												<div className='add-op'>{option.text}</div>
+											)}
+											{editOpIndex === ind ? (
+												<Icon className='save-icon' onClick={() => saveEdited()}>
+													<SaveRounded />
 												</Icon>
-											</div>
-										))}
-									</div>
-								</div>
-
-								<div className='add-op'>
-									<div>
-										<input
-											type={optionType === 'radio' ? 'radio' : 'checkbox'}
-											ref={checkBoxRef}
-											className='radio-in'
-											name='option'
-										/>
-										<input
-											type='text'
-											ref={optionsRef}
-											className='input-text op-text'
-											placeholder={`Option ${optionsArray.length + 1}`}
-										/>
-									</div>
-									<input
-										type='submit'
-										className='add-btn'
-										value='+ Add'
-										onClick={addOption}
-									/>
+											) : (
+												<Icon
+													className='edit-icon'
+													onClick={() => handleEdit(ind)}
+												>
+													<EditRounded />
+												</Icon>
+											)}
+											<Icon
+												className='delete-icon'
+												onClick={() => {
+													deleteHandler(ind)
+												}}
+											>
+												<DeleteRounded />
+											</Icon>
+										</div>
+									))}
 								</div>
 							</div>
-						</Col>
-						<Col lg={3}>
-							Add Picture
-						</Col>
+
+							<div className='add-op'>
+								<div>
+									<input
+										type={optionType === 'radio' ? 'radio' : 'checkbox'}
+										ref={checkBoxRef}
+										className='radio-in'
+										name='option'
+									/>
+									<input
+										type='text'
+										ref={optionsRef}
+										className='input-text op-text'
+										placeholder={`Option ${optionsArray.length + 1}`}
+									/>
+								</div>
+								<input
+									type='submit'
+									className='add-btn'
+									value='+ Add'
+									onClick={addOption}
+								/>
+							</div>
+						</div>
 					</Row>
 					<div className={classes.buttons}>
 						<button className='add-btn' onClick={handleClose}>

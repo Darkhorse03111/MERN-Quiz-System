@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { Redirect, Link } from 'react-router-dom'
 import './Home.css'
-import { InputGroup, FormControl, ToastContainer, Toast } from 'react-bootstrap'
+import { InputGroup, FormControl } from 'react-bootstrap'
 const Register = ({ showToast }) => {
   const [path, setPath] = useState('')
   const [username, setUsername] = useState('')
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
   const [cPassword, setCPassword] = useState('')
-  const [msg, setMsg] = useState('')
-  const [show, setShow] = useState(true)
 
   useEffect(() => {
   })
 
   const register = async () => {
-    if (password != cPassword) {
-      showToast('Register', 'Two passwords are different')
+    if (password !== cPassword) {
+      showToast('Register', 'Two passwords are different', 'error')
       return;
     }
     const result = await fetch('/API/users/create', {
@@ -31,7 +29,7 @@ const Register = ({ showToast }) => {
       }
     })
     const res = await result.json()
-    showToast('Register', res.message)
+    showToast('Register', res.message, res.message === 'Success' ? 'success' : 'error')
     if (res.message === 'Success') {
       setPath('/admin')
     }

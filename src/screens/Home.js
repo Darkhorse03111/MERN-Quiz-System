@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { Redirect, Link } from 'react-router-dom'
 import './Home.css'
 import { InputGroup, FormControl } from 'react-bootstrap'
+import { useToasts } from 'react-toast-notifications'
+
 const Home = ({ setUser, showToast, history }) => {
 	const [path, setPath] = useState('')
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
+	const { addToast } = useToasts()
 	var uiConfig = {
 		signInflow: 'popup',
 		signInOptions: [
@@ -31,11 +34,16 @@ const Home = ({ setUser, showToast, history }) => {
 			}
 		})
 		const res = await result.json()
-		showToast('Login', res.message)
+
 		if (res.message === 'Success') {
 			localStorage.setItem('user', username)
-			console.log('setting path admin dashboard')
+			setUser(username)
 			history.push('/admin/dashboard')
+			// showToast('Login', 'Success')
+			addToast('Login Success', {
+				appearance: 'success',
+				autoDismiss: true
+			})
 		}
 	}
 

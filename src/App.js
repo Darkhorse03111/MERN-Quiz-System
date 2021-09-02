@@ -1,6 +1,7 @@
 import { Switch, Route } from 'react-router-dom'
 import React, { useState, useEffect } from 'react'
 import { Row, Col, Toast, ToastContainer } from 'react-bootstrap'
+import { useToasts } from 'react-toast-notifications'
 
 // Stylesheet
 import './App.css'
@@ -28,19 +29,30 @@ const App = () => {
 	const [show, setShow] = useState(false)
 	const [toastTitle, setToastTitle] = useState('')
 	const [toastContent, setToastContent] = useState('')
+	const { addToast } = useToasts()
 	useEffect(() => {
 	}, [user])
-	const showToast = (title, content) => {
-		setShow(true)
-		setToastTitle(title)
-		setToastContent(content)
+	const showToast = (title, content, appr = 'success') => {
+		// setShow(true)
+		// setToastTitle(title)
+		// setToastContent(content)
+		addToast(title + ' ' + content, {
+			appearance: appr,
+			autoDismiss: true
+		})
+	}
+	const logout = () => {
+		setUser('')
+		setUsername('')
+		localStorage.removeItem('user')
+		localStorage.removeItem('username')
 	}
 	return (
 		<div className='App flex-container grow'>
 			<div className='fixed'>
-				<AppBar setUsername={setUsername} />
+				<AppBar setUsername={setUsername} user={user} username={username} setUser={setUser} logout={logout} />
 			</div>
-			<ToastContainer position="top-end" className="p-3" style={{ marginTop: '80px', zIndex: '100' }}>
+			<ToastContainer position="top-end" className="p-3" style={{ position: 'absolute', marginTop: '80px', zIndex: '100' }}>
 				<Toast onClose={() => setShow(false)} show={show} delay={5000} autohide>
 					<Toast.Header>
 						<img src="holder.js/20x20?text=%20" className="rounded me-2" alt="" />
@@ -58,7 +70,7 @@ const App = () => {
 				<Route path='/admin/dashboard' render={routeProps => <AdminDashboard setUser={setUser} showToast={showToast} {...routeProps} />}>
 				</Route>
 
-				<Route path='/admin' render={routeProps => !user ? <Home setUser={setUser} user={user} showToast={showToast} {...routeProps} /> : <AdminDashboard setUser={setUser} showToast={showToast} {...routeProps} />}>
+				<Route path='/admin' render={routeProps => <Home setUser={setUser} user={user} showToast={showToast} {...routeProps} />}>
 				</Route>
 
 				<Route
@@ -67,7 +79,7 @@ const App = () => {
 					<Register showToast={showToast} />
 				</Route>
 
-				<Route path='/dashboard' render={routeProps => !!user ? <AdminDashboard setUser={setUser} showToast={showToast} {...routeProps} /> : <UserDashboard user={user} />}>
+				<Route path='/dashboard' render={routeProps => <UserDashboard user={user} />}>
 				</Route>
 				<Route path='/create-quiz/:id' render={routeProps => <CreateQuiz showToast={showToast} id={routeProps.match.params.id} {...routeProps} />} />
 				<Route path='/create-quiz' render={routeProps => <CreateQuiz showToast={showToast} {...routeProps} />} />

@@ -1,5 +1,6 @@
 'use strict'
 const express = require('express')
+const fileUpload = require('express-fileupload')
 const path = require('path')
 const app = express()
 const server = require('http').Server(app)
@@ -17,15 +18,31 @@ let clients = []
 const PORT = process.env.PORT || 3000
 
 app.use(express.json())
+app.use(fileUpload());
 app.use('/API/users', userRoute)
 app.use('/API/quizzes', quizzesRoute)
+app.post('/API/upload', (req, res) => {
+	if (req.files === null) {
+		return res.status(400).json({ msg: 'No file uploaded' });
+	}
 
-app.use(express.static(path.resolve('build')))
+	const file = req.files.file;
+
+	file.mv(`${__dirname}/build/uploads/${file.name}`, err => {
+		if (err) {
+			console.error(err);
+			return res.status(500).send(err);
+		}
+
+		res.json({ fileName: file.name, filePath: `/uploads/${file.name}` });
+	});
+})
+
+app.use(express.static(`${__dirname}/build`))
 
 io.on('connect', client => {
 	client.on('login', body => {
 		clients.push(client)
-		console.log('connecting quiz test:', body)
 		students.push({ name: body.username, id: client.id, quizCode: body.quizCode, picture: body.picture, mark: '0' })
 		let res = students.filter(std => std.quizCode === body.quizCode).sort((a, b) => parseInt(b.mark) - parseInt(a.mark))
 		clients.map(clnt => clnt.emit('mark', res))

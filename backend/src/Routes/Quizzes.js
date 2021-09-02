@@ -24,26 +24,28 @@ Router.post('/join', (req, res) => {
 			if (!quizData[0].isOpen)
 				res.status(500).json({ error: 'ERR:QUIZ_ACCESS_DENIED' })
 			else {
-				/*
-				const cursor2 = db.collection('users').find({
-					$and: [{ uid }, { attemptedQuiz: ObjectId(quizId) }],
-				})
-
-				const quiz2 = await cursor2.toArray()
-				console.log('quiz 2 : ', quiz2)
-				if (quiz2[0]) {
-					console.log('in quiz already attempted')
-					res.status(200).json({
-						error: 'ERR:QUIZ_ALREADY_ATTEMPTED',
-					})
-				} else res.status(200).json(quizData[0])
-				*/
 				res.status(200).json(quizData[0])
 			}
 		} catch (error) {
 			res.status(500).json({ error: 'ERR:QUIZ_NOT_FOUND' })
 		}
 	}, res)
+})
+
+Router.post('/upload', (req, res) => {
+	if (req.files === null) {
+		return res.status(400).json({ msg: 'No file uploaded' });
+	}
+	const file = req.files.file;
+
+	file.mv(`${__dirname}/client/public/uploads/${file.name}`, err => {
+		if (err) {
+			console.error(err);
+			return res.status(500).send(err);
+		}
+
+		res.json({ fileName: file.name, filePath: `/uploads/${file.name}` });
+	});
 })
 
 // Submit the quiz
@@ -66,7 +68,6 @@ Router.post('/create', (req, res) => {
 
 Router.delete('/:id', (req, res) => {
 	const id = req.params.id
-	console.log('deleting:', id)
 	DB.withDB(async (db) => {
 		try {
 			await db.collection('quizzes').deleteOne(
@@ -118,7 +119,6 @@ Router.post('/edit', (req, res) => {
 
 Router.post('/responses', (req, res) => {
 	const reqBody = req.body
-	console.log('Req Body : ', reqBody)
 	DB.getResponses(reqBody, res)
 })
 
@@ -157,6 +157,7 @@ Router.get('/:id', (req, res) => {
 					isOpen: 1,
 					title: 1,
 					questions: 1,
+					type: 1,
 					responses: {
 						$size: '$responses',
 					},

@@ -35,7 +35,6 @@ const AdminDashboard = ({ showToast, history }) => {
         },
       })
       quizData = await results.json()
-      console.log('all quiz:', quizData)
       if (quizData.quizData) {
         setAllQuizzes(quizData.quizData)
       }
@@ -135,7 +134,7 @@ const AdminDashboard = ({ showToast, history }) => {
         showToast('Deleting Quiz', 'Success')
       }
       else {
-        showToast('Deleting Quiz', 'Fail')
+        showToast('Deleting Quiz', 'Fail', 'error')
       }
     }
   }

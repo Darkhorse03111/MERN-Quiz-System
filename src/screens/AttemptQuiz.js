@@ -10,7 +10,6 @@ import LoadingScreen from './LoadingScreen'
 import JoinedQuizCard from '../components/JoinedQuizCard';
 import './AttemptQuiz.css'
 
-
 let socket
 const socketUrl = "/"
 // const socketUrl = "ws://192.168.104.16:3001"
@@ -37,13 +36,13 @@ class AttemptQuiz extends React.Component {
 			waiting: 5,
 			timeout: 10
 		}
-		this.url = "/Music.wav";
-		this.audio = new Audio(this.url);
-		this.audio.play()
-		this.audio.addEventListener('ended', function () {
-			this.audio = new Audio(this.url);
-			this.audio.play()
-		}, false);
+		// this.url = "/Music.wav";
+		// this.audio = new Audio(this.url);
+		// this.audio.play()
+		// this.audio.addEventListener('ended', function () {
+		// 	this.audio = new Audio(this.url);
+		// 	this.audio.play()
+		// }, false);
 	}
 
 	async componentDidMount() {
@@ -104,13 +103,19 @@ class AttemptQuiz extends React.Component {
 		this.checkNext()
 	}
 	timerFunc = () => {
-		let { waiting } = this.state
+		let { waiting, questions } = this.state
 		if (waiting > 0) {
 			--waiting;
 			this.setState({ waiting })
 			if (waiting === 0) {
 				clearInterval(this.timerId)
 				this.timerId = setInterval(this.clock, 1000)
+				if (!!questions[0].audio) {
+					console.log('playing music')
+					this.audio = new Audio(questions[0].audio)
+					this.audio.play()
+					this.audio.addEventListener('ended', () => this.audio.play())
+				}
 			}
 		}
 	}
@@ -145,6 +150,7 @@ class AttemptQuiz extends React.Component {
 				showMark: true,
 				score: currentScore
 			})
+			this.audio.pause()
 			setTimeout(() => this.increaseNumber(), 3000)
 		} else if (attemptedQuestions[number].optionType === 'check') {
 			this.setState({
@@ -174,7 +180,6 @@ class AttemptQuiz extends React.Component {
 	}
 
 	checkNext = (flag = true) => {
-		console.log('checking next')
 		clearInterval(this.timerId)
 		const { attemptedQuestions, questions, number } = this.state
 		let score = this.getMark(attemptedQuestions, number)
@@ -186,11 +191,12 @@ class AttemptQuiz extends React.Component {
 			score: currentScore,
 			timeout: 10
 		})
+		this.audio.pause()
 		setTimeout(this.increaseNumber, 3000)
 	}
 
 	increaseNumber = () => {
-		const { number, questions, attemptedQuestions } = this.state
+		const { number, questions, attemptedQuestions, music } = this.state
 		if (number < questions.length - 1) {
 			this.setState({
 				number: number + 1,
@@ -199,6 +205,14 @@ class AttemptQuiz extends React.Component {
 				timeout: 10
 			})
 			this.timerId = setInterval(this.clock, 1000)
+			if (!!questions[number + 1].audio) {
+				this.audio.remove()
+				console.log('playing ' + questions[number + 1].audio)
+				this.audio = new Audio(questions[number + 1].audio)
+				if (music) {
+					this.audio.play()
+				}
+			}
 		}
 		else {
 			this.setState({
@@ -370,24 +384,12 @@ class AttemptQuiz extends React.Component {
 									<img
 										className="d-block"
 										style={{ width: `1240px`, height: `336px` }}
-										src="/Quiz/banner.png"
+										src="/Quiz/banner1.png"
 										alt="Second slide"
 									/>
 									<Carousel.Caption>
 										{/* <h3>Second slide label</h3>
 								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p> */}
-									</Carousel.Caption>
-								</Carousel.Item>
-								<Carousel.Item interval={4000}>
-									<img
-										className="d-block"
-										style={{ width: `1240px`, height: `336px` }}
-										src="/Quiz/banner.png"
-										alt="Third slide"
-									/>
-									<Carousel.Caption>
-										{/* <h3>Third slide label</h3>
-								<p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p> */}
 									</Carousel.Caption>
 								</Carousel.Item>
 							</Carousel>
@@ -396,8 +398,8 @@ class AttemptQuiz extends React.Component {
 							<p style={{ width: '200px', color: '#294634', marginTop: '35px' }}>Time Remaining</p>
 							<img src={`/Quiz/Number/${(timeout < 10 ? '0' : '')}${timeout}.png`} style={{ width: '150px' }}></img>
 						</Row>
-						<div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between', height: '800px' }}>
-							<div id='create-quiz-body' className='flex-container' style={{ width: '830px', color: '#ffffff', marginTop: '0px' }}>
+						<div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between', height: '1300px' }}>
+							<div id='create-quiz-body' className='flex-container' style={{ width: '830px', color: '#ffffff', marginTop: '0px', marginBottom: '30px' }}>
 								{
 									waiting > 0 ? <div className='attemptQuestionCard theme-classic flex-container' style={{ backgroundColor: '#294634', marginLeft: '10px', width: '100%' }}>
 										<div className='fixed' style={{ height: '60px', display: 'flex', justifyContent: 'space-between', width: '100%' }}>
@@ -432,7 +434,7 @@ class AttemptQuiz extends React.Component {
 											</Col>
 										</Row>
 									</div> :
-										<div className='attemptQuestionCard theme-classic' style={{ backgroundColor: '#294634', marginLeft: '10px', width: '100%', height: '1000px', marginBottom: '100px' }}>
+										<div className='attemptQuestionCard theme-classic' style={{ backgroundColor: '#294634', marginLeft: '10px', width: '100%', height: '600px', marginBottom: '100px' }}>
 											<div className='fixed' style={{ height: '60px', display: 'flex', justifyContent: 'space-between', width: '100%' }}>
 												<Row style={{ marginLeft: 'auto', marginRight: 'auto' }}>
 													<Col><div className='topText' style={{ width: '200px' }}>Quiz {`${number + 1}`}</div></Col>
@@ -446,10 +448,27 @@ class AttemptQuiz extends React.Component {
 												</Row>
 											</div>
 											{
-												!showModal && <div className='grow vertical-center puzzle-text' style={{ color: '#ffffff', marginTop: '120px' }}>
-													{question.title}
-												</div>
+												// !showModal && !!question.audio && <audio controls autoplay >
+												// 	<source src={question.audio} />
+												// </audio>
 											}
+											{/* <audio controls autoplay >
+												<source src='uploads/Music.wav' />
+											</audio> */}
+											<Row style={{ marginTop: '30px', marginBottom: '30px' }}>
+												{
+													!showModal && !!question.image && <Col xs={4} md={4} lg={4} xl={4} style={{ display: 'flex', justifyContent: 'center' }}>
+														{
+															!!question.image && <img src={question.image} style={{ width: '100%' }}></img>
+														}
+													</Col>
+												}
+												{
+													!showModal && <Col className='grow vertical-center puzzle-text' style={{ color: '#ffffff' }} xs={!!question.image ? 8 : 12} md={!!question.image ? 8 : 12} lg={!!question.image ? 8 : 12} xl={!!question.image ? 8 : 12}>
+														{question.title}
+													</Col>
+												}
+											</Row>
 											{
 												mark === 0 ? !showModal && <div className='option-div options-grid grow' style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
 													{question.options.map((option, ind) => (
