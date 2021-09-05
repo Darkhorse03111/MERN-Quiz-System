@@ -4,9 +4,9 @@ import './Home.css'
 import { InputGroup, FormControl } from 'react-bootstrap'
 import { useToasts } from 'react-toast-notifications'
 
-const Home = ({ setUser, showToast, history }) => {
+const Home = ({ setUser, showToast, history, setUsername }) => {
 	const [path, setPath] = useState('')
-	const [username, setUsername] = useState('')
+	const [username, setUserName] = useState('')
 	const [password, setPassword] = useState('')
 	const { addToast } = useToasts()
 	var uiConfig = {
@@ -21,7 +21,7 @@ const Home = ({ setUser, showToast, history }) => {
 		// let isMounted = true
 		// return () => (isMounted = false)
 	}, [setUser])
-
+	setUsername('')
 	const login = async () => {
 		const result = await fetch('/API/users/login', {
 			method: 'POST',
@@ -81,7 +81,7 @@ const Home = ({ setUser, showToast, history }) => {
 								aria-label="Username"
 								aria-describedby="basic-addon1"
 								value={username}
-								onChange={e => setUsername(e.target.value)}
+								onChange={e => setUserName(e.target.value)}
 							/>
 						</InputGroup>
 						<InputGroup className="mb-3">

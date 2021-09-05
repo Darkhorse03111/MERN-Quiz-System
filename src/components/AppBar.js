@@ -5,12 +5,12 @@ import { AccountCircle } from '@material-ui/icons'
 import Sidebar from './Sidebar'
 import './AppBar.css'
 
-const AppBar = ({ setUsername, setPath, user, setUser, logout }) => {
+const AppBar = ({ setUsername, setPath, user, setUser, username, logout }) => {
 	return (
 		<div className='appBar'>
 			<div className='slider'>
-				<Sidebar setUsername={setUsername} setPath={setPath} setUser={setUser} user={user} logout={logout} />
-				<Link to={!!user ? '/admin/dashboard' : '/dashboard'} className='home'>
+				{!!user && <Sidebar setUsername={setUsername} setPath={setPath} setUser={setUser} user={user} logout={logout} />}
+				<Link to={!!user ? '/admin/dashboard' : '/'} className='home'>
 					<b>Quiz</b>
 				</Link>
 			</div>
@@ -22,7 +22,7 @@ const AppBar = ({ setUsername, setPath, user, setUser, logout }) => {
 						</Icon>
 					</div>}
 					<div className='vertical-center'>
-						<div>{user}</div>
+						<div>{user || username || ''}</div>
 					</div>
 				</div>
 			</div>

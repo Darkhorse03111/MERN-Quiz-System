@@ -17,7 +17,7 @@ const OneTimeDashboard = ({ user }) => {
 	// }
 
 	if (path.length > 0) return <Redirect push to={path} />
-	if (!username && !firebase.auth().currentUser) return <Redirect push to='/name' />
+	if (!username && !firebase.auth().currentUser) return <Redirect push to='/' />
 
 	return (
 		<div className='one-time-dashboard'>

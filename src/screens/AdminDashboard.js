@@ -8,7 +8,7 @@ import JoinedQuizCard from '../components/JoinedQuizCard'
 // import LoadingScreen from './LoadingScreen'
 import CreateQuiz from './CreateQuiz'
 
-const AdminDashboard = ({ showToast, history }) => {
+const AdminDashboard = ({ showToast, history, setUsername }) => {
   const [createdQuizzes, setCreatedQuizzes] = useState([])
   // const [loading, setLoading] = useState(true)
   const [editQuiz, setEditQuiz] = useState([])
@@ -43,7 +43,7 @@ const AdminDashboard = ({ showToast, history }) => {
     }
     fetchQuizData()
   }, [user])
-
+  setUsername('')
   const editQuizHandle = async (title, questions, isOpen) => {
     if (!title) setEditQuiz([])
     else {
@@ -160,11 +160,13 @@ const AdminDashboard = ({ showToast, history }) => {
     <div className='dash-body' style={{ marginTop: '100px' }}>
       {
         <div className='quizzes'>
-          <div className='heading'>
+          {
+            allQuizzes.find(quiz => quiz.type ==="Qur'an") && <div className='heading'>
             <div className='line-left' />
             <h2>Qur'an</h2>
             <div className='line' />
           </div>
+          }
           <div className='card-holder' style={{ justifyContent: 'center' }}>
             {allQuizzes.map((quiz, key) => (
               quiz.type === "Qur'an" && <CreatedQuizCard
@@ -181,11 +183,13 @@ const AdminDashboard = ({ showToast, history }) => {
               />
             ))}
           </div>
-          <div className='heading'>
+          {
+            allQuizzes.find(quiz => quiz.type ==="Arabic") && <div className='heading'>
             <div className='line-left' />
             <h2>Arabic</h2>
             <div className='line' />
           </div>
+          }
           <div className='card-holder' style={{ justifyContent: 'center' }}>
             {allQuizzes.map((quiz, key) => (
               quiz.type === "Arabic" && <CreatedQuizCard
@@ -202,11 +206,13 @@ const AdminDashboard = ({ showToast, history }) => {
               />
             ))}
           </div>
-          <div className='heading'>
+          {
+            allQuizzes.find(quiz => quiz.type ==="Islamic Studies") && <div className='heading'>
             <div className='line-left' />
-            <h2>Islamic Studies </h2>
+            <h2>Islamic Studies</h2>
             <div className='line' />
           </div>
+          }
           <div className='card-holder' style={{ justifyContent: 'center' }}>
             {allQuizzes.map((quiz, key) => (
               quiz.type === "Islamic Studies" && <CreatedQuizCard

@@ -12,7 +12,7 @@ const JoinQuiz = () => {
 		if (code.length) setValid('attempt-quiz')
 	}
 	if (localStorage.getItem('username') == undefined) {
-		return <Redirect to='/name' />
+		return <Redirect to='/' />
 	}
 	if (valid !== 'false') return <Redirect push to={`/${valid}/${code}`} />
 	// if (valid === 'join-blind')

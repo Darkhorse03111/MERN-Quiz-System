@@ -24,23 +24,11 @@ function Sidebar({ setUsername, setUser, setPath, user, logout }) {
 			CName: 'nav-text',
 		},
 		{
-			title: 'Join Quiz',
-			path: '/join-quiz',
-			icon: <MeetingRoom />,
-			CName: 'nav-text',
-		},
-		{
 			title: 'Create Quiz',
 			path: '/create-quiz/',
 			icon: <CreateNewFolder />,
 			CName: 'nav-text',
-		},
-		{
-			title: 'Login',
-			path: '/admin',
-			icon: <AssignmentInd />,
-			CName: 'nav-text',
-		},
+		}
 	]
 	const [sidebar, setSidebar] = useState(false)
 	const showSidebar = () => setSidebar(!sidebar)
@@ -64,8 +52,8 @@ function Sidebar({ setUsername, setUser, setPath, user, logout }) {
 							<MenuOpenRounded fontSize='large' />
 						</Icon>
 					</li>
-					{SidedbarData.map((item, index) => {
-						return (index === 0 || (index === 1 && !user) || (index === 2 && user === 'admin') || (index === 3 && !user)) && <li key={index} className='nav-text'>
+					{!!user && SidedbarData.map((item, index) => {
+						return <li key={index} className='nav-text'>
 							<Link to={item.path} style={{ color: '#ffffff' }}>
 								<Icon style={{ height: '40px' }}>{item.icon}</Icon>
 								<span className='nav-item-title'>{item.title}</span>
@@ -75,7 +63,7 @@ function Sidebar({ setUsername, setUser, setPath, user, logout }) {
 					{
 						(!!user || !!username) && <li className='nav-text sign-out' style={{ display: 'flex', justifyContent: 'left' }}>
 							<Link
-								to='/dashboard'
+								to='/'
 								onClick={() => setSignOut(true)}
 								style={{ color: '#ffffff' }}>
 								<Icon style={{ height: '40px' }}	>

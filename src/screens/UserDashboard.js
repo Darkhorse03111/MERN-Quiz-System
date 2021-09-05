@@ -164,13 +164,12 @@ const UserDashboard = ({ user }) => {
 							<Row>
 								<Col className='vertical-center'>
 									{
-										!!allQuizzes && allQuizzes.length > 0 && <JoinedQuizCard
+										<JoinedQuizCard
 											key={1}
-											title={allQuizzes[0].title}
+											title='Enjoy Quiz !'
 											// score={quiz.responses[0].score}
-											questions={allQuizzes[0].questions.length}
-											id={allQuizzes[0]._id}
-											joinQuiz={setPath}
+											questions={5}
+											id={'12123'}
 										/>
 									}
 								</Col>
@@ -191,32 +190,32 @@ const UserDashboard = ({ user }) => {
 					</div>
 					<div className='grow' style={{ flexGrow: '0', overflow: 'visible', height: `${window.innerHeight - 170}`, width: '350px' }}>
 						<ListGroup horizontal>
-							<ListGroup.Item variant='primary' className='markItem' style={{ backgroundColor: 'rgb(230,230,230)', color: 'rgb(41,70,52)' }}><img src='/Quiz/Avatar/1.png' /></ListGroup.Item>
+							<ListGroup.Item variant='primary' className='markItem' style={{ backgroundColor: 'rgb(230,230,230)', color: 'rgb(41,70,52)' }}><img src='/Quiz/Avatar/1.png' style={{width:'45px', height:'45px'}} /></ListGroup.Item>
 							<ListGroup.Item variant='primary' className='markItem' style={{ width: '270px' }}><div style={{ marginTop: '10px' }}>Al Haramain Madrash</div></ListGroup.Item>
 							<ListGroup.Item variant='primary' className='markItem' style={{ width: '53px' }}><div style={{ marginTop: '10px' }}>11</div></ListGroup.Item>
 						</ListGroup>
 						<ListGroup horizontal>
-							<ListGroup.Item variant='primary' className='markItem' style={{ backgroundColor: 'rgb(230,230,230)', color: 'rgb(41,70,52)' }}><img src='/Quiz/Avatar/2.png' /></ListGroup.Item>
+							<ListGroup.Item variant='primary' className='markItem' style={{ backgroundColor: 'rgb(230,230,230)', color: 'rgb(41,70,52)' }}><img src='/Quiz/Avatar/2.png' style={{width:'45px', height:'45px'}} /></ListGroup.Item>
 							<ListGroup.Item variant='primary' className='markItem' style={{ width: '270px' }}><div style={{ marginTop: '10px' }}>Amina Muhammad</div></ListGroup.Item>
 							<ListGroup.Item variant='primary' className='markItem' style={{ width: '53px' }}><div style={{ marginTop: '10px' }}>10</div></ListGroup.Item>
 						</ListGroup>
 						<ListGroup horizontal>
-							<ListGroup.Item variant='primary' className='markItem' style={{ backgroundColor: 'rgb(230,230,230)', color: 'rgb(41,70,52)' }}><img src='/Quiz/Avatar/3.png' /></ListGroup.Item>
+							<ListGroup.Item variant='primary' className='markItem' style={{ backgroundColor: 'rgb(230,230,230)', color: 'rgb(41,70,52)' }}><img src='/Quiz/Avatar/3.png' style={{width:'45px', height:'45px'}} /></ListGroup.Item>
 							<ListGroup.Item variant='primary' className='markItem' style={{ width: '270px' }}><div style={{ marginTop: '10px' }}>Shaveiz Muhammad</div></ListGroup.Item>
 							<ListGroup.Item variant='primary' className='markItem' style={{ width: '53px' }}><div style={{ marginTop: '10px' }}>9</div></ListGroup.Item>
 						</ListGroup>
 						<ListGroup horizontal>
-							<ListGroup.Item variant='primary' className='markItem' style={{ backgroundColor: 'rgb(230,230,230)', color: 'rgb(41,70,52)' }}><img src='/Quiz/Avatar/4.png' /></ListGroup.Item>
+							<ListGroup.Item variant='primary' className='markItem' style={{ backgroundColor: 'rgb(230,230,230)', color: 'rgb(41,70,52)' }}><img src='/Quiz/Avatar/4.png' style={{width:'45px', height:'45px'}} /></ListGroup.Item>
 							<ListGroup.Item variant='primary' className='markItem' style={{ width: '270px' }}><div style={{ marginTop: '10px' }}>Issa Uthman</div></ListGroup.Item>
 							<ListGroup.Item variant='primary' className='markItem' style={{ width: '53px' }}><div style={{ marginTop: '10px' }}>8</div></ListGroup.Item>
 						</ListGroup>
 						<ListGroup horizontal>
-							<ListGroup.Item variant='primary' className='markItem' style={{ backgroundColor: 'rgb(230,230,230)', color: 'rgb(41,70,52)' }}><img src='/Quiz/Avatar/5.png' /></ListGroup.Item>
+							<ListGroup.Item variant='primary' className='markItem' style={{ backgroundColor: 'rgb(230,230,230)', color: 'rgb(41,70,52)' }}><img src='/Quiz/Avatar/5.png' style={{width:'45px', height:'45px'}} /></ListGroup.Item>
 							<ListGroup.Item variant='primary' className='markItem' style={{ width: '270px' }}><div style={{ marginTop: '10px' }}>Kuluthum</div></ListGroup.Item>
 							<ListGroup.Item variant='primary' className='markItem' style={{ width: '53px' }}><div style={{ marginTop: '10px' }}>7</div></ListGroup.Item>
 						</ListGroup>
 						<ListGroup horizontal>
-							<ListGroup.Item variant='primary' className='markItem' style={{ backgroundColor: 'rgb(230,230,230)', color: 'rgb(41,70,52)' }}><img src='/Quiz/Avatar/6.png' /></ListGroup.Item>
+							<ListGroup.Item variant='primary' className='markItem' style={{ backgroundColor: 'rgb(230,230,230)', color: 'rgb(41,70,52)' }}><img src='/Quiz/Avatar/6.png' style={{width:'45px', height:'45px'}} /></ListGroup.Item>
 							<ListGroup.Item variant='primary' className='markItem' style={{ width: '270px' }}><div style={{ marginTop: '10px' }}>Ahyan Ayan</div></ListGroup.Item>
 							<ListGroup.Item variant='primary' className='markItem' style={{ width: '53px' }}><div style={{ marginTop: '10px' }}>6</div></ListGroup.Item>
 						</ListGroup>

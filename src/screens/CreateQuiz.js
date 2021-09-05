@@ -196,10 +196,10 @@ export default class CreateQuiz extends React.Component {
 													<div className='fileInput' style={{ height: '35px', paddingTop: '5px' }}>+Image</div>
 													<Form.Control type="file" onChange={e => this.onChangeFile(e.target.files[0], index, 'image')} style={{ position: 'absolute', width: '90px', height: '35px', left: '12px', top: '0', opacity: '0' }} />
 												</div>
-												<div style={{ position: 'relative', width: '90px' }}>
+												{/* <div style={{ position: 'relative', width: '90px' }}>
 													<div className='fileInput' style={{ height: '35px', paddingTop: '5px' }}>+Audio</div>
 													<Form.Control type="file" onChange={e => this.onChangeFile(e.target.files[0], index, 'audio')} style={{ position: 'absolute', width: '90px', height: '35px', left: '12px', top: '0', opacity: '0' }} />
-												</div>
+												</div> */}
 												<button
 													className='button'
 													onClick={() => this.setState({ editing: true, curIndex: index })}

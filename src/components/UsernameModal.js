@@ -9,9 +9,9 @@ export default class UsernameModal extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      username: '',
+      username: localStorage.getItem('username') || '',
       code: '',
-      picture: 0
+      picture: parseInt(localStorage.getItem('picture')) || 1
     }
   }
   enter = () => {
@@ -40,6 +40,7 @@ export default class UsernameModal extends React.Component {
     }
     localStorage.setItem('username', username)
     localStorage.setItem('picture', picture)
+    this.props.setUsername(username)
     this.props.history.push(`/attempt-quiz/${code}`)
   }
 
@@ -67,7 +68,7 @@ export default class UsernameModal extends React.Component {
       }
     }
     let img = []
-    for (let i = 2; i < 11; ++i) {
+    for (let i = 1; i < 21; ++i) {
       img.push(i)
     }
     return <div style={{ width: '800px', height: '500px', marginTop: `${(window.innerHeight - 570) / 2 > 100 ? (window.innerHeight - 570) / 2 : 100}px`, backgroundColor: '#A17F50', marginLeft: `${(window.innerWidth - 800) / 2}px` }} >
@@ -79,7 +80,7 @@ export default class UsernameModal extends React.Component {
         open={true}
       >
         <Row>
-          <Col lg='auto' md='auto' sm='auto' style={{ backgroundColor: '#294634', width: '300px', paddingLeft: '15px', paddingRight: '15px', borderRadius: '10px' }}>
+          <Col lg='auto' md='auto' sm='auto' style={{ backgroundColor: '#294634', width: '300px', paddingLeft: '15px', paddingRight: '15px', borderRadius: '10px 0 0 10px', height:'450px' }}>
             <img
               style={{ width: '100px', marginLeft: '85px', marginRight: '85px', marginTop: '60px', marginBottom: '60px' }}
               src="/Quiz/logo/admin_login_logo.png"
@@ -108,7 +109,7 @@ export default class UsernameModal extends React.Component {
             </InputGroup>
             <button className="btn" style={{ backgroundColor: '#A17F50', color: '#fff', width: '100%', marginTop: '15px', marginBottom: '25px', height: '40px', borderRadius: '10px', paddingTop: '5px', fontSize: '12px' }} onClick={e => this.enter()}>ENTER</button>
           </Col>
-          <Col lg='auto' md='auto' sm='auto' style={{ width: '420px', backgroundColor: '#fff' }}>
+          <Col lg='auto' md='auto' sm='auto' style={{ width: '435px', backgroundColor: '#fff', height:'450px', overflow:'auto', borderRadius: '0 10px 10px 0' }}>
             <div style={{ textAlign: 'center', color: '#294634', marginTop: '20px', marginBottom: '20px' }}>CHOOSE AVATAR</div>
             <div style={{ padingLeft: '10px' }}>
               {

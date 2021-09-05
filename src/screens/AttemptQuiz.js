@@ -36,13 +36,13 @@ class AttemptQuiz extends React.Component {
 			waiting: 5,
 			timeout: 10
 		}
-		// this.url = "/Music.wav";
-		// this.audio = new Audio(this.url);
-		// this.audio.play()
-		// this.audio.addEventListener('ended', function () {
-		// 	this.audio = new Audio(this.url);
-		// 	this.audio.play()
-		// }, false);
+		this.url = "/audio.mp3";
+		this.audio = new Audio(this.url);
+		this.audio.play()
+		this.audio.addEventListener('ended', function () {
+			this.audio = new Audio(this.url);
+			this.audio.play()
+		}, false);
 	}
 
 	async componentDidMount() {
@@ -93,7 +93,9 @@ class AttemptQuiz extends React.Component {
 		if (!!socket) {
 			socket.close()
 		}
-		this.audio.pause()
+		if (!!this.audio) {
+			this.audio.pause()
+		}
 	}
 	clock = () => {
 		let { timeout } = this.state
@@ -110,12 +112,12 @@ class AttemptQuiz extends React.Component {
 			if (waiting === 0) {
 				clearInterval(this.timerId)
 				this.timerId = setInterval(this.clock, 1000)
-				if (!!questions[0].audio) {
-					console.log('playing music')
-					this.audio = new Audio(questions[0].audio)
-					this.audio.play()
-					this.audio.addEventListener('ended', () => this.audio.play())
-				}
+				// if (!!questions[0].audio) {
+				// 	console.log('playing music')
+				// 	this.audio = new Audio(questions[0].audio)
+				// 	this.audio.play()
+				// 	this.audio.addEventListener('ended', () => this.audio.play())
+				// }
 			}
 		}
 	}
@@ -150,7 +152,7 @@ class AttemptQuiz extends React.Component {
 				showMark: true,
 				score: currentScore
 			})
-			this.audio.pause()
+			// this.audio.pause()
 			setTimeout(() => this.increaseNumber(), 3000)
 		} else if (attemptedQuestions[number].optionType === 'check') {
 			this.setState({
@@ -191,7 +193,7 @@ class AttemptQuiz extends React.Component {
 			score: currentScore,
 			timeout: 10
 		})
-		this.audio.pause()
+		// this.audio.pause()
 		setTimeout(this.increaseNumber, 3000)
 	}
 
@@ -205,14 +207,14 @@ class AttemptQuiz extends React.Component {
 				timeout: 10
 			})
 			this.timerId = setInterval(this.clock, 1000)
-			if (!!questions[number + 1].audio) {
-				this.audio.remove()
-				console.log('playing ' + questions[number + 1].audio)
-				this.audio = new Audio(questions[number + 1].audio)
-				if (music) {
-					this.audio.play()
-				}
-			}
+			// if (!!questions[number + 1].audio) {
+			// 	this.audio.remove()
+			// 	console.log('playing ' + questions[number + 1].audio)
+			// 	this.audio = new Audio(questions[number + 1].audio)
+			// 	if (music) {
+			// 		this.audio.play()
+			// 	}
+			// }
 		}
 		else {
 			this.setState({
@@ -559,7 +561,7 @@ class AttemptQuiz extends React.Component {
 							<div className='grow' style={{ flexGrow: '0', overflow: 'visible', height: `${window.innerHeight - 170}`, width: '350px' }}>
 								{
 									students.map(std => <ListGroup horizontal>
-										<ListGroup.Item variant='primary' className='markItem' style={{ backgroundColor: 'rgb(230,230,230)', color: 'rgb(41,70,52)' }}><img src={`/Quiz/Avatar/${std.picture}.png`} /></ListGroup.Item>
+										<ListGroup.Item variant='primary' className='markItem' style={{ backgroundColor: 'rgb(230,230,230)', color: 'rgb(41,70,52)' }}><img src={`/Quiz/Avatar/${std.picture}.png`}  style={{width:'45px', height:'45px'}}/></ListGroup.Item>
 										<ListGroup.Item variant='primary' className='markItem' style={{ width: '270px' }}><div style={{ marginTop: '10px' }}>{std.name}</div></ListGroup.Item>
 										<ListGroup.Item variant='primary' className='markItem' style={{ width: '53px' }}><div style={{ marginTop: '10px' }}>{std.mark}</div></ListGroup.Item>
 									</ListGroup>)
