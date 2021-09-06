@@ -71,6 +71,9 @@ class AttemptQuiz extends React.Component {
 					students
 				})
 			})
+			socket.on('start', () => {
+				this.timerId = setInterval(this.timerFunc, 1000)
+			})
 			const temp = quizData.questions.map((question) => {
 				return {
 					id: question.id,
@@ -86,7 +89,7 @@ class AttemptQuiz extends React.Component {
 				attemptedQuestions: temp,
 				quizCode
 			})
-			this.timerId = setInterval(this.timerFunc, 1000)
+			// this.timerId = setInterval(this.timerFunc, 1000)
 		}
 	}
 	componentWillUnmount() {
@@ -105,7 +108,7 @@ class AttemptQuiz extends React.Component {
 		this.checkNext()
 	}
 	timerFunc = () => {
-		let { waiting, questions } = this.state
+		let { waiting } = this.state
 		if (waiting > 0) {
 			--waiting;
 			this.setState({ waiting })
@@ -561,7 +564,7 @@ class AttemptQuiz extends React.Component {
 							<div className='grow' style={{ flexGrow: '0', overflow: 'visible', height: `${window.innerHeight - 170}`, width: '350px' }}>
 								{
 									students.map(std => <ListGroup horizontal>
-										<ListGroup.Item variant='primary' className='markItem' style={{ backgroundColor: 'rgb(230,230,230)', color: 'rgb(41,70,52)' }}><img src={`/Quiz/Avatar/${std.picture}.png`}  style={{width:'45px', height:'45px'}}/></ListGroup.Item>
+										<ListGroup.Item variant='primary' className='markItem' style={{ backgroundColor: 'rgb(230,230,230)', color: 'rgb(41,70,52)' }}><img src={`/Quiz/Avatar/${std.picture}.png`} style={{ width: '45px', height: '45px' }} /></ListGroup.Item>
 										<ListGroup.Item variant='primary' className='markItem' style={{ width: '270px' }}><div style={{ marginTop: '10px' }}>{std.name}</div></ListGroup.Item>
 										<ListGroup.Item variant='primary' className='markItem' style={{ width: '53px' }}><div style={{ marginTop: '10px' }}>{std.mark}</div></ListGroup.Item>
 									</ListGroup>)

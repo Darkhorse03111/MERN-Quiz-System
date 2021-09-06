@@ -2,7 +2,7 @@ const express = require('express')
 const ObjectId = require('mongodb').ObjectId
 const Router = express.Router()
 const DB = require('./DB')
-let students = require('../data/students')
+let { students } = require('../data/students')
 
 // Create User in DB
 Router.post('/create', (req, res) => {

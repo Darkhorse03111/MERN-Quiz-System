@@ -12,8 +12,7 @@ const io = module.exports.io = require('socket.io')(server, {
 
 const userRoute = require('./Routes/Users')
 const quizzesRoute = require('./Routes/Quizzes')
-let students = require('./data/students')
-let clients = []
+let { students, clients, tests } = require('./data/students')
 
 const PORT = process.env.PORT || 3000
 
@@ -42,10 +41,10 @@ app.use(express.static(`${__dirname}/build`))
 
 io.on('connect', client => {
 	client.on('login', body => {
-		clients.push(client)
+		clients.push({ client, quizCode: body.quizCode })
 		students.push({ name: body.username, id: client.id, quizCode: body.quizCode, picture: body.picture, mark: '0' })
 		let res = students.filter(std => std.quizCode === body.quizCode).sort((a, b) => parseInt(b.mark) - parseInt(a.mark))
-		clients.map(clnt => clnt.emit('mark', res))
+		clients.filter(client => client.quizCode === body.quizCode).map(clnt => clnt.client.emit('mark', res))
 	})
 	client.on('mark', body => {
 		let index = students.findIndex(std => std.id === client.id)
@@ -53,20 +52,28 @@ io.on('connect', client => {
 			return;
 		}
 		students[index].mark = body.currentScore
+		console.log('current score:', body.currentScore)
 		let res = students.filter(std => std.quizCode === students[index].quizCode).sort((a, b) => parseInt(b.mark) - parseInt(a.mark))
-		clients.map(clnt => clnt.emit('mark', res))
+		clients.filter(client => client.quizCode === students[index].quizCode).map(clnt => clnt.client.emit('mark', res))
 	})
 	client.on('disconnect', () => {
 		let index = students.findIndex(std => std.id === client.id)
 		if (index < 0) {
 			return;
 		}
+		let quizCode = students[index].quizCode
 		students.splice(index, 1)
 		index = clients.findIndex(clnt => clnt.id === client.id)
 		if (index < 0) {
 			return;
 		}
 		clients.splice(index, 1)
+		if (clients.findIndex(client => client.quizCode === quizCode) < 0) {
+			let tIndex = tests.findIndex(test => test === quizCode)
+			tests.splice(tIndex, 1)
+		}
+		let res = students.filter(std => std.quizCode === students[index].quizCode).sort((a, b) => parseInt(b.mark) - parseInt(a.mark))
+		clients.filter(client => client.quizCode === quizCode).map(clnt => clnt.client.emit('mark', res))
 	});
 });
 

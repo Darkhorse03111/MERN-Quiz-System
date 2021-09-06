@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 // import { Redirect } from 'react-router-dom'
 import { Row, Col } from 'react-bootstrap'
 import './CreateQuiz.css'
@@ -8,12 +8,12 @@ import { Switch } from '@material-ui/core'
 // import LoadingScreen from './LoadingScreen'
 
 const EditQuiz = ({
-// 	user,
-// 	quizTitle,
-// 	questions,
-// 	isOpen,
-// 	editQuizHandle,
-// 	showToast
+	// 	user,
+	// 	quizTitle,
+	// 	questions,
+	// 	isOpen,
+	// 	editQuizHandle,
+	// 	showToast
 }) => {
 	// const [questionArray, setQuestionArray] = useState([])
 	// const [title, setTitle] = useState('')
@@ -104,7 +104,7 @@ const EditQuiz = ({
 					</Row>
 				</div>
 				<div className='controls'>
-					<AddQuestionModal  />
+					<AddQuestionModal />
 					<div className='switch'>
 						<h4>Public</h4>
 					</div>
@@ -115,9 +115,9 @@ const EditQuiz = ({
 				/>
 			</div>
 			<div>
-					<button className='add-btn'>
-						Close
-					</button>
+				<button className='add-btn'>
+					Close
+				</button>
 				<button
 					// disabled={!(title.length && questionArray.length)}
 					className='button wd-200'

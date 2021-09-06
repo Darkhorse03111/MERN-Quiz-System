@@ -2,7 +2,7 @@ const express = require('express')
 const Router = express.Router()
 const DB = require('./DB')
 const ObjectId = require('mongodb').ObjectId
-let students = require('../data/students')
+let { students, clients, tests } = require('../data/students')
 
 // Get Quiz Data
 Router.post('/join', (req, res) => {
@@ -122,6 +122,15 @@ Router.post('/responses', (req, res) => {
 	DB.getResponses(reqBody, res)
 })
 
+Router.post('/start', (req, res) => {
+	console.log('backend starting quiz:', req.body.id)
+	clients.filter(client => client.quizCode === req.body.id).map(clnt => clnt.client.emit('start'))
+	tests.push(req.body.id)
+	res.status(200).json({
+		message: 'Success'
+	})
+})
+
 Router.get('/all', (req, res) => {
 	DB.withDB(async (db) => {
 		try {
@@ -184,11 +193,13 @@ Router.get('/', (req, res) => {
 					_id: 1,
 					isOpen: 1,
 					title: 1,
-					questions: 1
+					questions: 1,
+					type: 1
 				})
 			const quizData = await createdCursor.toArray();
 			res.status(200).json({
-				quizData
+				quizData,
+				tests
 			})
 		} catch (error) {
 			res.status(500).json({ error })

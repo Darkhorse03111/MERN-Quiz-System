@@ -1,19 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { Redirect } from 'react-router-dom'
-import { Row, Col, Toast, ToastContainer } from 'react-bootstrap'
 import confirm from "reactstrap-confirm"
 import './UserDashBoard.css'
 import CreatedQuizCard from '../components/CreatedQuizCard'
-import JoinedQuizCard from '../components/JoinedQuizCard'
 // import LoadingScreen from './LoadingScreen'
 import CreateQuiz from './CreateQuiz'
 
-const AdminDashboard = ({ showToast, history, setUsername }) => {
+const AdminDashboard = ({ showToast, setUsername }) => {
   const [createdQuizzes, setCreatedQuizzes] = useState([])
   // const [loading, setLoading] = useState(true)
   const [editQuiz, setEditQuiz] = useState([])
   const [allQuizzes, setAllQuizzes] = useState([])
-  const [path, setPath] = useState('')
   const user = localStorage.getItem('user')
   // Fetch Data from the API
   useEffect(() => {
@@ -22,21 +18,26 @@ const AdminDashboard = ({ showToast, history, setUsername }) => {
     // 	return
     // }
     const fetchQuizData = async () => {
-      let results, quizData
+      let results, res
       // if (!!user && !!user.uid) {
       //   results = await fetch(`/API/users/${user.uid}`)
       //   quizData = await results.json()
       //   if (quizData.createdQuiz) setCreatedQuizzes(quizData.createdQuiz)
       //   console.log('created quiz:', quizData.createdQuiz)
-      results = await fetch('/API/quizzes/all', {
+      results = await fetch(user === 'admin' ? '/API/quizzes/all' : '/API/quizzes', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
       })
-      quizData = await results.json()
-      if (quizData.quizData) {
-        setAllQuizzes(quizData.quizData)
+      res = await results.json()
+      if (res.quizData) {
+        let { quizData, tests } = res
+        quizData.map(quiz => {
+          tests.find(test => test === quiz._id) ? quiz.started = true : quiz.started = false
+        })
+        setAllQuizzes(quizData)
+        console.log("quizData:", quizData)
       }
       // }
       // setLoading(false)
@@ -80,10 +81,6 @@ const AdminDashboard = ({ showToast, history, setUsername }) => {
       setAllQuizzes(temp)
       setEditQuiz([])
       // setLoading(false)
-
-      // setToastTitle('Edit Quiz')
-      // setToastContent('Success')
-      // setShow(true)
       showToast('Edit Quiz', 'Success')
     }
   }
@@ -139,11 +136,32 @@ const AdminDashboard = ({ showToast, history, setUsername }) => {
     }
   }
 
+  const startQuiz = async id => {
+    console.log('Starting Quiz ' + id)
+    const result = await fetch(`/API/quizzes/start`, {
+      method: 'POST',
+      body: JSON.stringify({
+        id
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    const res = await result.json()
+    if (res.message === 'Success') {
+      showToast('Starting Quiz', 'Success')
+      let { allQuizzes } = this.state
+      const index = allQuizzes.findIndex(quiz => quiz._id === id)
+      allQuizzes[index].started = true
+      setAllQuizzes(allQuizzes)
+    }
+  }
+
   // if (loading) return <LoadingScreen />
 
-  if (path) {
-    return localStorage.getItem('username') == undefined ? <Redirect push to='join-quiz' /> : <Redirect push to={`/attempt-quiz/${path}`} />
-  }
+  // if (path) {
+  //   return localStorage.getItem('username') === undefined ? <Redirect push to='join-quiz' /> : <Redirect push to={`/attempt-quiz/${path}`} />
+  // }
 
   if (editQuiz.length)
     return (
@@ -161,11 +179,11 @@ const AdminDashboard = ({ showToast, history, setUsername }) => {
       {
         <div className='quizzes'>
           {
-            allQuizzes.find(quiz => quiz.type ==="Qur'an") && <div className='heading'>
-            <div className='line-left' />
-            <h2>Qur'an</h2>
-            <div className='line' />
-          </div>
+            allQuizzes.find(quiz => quiz.type === "Qur'an") && <div className='heading'>
+              <div className='line-left' />
+              <h2>Qur'an</h2>
+              <div className='line' />
+            </div>
           }
           <div className='card-holder' style={{ justifyContent: 'center' }}>
             {allQuizzes.map((quiz, key) => (
@@ -180,15 +198,17 @@ const AdminDashboard = ({ showToast, history, setUsername }) => {
                 isOpen={quiz.isOpen}
                 publishQuiz={publishQuiz}
                 showToast={showToast}
+                startQuiz={startQuiz}
+                showStart={!quiz.started}
               />
             ))}
           </div>
           {
-            allQuizzes.find(quiz => quiz.type ==="Arabic") && <div className='heading'>
-            <div className='line-left' />
-            <h2>Arabic</h2>
-            <div className='line' />
-          </div>
+            allQuizzes.find(quiz => quiz.type === "Arabic") && <div className='heading'>
+              <div className='line-left' />
+              <h2>Arabic</h2>
+              <div className='line' />
+            </div>
           }
           <div className='card-holder' style={{ justifyContent: 'center' }}>
             {allQuizzes.map((quiz, key) => (
@@ -203,15 +223,17 @@ const AdminDashboard = ({ showToast, history, setUsername }) => {
                 isOpen={quiz.isOpen}
                 publishQuiz={publishQuiz}
                 showToast={showToast}
+                startQuiz={startQuiz}
+                showStart={!quiz.started}
               />
             ))}
           </div>
           {
-            allQuizzes.find(quiz => quiz.type ==="Islamic Studies") && <div className='heading'>
-            <div className='line-left' />
-            <h2>Islamic Studies</h2>
-            <div className='line' />
-          </div>
+            allQuizzes.find(quiz => quiz.type === "Islamic Studies") && <div className='heading'>
+              <div className='line-left' />
+              <h2>Islamic Studies</h2>
+              <div className='line' />
+            </div>
           }
           <div className='card-holder' style={{ justifyContent: 'center' }}>
             {allQuizzes.map((quiz, key) => (
@@ -226,6 +248,8 @@ const AdminDashboard = ({ showToast, history, setUsername }) => {
                 isOpen={quiz.isOpen}
                 publishQuiz={publishQuiz}
                 showToast={showToast}
+                startQuiz={startQuiz}
+                showStart={!quiz.started}
               />
             ))}
           </div>

@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { Redirect } from 'react-router-dom'
 import { IconButton } from '@material-ui/core'
-import { EditRounded, DeleteRounded } from '@material-ui/icons'
+import { EditRounded, DeleteRounded, PlayArrow } from '@material-ui/icons'
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-import { Card, ListGroup, ListGroupItem, Button, Row, Col } from 'react-bootstrap'
+import { Card, Row, Col } from 'react-bootstrap'
 import { useToasts } from 'react-toast-notifications'
 import "./QuizCard.css"
 
@@ -16,15 +16,16 @@ const CreatedQuizCard = ({
 	index,
 	setEditQuiz,
 	deleteQuiz,
-	publishQuiz
+	publishQuiz,
+	startQuiz,
+	showStart
 }) => {
 	const [path, setPath] = useState('')
 	const user = localStorage.getItem('user')
 	const { addToast } = useToasts()
 	if (path) {
-		return <Redirect to={path}></Redirect>
+		return <Redirect to={path} />
 	}
-
 
 	return <Card className="m-4" style={{ border: '1px solid #a17f50', backgroundColor: 'rgb(41, 70, 52)', borderRadius: '10px', color: '#ffffff', width: '236px' }}>
 		<Card.Img variant="top" src="/Quiz/Links/tariq-bin-ziyad-for-burning-the-boats-azhar-abbas.jpg" style={{ borderRadius: '10px' }} />
@@ -51,6 +52,13 @@ const CreatedQuizCard = ({
 					</IconButton>
 				</CopyToClipboard>
 			</Col>
+			{
+				user !== 'admin' && showStart && <Col>
+					<IconButton style={{ padding: 0, color: '#a17f50' }} onClick={() => startQuiz(code)}>
+						<PlayArrow />
+					</IconButton>
+				</Col>
+			}
 			{
 				user === 'admin' && <Col>
 					<IconButton style={{ padding: 0, color: '#a17f50' }} onClick={() => setPath(`/create-quiz/${code}`)}>
