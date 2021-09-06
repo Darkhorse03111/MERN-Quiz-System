@@ -37,7 +37,20 @@ app.post('/API/upload', (req, res) => {
 	});
 })
 
-app.use(express.static(`${__dirname}/build`))
+
+app.use(express.static(path.resolve('build')))
+
+app.use('/*', (req, res) => {
+	// res.sendFile(path.join(__dirname.substr(0, __dirname.length - 12), 'build', 'index.html'))
+	res.sendFile(path.resolve('build/index.html'))
+})
+
+// app.use(express.static(`${__dirname}/build`))
+
+// app.use('/*', (req, res) => {
+// 	// res.sendFile(path.join(__dirname.substr(0, __dirname.length - 12), 'build', 'index.html'))
+// 	res.sendFile(path.resolve('build/index.html'))
+// })
 
 io.on('connect', client => {
 	client.on('login', body => {
@@ -82,10 +95,8 @@ io.on('connect', client => {
 	});
 });
 
-app.use('/*', (req, res) => {
-	// res.sendFile(path.join(__dirname.substr(0, __dirname.length - 12), 'build', 'index.html'))
-	res.sendFile(path.resolve('build/index.html'))
-})
+
+
 
 server.listen(PORT, () => {
 	console.log("Connected to port:" + PORT);
