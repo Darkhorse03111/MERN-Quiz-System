@@ -8,6 +8,7 @@ import './AddQuestionModal.css'
 export default class UsernameModal extends React.Component {
   constructor(props) {
     super(props)
+    localStorage.removeItem('user')
     this.state = {
       username: localStorage.getItem('username') || '',
       code: '',
@@ -80,7 +81,7 @@ export default class UsernameModal extends React.Component {
         open={true}
       >
         <Row>
-          <Col lg='auto' md='auto' sm='auto' style={{ backgroundColor: '#294634', width: '300px', paddingLeft: '15px', paddingRight: '15px', borderRadius: '10px 0 0 10px', height:'450px' }}>
+          <Col lg='auto' md='auto' sm='auto' style={{ backgroundColor: '#294634', width: '300px', paddingLeft: '15px', paddingRight: '15px', borderRadius: '10px 0 0 10px', height: '450px' }}>
             <img
               style={{ width: '100px', marginLeft: '85px', marginRight: '85px', marginTop: '60px', marginBottom: '60px' }}
               src="/Quiz/logo/admin_login_logo.png"
@@ -109,17 +110,17 @@ export default class UsernameModal extends React.Component {
             </InputGroup>
             <button className="btn" style={{ backgroundColor: '#A17F50', color: '#fff', width: '100%', marginTop: '15px', marginBottom: '25px', height: '40px', borderRadius: '10px', paddingTop: '5px', fontSize: '12px' }} onClick={e => this.enter()}>ENTER</button>
           </Col>
-          <Col lg='auto' md='auto' sm='auto' style={{ width: '435px', backgroundColor: '#fff', height:'450px', overflow:'auto', borderRadius: '0 10px 10px 0' }}>
+          <Col lg='auto' md='auto' sm='auto' style={{ width: '435px', backgroundColor: '#fff', height: '450px', overflow: 'auto', borderRadius: '0 10px 10px 0' }}>
             <div style={{ textAlign: 'center', color: '#294634', marginTop: '20px', marginBottom: '20px' }}>CHOOSE AVATAR</div>
             <div style={{ padingLeft: '10px' }}>
               {
                 img.map((im, index) => <img
                   src={`/Quiz/Avatar/${im}.png`}
-                  style={{ margin: '20px 20px 20px 20px', width: '90px', height: '90px', border: picture === index + 2 ? 'blue 1px solid' : 'none' }}
+                  style={{ margin: '20px 20px 20px 20px', width: '90px', height: '90px', border: picture === index + 1 ? 'blue 1px solid' : 'none' }}
                   className="rounded"
                   alt=""
                   key={im}
-                  onClick={e => this.setState({ picture: index + 2 })}
+                  onClick={e => this.setState({ picture: index + 1 })}
                 />)
               }
             </div>

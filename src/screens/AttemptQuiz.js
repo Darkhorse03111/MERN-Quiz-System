@@ -68,10 +68,11 @@ class AttemptQuiz extends React.Component {
 			socket.emit('login', { username, quizCode, picture })
 			socket.on('mark', students => {
 				this.setState({
-					students
+					students: [...students]
 				})
 			})
 			socket.on('start', () => {
+				console.log('starting quiz now')
 				this.timerId = setInterval(this.timerFunc, 1000)
 			})
 			const temp = quizData.questions.map((question) => {
@@ -115,12 +116,6 @@ class AttemptQuiz extends React.Component {
 			if (waiting === 0) {
 				clearInterval(this.timerId)
 				this.timerId = setInterval(this.clock, 1000)
-				// if (!!questions[0].audio) {
-				// 	console.log('playing music')
-				// 	this.audio = new Audio(questions[0].audio)
-				// 	this.audio.play()
-				// 	this.audio.addEventListener('ended', () => this.audio.play())
-				// }
 			}
 		}
 	}
@@ -146,6 +141,8 @@ class AttemptQuiz extends React.Component {
 		let score = this.getMark(temp, number)
 		if (attemptedQuestions[number].optionType === 'radio') {
 			let currentScore = this.evaluateQuiz(questions, temp)
+			console.log('radio current answer:', temp)
+			console.log('current score:', number, currentScore)
 			socket.emit('mark', { id: localStorage.getItem('id'), currentScore })
 			clearInterval(this.timerId)
 			this.setState({
@@ -158,6 +155,7 @@ class AttemptQuiz extends React.Component {
 			// this.audio.pause()
 			setTimeout(() => this.increaseNumber(), 3000)
 		} else if (attemptedQuestions[number].optionType === 'check') {
+			console.log('checkbox current answer:', temp)
 			this.setState({
 				attemptedQuestions: [...temp]
 			})
@@ -168,7 +166,6 @@ class AttemptQuiz extends React.Component {
 		const { questions } = this.state
 		const correctOptions = questions[number].options.filter((op) => op.isCorrect)
 		let question = questions[number]
-		let mark
 		// Error for Quiz with no correct answers
 		if (correctOptions.length < 1) return 0
 		const weightage = 1 / correctOptions.length
@@ -189,6 +186,8 @@ class AttemptQuiz extends React.Component {
 		const { attemptedQuestions, questions, number } = this.state
 		let score = this.getMark(attemptedQuestions, number)
 		let currentScore = this.evaluateQuiz(questions, attemptedQuestions)
+		console.log('current answer:', attemptedQuestions)
+		console.log('current score:', number, currentScore)
 		socket.emit('mark', { id: localStorage.getItem('id'), currentScore })
 		this.setState({
 			mark: score === 1 ? 1 : 2,
@@ -201,7 +200,7 @@ class AttemptQuiz extends React.Component {
 	}
 
 	increaseNumber = () => {
-		const { number, questions, attemptedQuestions, music } = this.state
+		const { number, questions, attemptedQuestions } = this.state
 		if (number < questions.length - 1) {
 			this.setState({
 				number: number + 1,
@@ -210,14 +209,6 @@ class AttemptQuiz extends React.Component {
 				timeout: 10
 			})
 			this.timerId = setInterval(this.clock, 1000)
-			// if (!!questions[number + 1].audio) {
-			// 	this.audio.remove()
-			// 	console.log('playing ' + questions[number + 1].audio)
-			// 	this.audio = new Audio(questions[number + 1].audio)
-			// 	if (music) {
-			// 		this.audio.play()
-			// 	}
-			// }
 		}
 		else {
 			this.setState({
@@ -230,7 +221,6 @@ class AttemptQuiz extends React.Component {
 	}
 	submitQuiz = async () => {
 		// send attempted Questions to backend
-		const { quizCode, attemptedQuestions } = this.state
 		try {
 			const { questions, attemptedQuestions, number } = this.state
 			const score = this.evaluateQuiz(questions, attemptedQuestions)
@@ -282,8 +272,9 @@ class AttemptQuiz extends React.Component {
 	}
 	evaluateQuiz = (quizQuestions, attemptedQuestions) => {
 		let score = 0
-		attemptedQuestions.forEach((question) => {
-			const realQues = quizQuestions.find((x) => x.id === question.id)
+		attemptedQuestions.forEach((question, index) => {
+			// const realQues = quizQuestions.find((x) => x.id === question.id)
+			const realQues = quizQuestions[index]
 			const correctOptions = realQues.options.filter((op) => op.isCorrect)
 			// Error for Quiz with no correct answers
 			if (correctOptions.length < 1) return 0
@@ -292,7 +283,7 @@ class AttemptQuiz extends React.Component {
 			if (realQues.optionType === 'check') {
 				let cnt = 0
 				for (let i = 0; i < attemptedOptions.length; ++i) {
-					if (correctOptions.find(opt => opt.text == attemptedOptions[i])) {
+					if (correctOptions.find(opt => opt.text === attemptedOptions[i])) {
 						++cnt
 					}
 				}
@@ -318,8 +309,8 @@ class AttemptQuiz extends React.Component {
 	}
 
 	render = () => {
-		const { number, questions, attemptedQuestions, quizTitle, loading, result, path, showModal, score, time, mark, students, showMark, music, waiting, timeout } = this.state
-		const { handleOptionSelect, submitQuiz, increaseNumber, hideModal, checkNext } = this
+		const { number, questions, attemptedQuestions, quizTitle, loading, path, showModal, score, mark, students, music, waiting, timeout } = this.state
+		const { handleOptionSelect, checkNext } = this
 		const { quizCode } = this.props.match.params
 		if (loading) return <LoadingScreen />
 		// For Quiz not Found
@@ -415,7 +406,7 @@ class AttemptQuiz extends React.Component {
 												</Icon>
 												</Col>
 												<Col>
-													<div className='topText' style={{ width: '200px' }}>Score:10</div>
+													<div className='topText' style={{ width: '200px' }}>Score:0</div>
 												</Col>
 											</Row>
 										</div>
@@ -452,14 +443,6 @@ class AttemptQuiz extends React.Component {
 													</Col>
 												</Row>
 											</div>
-											{
-												// !showModal && !!question.audio && <audio controls autoplay >
-												// 	<source src={question.audio} />
-												// </audio>
-											}
-											{/* <audio controls autoplay >
-												<source src='uploads/Music.wav' />
-											</audio> */}
 											<Row style={{ marginTop: '30px', marginBottom: '30px' }}>
 												{
 													!showModal && !!question.image && <Col xs={4} md={4} lg={4} xl={4} style={{ display: 'flex', justifyContent: 'center' }}>
@@ -539,7 +522,7 @@ class AttemptQuiz extends React.Component {
 											{
 												mark === 1 ? !showModal && <div className='fixed mycorrect-answer vertical-center puzzle-text' style={{ marginTop: '20px' }}>
 													Correct
-												</div> : (mark == 2 ? !showModal && <div className='fixed mywrong-answer vertical-center puzzle-text' style={{ marginTop: '20px' }}>
+												</div> : (mark === 2 ? !showModal && <div className='fixed mywrong-answer vertical-center puzzle-text' style={{ marginTop: '20px' }}>
 													Wrong
 												</div> : <div style={{ height: '100px' }}>  </div>)
 											}
@@ -547,7 +530,7 @@ class AttemptQuiz extends React.Component {
 												showModal && <div style={{ position: 'relative', height: '150px', marginTop: '45px' }}>
 													{students.length > 0 && <img src={`/Quiz/Avatar/${students[0].picture}.png`} style={{ position: 'absolute', left: '360px', top: '20px', width: '80px', height: '80px' }}></img>}
 													{students.length > 1 && <img src={`/Quiz/Avatar/${students[1].picture}.png`} style={{ position: 'absolute', left: '235px', top: '60px', width: '80px', height: '80px' }}></img>}
-													{students.length > 2 && <img src={`/Quiz/Avatar/${students[2].picture}.png`} style={{ position: 'absolute', left: '500px', top: '60px', width: '80px', height: '80px' }}></img>}
+													{students.length > 2 && <img src={`/Quiz/Avatar/${students[2].picture}.png`} style={{ position: 'absolute', left: '500px', top: '100px', width: '80px', height: '80px' }}></img>}
 													{students.length > 0 && <div style={{ position: 'absolute', left: '360px', top: '110px', width: '80px', textAlign: 'center' }}>{students[0].name}</div>}
 													{students.length > 1 && <div style={{ position: 'absolute', left: '235px', top: '150px', width: '80px', textAlign: 'center' }}>{students[1].name}</div>}
 													{students.length > 2 && <div style={{ position: 'absolute', left: '500px', top: '190px', width: '80px', textAlign: 'center' }}>{students[2].name}</div>}
@@ -563,7 +546,7 @@ class AttemptQuiz extends React.Component {
 							</div>
 							<div className='grow' style={{ flexGrow: '0', overflow: 'visible', height: `${window.innerHeight - 170}`, width: '350px' }}>
 								{
-									students.map(std => <ListGroup horizontal>
+									students.map((std, ind) => <ListGroup horizontal key={ind}>
 										<ListGroup.Item variant='primary' className='markItem' style={{ backgroundColor: 'rgb(230,230,230)', color: 'rgb(41,70,52)' }}><img src={`/Quiz/Avatar/${std.picture}.png`} style={{ width: '45px', height: '45px' }} /></ListGroup.Item>
 										<ListGroup.Item variant='primary' className='markItem' style={{ width: '270px' }}><div style={{ marginTop: '10px' }}>{std.name}</div></ListGroup.Item>
 										<ListGroup.Item variant='primary' className='markItem' style={{ width: '53px' }}><div style={{ marginTop: '10px' }}>{std.mark}</div></ListGroup.Item>

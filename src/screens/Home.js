@@ -1,27 +1,18 @@
 import React, { useState, useEffect } from 'react'
-import { Redirect, Link } from 'react-router-dom'
 import './Home.css'
 import { InputGroup, FormControl } from 'react-bootstrap'
 import { useToasts } from 'react-toast-notifications'
 
-const Home = ({ setUser, showToast, history, setUsername }) => {
-	const [path, setPath] = useState('')
+const Home = ({ setUser, history, setUsername }) => {
 	const [username, setUserName] = useState('')
 	const [password, setPassword] = useState('')
 	const { addToast } = useToasts()
-	var uiConfig = {
-		signInflow: 'popup',
-		signInOptions: [
-		],
-		callbacks: {
-			signInSuccessWithAuthResult: () => false,
-		},
-	}
 	useEffect(() => {
 		// let isMounted = true
 		// return () => (isMounted = false)
 	}, [setUser])
 	setUsername('')
+	localStorage.removeItem('username')
 	const login = async () => {
 		const result = await fetch('/API/users/login', {
 			method: 'POST',
@@ -38,17 +29,18 @@ const Home = ({ setUser, showToast, history, setUsername }) => {
 		if (res.message === 'Success') {
 			localStorage.setItem('user', username)
 			setUser(username)
-			history.push('/admin/dashboard')
-			// showToast('Login', 'Success')
+			history.push(username === 'admin' ? '/admin/dashboard' : '/teacher/dashboard')
 			addToast('Login Success', {
 				appearance: 'success',
 				autoDismiss: true
 			})
 		}
-	}
-
-	if (!!path) {
-		return <Redirect push to={path} />
+		else {
+			addToast(res.message, {
+				appearance: 'error',
+				autoDismiss: true
+			})
+		}
 	}
 
 	return (
@@ -97,9 +89,9 @@ const Home = ({ setUser, showToast, history, setUsername }) => {
 						<InputGroup className="mb-3">
 							<button className="btn" style={{ backgroundColor: '#A17F50', color: '#fff', width: '100%' }} onClick={e => login()}>LOGIN</button>
 						</InputGroup>
-						<InputGroup className="mb-3">
+						{/* <InputGroup className="mb-3">
 							<Link to='/register' style={{ width: '100%' }}><button className="btn" style={{ backgroundColor: '#A17F50', color: '#fff', width: '100%' }}>REGISTER</button></Link>
-						</InputGroup>
+						</InputGroup> */}
 					</div>
 				</div>
 			</div>

@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Redirect } from 'react-router-dom'
 import { IconButton } from '@material-ui/core'
-import { EditRounded, DeleteRounded, PlayArrow } from '@material-ui/icons'
+import { EditRounded, DeleteRounded, PlayArrow, LockOpen, Lock, Stop } from '@material-ui/icons'
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { Card, Row, Col } from 'react-bootstrap'
@@ -18,7 +18,9 @@ const CreatedQuizCard = ({
 	deleteQuiz,
 	publishQuiz,
 	startQuiz,
-	showStart
+	showStart,
+	lockQuiz,
+	stopQuiz
 }) => {
 	const [path, setPath] = useState('')
 	const user = localStorage.getItem('user')
@@ -35,8 +37,17 @@ const CreatedQuizCard = ({
 		<p style={{ borderBottom: '1px solid #ffffff', marginLeft: '12px', marginRight: '12px', paddingTop: '3px', paddingBottom: '3px', color: '#ffffff', fontSize: '12px' }}>Teacher Shavez Muhammad</p>
 		<Row style={{ marginBottom: '10px', paddingLeft: '15px', paddingRight: '15px' }}>
 			{
-				!isOpen && <Col>
-					<button className="button" style={{ height: '24px', padding: '2px', margin: '0px', fontSize: '10px' }} onClick={e => publishQuiz(code)}>Publish</button>
+				!isOpen && user === 'admin' && <Col>
+					<IconButton style={{ padding: 0, color: '#a17f50' }} onClick={e => publishQuiz(code)}>
+						<LockOpen />
+					</IconButton>
+				</Col>
+			}
+			{
+				isOpen && user === 'admin' && <Col>
+					<IconButton style={{ padding: 0, color: '#a17f50' }} onClick={e => lockQuiz(code)}>
+						<Lock />
+					</IconButton>
 				</Col>
 			}
 			<Col>
@@ -56,6 +67,13 @@ const CreatedQuizCard = ({
 				user !== 'admin' && showStart && <Col>
 					<IconButton style={{ padding: 0, color: '#a17f50' }} onClick={() => startQuiz(code)}>
 						<PlayArrow />
+					</IconButton>
+				</Col>
+			}
+			{
+				user !== 'admin' && !showStart && <Col>
+					<IconButton style={{ padding: 0, color: '#a17f50' }} onClick={() => stopQuiz(code)}>
+						<Stop />
 					</IconButton>
 				</Col>
 			}

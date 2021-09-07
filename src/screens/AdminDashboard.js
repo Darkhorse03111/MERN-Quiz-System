@@ -5,7 +5,7 @@ import CreatedQuizCard from '../components/CreatedQuizCard'
 // import LoadingScreen from './LoadingScreen'
 import CreateQuiz from './CreateQuiz'
 
-const AdminDashboard = ({ showToast, setUsername }) => {
+const AdminDashboard = ({ showToast, setUsername, history, role }) => {
   const [createdQuizzes, setCreatedQuizzes] = useState([])
   // const [loading, setLoading] = useState(true)
   const [editQuiz, setEditQuiz] = useState([])
@@ -34,7 +34,7 @@ const AdminDashboard = ({ showToast, setUsername }) => {
       if (res.quizData) {
         let { quizData, tests } = res
         quizData.map(quiz => {
-          tests.find(test => test === quiz._id) ? quiz.started = true : quiz.started = false
+          tests.findIndex(test => test === quiz._id) >= 0 ? quiz.started = true : quiz.started = false
         })
         setAllQuizzes(quizData)
         console.log("quizData:", quizData)
@@ -105,6 +105,26 @@ const AdminDashboard = ({ showToast, setUsername }) => {
     }
   }
 
+  const lockQuiz = async id => {
+    let index = allQuizzes.findIndex(quiz => quiz._id === id)
+    const result = await fetch('/API/quizzes/edit', {
+      method: 'POST',
+      body: JSON.stringify({
+        ...allQuizzes[index],
+        quizId: allQuizzes[index]._id,
+        isOpen: false
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    const res = await result.json()
+    if (res.message === 'Success') {
+      allQuizzes[index].isOpen = false
+      showToast('Lock Quiz', 'Success')
+    }
+  }
+
   const deleteQuiz = async id => {
     let result = await confirm({
       title: (
@@ -150,10 +170,54 @@ const AdminDashboard = ({ showToast, setUsername }) => {
     const res = await result.json()
     if (res.message === 'Success') {
       showToast('Starting Quiz', 'Success')
-      let { allQuizzes } = this.state
+      let quizzes = [...allQuizzes]
       const index = allQuizzes.findIndex(quiz => quiz._id === id)
-      allQuizzes[index].started = true
+      quizzes[index].started = true
       setAllQuizzes(allQuizzes)
+    }
+  }
+
+  const stopQuiz = async id => {
+    console.log('stopping quiz:', id)
+    const result = await fetch(`/API/quizzes/stop`, {
+      method: 'POST',
+      body: JSON.stringify({
+        id
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    const res = await result.json()
+    if (res.message === 'Success') {
+      showToast('Stopping Quiz', 'Success')
+      let quizzes = [...allQuizzes]
+      const index = allQuizzes.findIndex(quiz => quiz._id === id)
+      quizzes[index].started = false
+      setAllQuizzes(allQuizzes)
+    }
+  }
+
+  if (role === 'admin') {
+    if (user === 'admin') {
+      //correct
+    }
+    else if (!!user) {
+      history.push('/teacher/dashboard')
+    }
+    else {
+      history.push('/admin')
+    }
+  }
+  else {
+    if (user === 'admin') {
+      history.push('/admin/dashboard')
+    }
+    else if (!!user) {
+
+    }
+    else {
+      history.push('/teacher')
     }
   }
 
@@ -197,8 +261,10 @@ const AdminDashboard = ({ showToast, setUsername }) => {
                 questions={quiz.questions.length}
                 isOpen={quiz.isOpen}
                 publishQuiz={publishQuiz}
+                lockQuiz={lockQuiz}
                 showToast={showToast}
                 startQuiz={startQuiz}
+                stopQuiz={stopQuiz}
                 showStart={!quiz.started}
               />
             ))}
@@ -222,8 +288,10 @@ const AdminDashboard = ({ showToast, setUsername }) => {
                 questions={quiz.questions.length}
                 isOpen={quiz.isOpen}
                 publishQuiz={publishQuiz}
+                lockQuiz={lockQuiz}
                 showToast={showToast}
                 startQuiz={startQuiz}
+                stopQuiz={stopQuiz}
                 showStart={!quiz.started}
               />
             ))}
@@ -247,8 +315,10 @@ const AdminDashboard = ({ showToast, setUsername }) => {
                 questions={quiz.questions.length}
                 isOpen={quiz.isOpen}
                 publishQuiz={publishQuiz}
+                lockQuiz={lockQuiz}
                 showToast={showToast}
                 startQuiz={startQuiz}
+                stopQuiz={stopQuiz}
                 showStart={!quiz.started}
               />
             ))}

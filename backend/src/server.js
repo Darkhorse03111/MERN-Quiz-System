@@ -44,6 +44,8 @@ io.on('connect', client => {
 		clients.push({ client, quizCode: body.quizCode })
 		students.push({ name: body.username, id: client.id, quizCode: body.quizCode, picture: body.picture, mark: '0' })
 		let res = students.filter(std => std.quizCode === body.quizCode).sort((a, b) => parseInt(b.mark) - parseInt(a.mark))
+		console.log('login:', clients)
+		console.log(students)
 		clients.filter(client => client.quizCode === body.quizCode).map(clnt => clnt.client.emit('mark', res))
 	})
 	client.on('mark', body => {
@@ -63,7 +65,7 @@ io.on('connect', client => {
 		}
 		let quizCode = students[index].quizCode
 		students.splice(index, 1)
-		index = clients.findIndex(clnt => clnt.id === client.id)
+		index = clients.findIndex(clnt => clnt.quizCode === quizCode)
 		if (index < 0) {
 			return;
 		}
@@ -74,6 +76,9 @@ io.on('connect', client => {
 		}
 		let res = students.filter(std => std.quizCode === students[index].quizCode).sort((a, b) => parseInt(b.mark) - parseInt(a.mark))
 		clients.filter(client => client.quizCode === quizCode).map(clnt => clnt.client.emit('mark', res))
+		console.log('students:', students)
+		console.log('clients:', clients)
+		console.log('tests:', tests)
 	});
 });
 

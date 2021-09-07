@@ -52,7 +52,7 @@ function Sidebar({ setUsername, setUser, setPath, user, logout }) {
 							<MenuOpenRounded fontSize='large' />
 						</Icon>
 					</li>
-					{!!user && SidedbarData.map((item, index) => {
+					{user === 'admin' && SidedbarData.map((item, index) => {
 						return <li key={index} className='nav-text'>
 							<Link to={item.path} style={{ color: '#ffffff' }}>
 								<Icon style={{ height: '40px' }}>{item.icon}</Icon>

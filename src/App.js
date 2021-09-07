@@ -24,7 +24,7 @@ import AdminDashboard from './screens/AdminDashboard'
 import Register from './screens/Register'
 
 const App = () => {
-	const [user, setUser] = useState('')//useState(localStorage.getItem('user'))
+	const [user, setUser] = useState(localStorage.getItem('user'))
 	const [username, setUsername] = useState(localStorage.getItem('username'))
 	const [show, setShow] = useState(false)
 	const [toastTitle, setToastTitle] = useState('')
@@ -33,9 +33,6 @@ const App = () => {
 	useEffect(() => {
 	}, [user])
 	const showToast = (title, content, appr = 'success') => {
-		// setShow(true)
-		// setToastTitle(title)
-		// setToastContent(content)
 		addToast(title + ' ' + content, {
 			appearance: appr,
 			autoDismiss: true
@@ -63,25 +60,26 @@ const App = () => {
 				</Toast>
 			</ToastContainer>
 			<Switch>
-				<Route path='/name' render={routeProps => <UsernameModal setUsername={setUsername} showToast={showToast} {...routeProps} />}/>
-				<Route path='/admin/dashboard/editQuiz' render={routeProps => <EditQuiz setUser={setUser} user={user} {...routeProps} />}/>
+				<Route path='/name' render={routeProps => <UsernameModal setUsername={setUsername} showToast={showToast} {...routeProps} />} />
+				<Route path='/admin/dashboard/editQuiz' render={routeProps => <EditQuiz setUser={setUser} user={user} {...routeProps} />} />
 
-				<Route path='/admin/dashboard' render={routeProps => <AdminDashboard setUsername={setUsername} setUser={setUser} showToast={showToast} {...routeProps} />}/>
-				<Route path='/teacher' render={routeProps => <AdminDashboard setUsername={setUsername} setUser={setUser} showToast={showToast} {...routeProps} />}/>
+				<Route path='/admin/dashboard' render={routeProps => <AdminDashboard setUsername={setUsername} setUser={setUser} showToast={showToast} role='admin' {...routeProps} />} />
+				<Route path='/teacher/dashboard' render={routeProps => <AdminDashboard setUsername={setUsername} setUser={setUser} showToast={showToast} role='teacher' {...routeProps} />} />
 
-				<Route path='/admin' render={routeProps => <Home setUser={setUser} user={user} showToast={showToast} setUsername={setUsername} {...routeProps} />}/>
+				<Route path='/admin' render={routeProps => <Home setUser={setUser} user={user} showToast={showToast} setUsername={setUsername} {...routeProps} />} />
+				<Route path='/teacher' render={routeProps => <Home setUser={setUser} user={user} showToast={showToast} setUsername={setUsername} {...routeProps} />} />
 
-				<Route path='/register' render={routeProps => <Register showToast={showToast} {...routeProps}/>}/>
+				<Route path='/register' render={routeProps => <Register showToast={showToast} {...routeProps} />} />
 
-				<Route path='/dashboard' render={routeProps => <UserDashboard user={user} {...routeProps} />}/>
+				<Route path='/dashboard' render={routeProps => <UserDashboard user={user} {...routeProps} />} />
 				<Route path='/create-quiz/:id' render={routeProps => <CreateQuiz showToast={showToast} id={routeProps.match.params.id} {...routeProps} />} />
 				<Route path='/create-quiz' render={routeProps => <CreateQuiz showToast={showToast} {...routeProps} />} />
-				<Route path='/created-successfully/:quizCode' component={CreatedSuccessfully}/>
-				<Route path='/join-quiz' render={routeProps => <JoinQuiz user={user} {...routeProps} />}/>
+				<Route path='/created-successfully/:quizCode' component={CreatedSuccessfully} />
+				<Route path='/join-quiz' render={routeProps => <JoinQuiz user={user} {...routeProps} />} />
 				<Route path='/attempt-quiz/:quizCode' component={AttemptQuiz} />
 				<Route path='/attempt-blind-quiz/:quizCode' component={AttemptBlindQuiz} />
 				<Route path='/responses/:quizCode' component={Responses} />
-				<Route path='/' render={routeProps => !!user ? <AdminDashboard setUsername={setUsername} setUser={setUser} showToast={showToast} {...routeProps} /> : <UsernameModal setUsername={setUsername} showToast={showToast} {...routeProps} />} />
+				<Route path='/' render={routeProps => <UsernameModal setUsername={setUsername} showToast={showToast} {...routeProps} />} />
 				<Route component={NotFoundPage} />
 			</Switch>
 		</div>

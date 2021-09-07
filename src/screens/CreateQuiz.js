@@ -94,6 +94,11 @@ export default class CreateQuiz extends React.Component {
 		this.setState({ questions: [...questions] })
 		this.props.showToast('File Upload', 'Success')
 	}
+	deleteQuiz = index => {
+		let { questions } = this.state
+		questions.splice(index, 1)
+		this.setState({ questions })
+	}
 	render() {
 		const { access, title, questions, curIndex, editing, type } = this.state
 		console.log('current type:', type)
@@ -206,6 +211,13 @@ export default class CreateQuiz extends React.Component {
 													style={{ height: '35px', fontSize: '12px', paddingTop: '3px', paddingBottom: '5px', width: '90px', fontSize: '15px', marginTop: '10px' }}
 												>
 													EDIT
+												</button>
+												<button
+													className='button'
+													onClick={() => this.deleteQuiz(index)}
+													style={{ height: '35px', fontSize: '12px', paddingTop: '3px', paddingBottom: '5px', width: '90px', fontSize: '15px', marginTop: '10px' }}
+												>
+													DELETE
 												</button>
 											</Row>
 										</div>

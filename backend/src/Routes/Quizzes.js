@@ -123,9 +123,20 @@ Router.post('/responses', (req, res) => {
 })
 
 Router.post('/start', (req, res) => {
-	console.log('backend starting quiz:', req.body.id)
+	console.log('backend starting quiz:', req.body.id, clients, clients.filter(client => client.quizCode === req.body.id).length)
 	clients.filter(client => client.quizCode === req.body.id).map(clnt => clnt.client.emit('start'))
 	tests.push(req.body.id)
+	res.status(200).json({
+		message: 'Success'
+	})
+})
+
+Router.post('/stop', (req, res) => {
+	console.log('backend stopping quiz:', req.body.id)
+	// clients.filter(client => client.quizCode === req.body.id).map(clnt => clnt.client.emit('start'))
+	clients = clients.filter(client => client.quizCode !== req.body.id)
+	tests = tests.filter(test => test !== req.body.id)
+	students = students.filter(student => student.quizCode !== req.body.id)
 	res.status(200).json({
 		message: 'Success'
 	})
@@ -147,7 +158,8 @@ Router.get('/all', (req, res) => {
 				})
 			const quizData = await createdCursor.toArray();
 			res.status(200).json({
-				quizData
+				quizData,
+				tests
 			})
 		} catch (error) {
 			res.status(500).json({ error })
