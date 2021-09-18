@@ -1,6 +1,3 @@
-<div align="center">
-    <h1>Alharamain Games</h1>
-</div>
 
 ## 🎓Overview
 
